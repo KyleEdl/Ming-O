@@ -48,7 +48,7 @@ class gamescreenState extends State<gamescreen> {
   );
 
   final FirstPage fp = new FirstPage();
-  static int points = 1000;
+  static int points = 25;
   static int addPointsOne = 25;
   static int addPointsTwo = 25;
   static int addPointsThree = 25;
@@ -970,7 +970,7 @@ class gamescreenState extends State<gamescreen> {
                   width: 5,
                 ),
                 Text(
-                  (healthLevel.toString()
+                  (points.toString()
                   //secondsGrace.toString()
                   ),
                   textAlign: TextAlign.center,
@@ -1246,6 +1246,7 @@ class gamescreenState extends State<gamescreen> {
                                 }
                                 if (healthLevel <= 4) {
                                   bandageAni();
+                                  bandageCount--;
                                 }
                                 if (healthLevel <= 0) {
                                   ScaffoldMessenger.of(context)
@@ -1846,7 +1847,7 @@ class gamescreenState extends State<gamescreen> {
                           width: 120,
                           child: RiveAnimation.asset(
                             'assets/Mingeruchi.riv',
-                            artboard: "hourglass",
+                            artboard: "Angel",
                             animations: [],
                             fit: BoxFit.fitWidth,
                             alignment: Alignment.center,
