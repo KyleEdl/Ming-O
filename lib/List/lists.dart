@@ -1,14 +1,4 @@
-import 'dart:ffi';
 import 'dart:math';
-import 'package:bingo_application/main.dart';
-import 'package:flutter/material.dart';
-import 'package:bingo_application/screens/homescreen.dart';
-import 'package:bingo_application/screens/bingoWin.dart';
-import 'package:bingo_application/modelclass.dart';
-import 'package:get_it/get_it.dart';
-import 'package:flutter/material.dart';
-import 'package:bingo_application/screens/homescreen.dart';
-import 'package:bingo_application/service_locator.dart';
 
 class gameList {
   // Universal List
@@ -48,7 +38,6 @@ class gameList {
     'Corrin is a frat boy',
     'Alex wears floral shirt',
     'Someone gives Emmett rapid kisses',
-    'NPC mentions requirement',
     'The death of Kiwi is mentioned',
   ];
 
@@ -130,6 +119,34 @@ class gameList {
     'Diane talks about not having enough\n vacation',
   ];
 
+  List fList = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+  ];
+
   // Universal Description
   List uDescription = [
     "Caleb makes a subtle reference to his sexuality or defends his sexuality in conversation with NPCs",
@@ -167,7 +184,6 @@ class gameList {
     'If Corrin talks about his frat life, this tile is qualified',
     'If Alex is showing off his sexuality, this tile is qualified',
     'Someone gives Emmett rapid kisses',
-    'NPC mentions requirement',
     'The death of Kiwi is mentioned',
   ];
 
@@ -249,6 +265,34 @@ class gameList {
     'Diane talks about not having enough vacation',
   ];
 
+  List fDescription = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+  ];
+
   List shownDescriptions = List.filled(25, "");
   final List tileAssignment = List.filled(25, "");
   var ranNum = new Random();
@@ -260,14 +304,17 @@ class gameList {
   bool? isOma;
   bool? isEdl;
   bool? isRoth;
+  bool? isFuneral;
   String tmp = '';
   var y = 0;
 
-  gameList(bool? isLaura, bool? isOma, bool? isEdl, bool? isRoth) {
+  gameList(
+      bool? isLaura, bool? isOma, bool? isEdl, bool? isRoth, bool? isFuneral) {
     this.isLaura = isLaura;
     this.isOma = isOma;
     this.isEdl = isEdl;
     this.isRoth = isRoth;
+    this.isFuneral = isFuneral;
 
     if (isLaura == true) {
       randList = 1;
@@ -281,47 +328,57 @@ class gameList {
     if (isRoth == true) {
       randList = 4;
     }
+    if (isFuneral == true) {
+      randList = 5;
+    }
 
     while (cou < 25) {
-      c = ranNum.nextInt(randList + 1);
-      if (c == 0) {
-        r = ranNum.nextInt(uList.length);
-        tileAssignment[cou] = uList[r];
-        shownDescriptions[cou] = uDescription[r];
-        uList.removeAt(r);
-        uDescription.removeAt(r);
+      if (isFuneral == true) {
+        r = ranNum.nextInt(fList.length);
+        tileAssignment[cou] = fList[r];
+        shownDescriptions[cou] = fDescription[r];
+        fList.removeAt(r);
+        fDescription.removeAt(r);
         cou++;
-      } else if (c == 1 && isLaura == true) {
-        r = ranNum.nextInt(lList.length);
-        tileAssignment[cou] = lList[r];
-        shownDescriptions[cou] = lDescription[r];
-        lList.removeAt(r);
-        lDescription.removeAt(r);
-        cou++;
-      } else if (c == 2 && isOma == true) {
-        r = ranNum.nextInt(oList.length);
-        tileAssignment[cou] = oList[r];
-        shownDescriptions[cou] = oList[r];
-        oList.removeAt(r);
-        oDescription.removeAt(r);
-        cou++;
-      } else if (c == 3 && isEdl == true) {
-        r = ranNum.nextInt(eList.length);
-        tileAssignment[cou] = eList[r];
-        shownDescriptions[cou] = eList[r];
-        eList.removeAt(r);
-        eDescription.removeAt(r);
-        cou++;
-      } else if (c == 4 && isRoth == true) {
-        r = ranNum.nextInt(rList.length);
-        tileAssignment[cou] = rList[r];
-        shownDescriptions[cou] = rDescription[r];
-        rDescription.removeAt(r);
-        rList.removeAt(r);
-        cou++;
+      } else {
+        c = ranNum.nextInt(randList + 1);
+        if (c == 0) {
+          r = ranNum.nextInt(uList.length);
+          tileAssignment[cou] = uList[r];
+          shownDescriptions[cou] = uDescription[r];
+          uList.removeAt(r);
+          uDescription.removeAt(r);
+          cou++;
+        } else if (c == 1 && isLaura == true) {
+          r = ranNum.nextInt(lList.length);
+          tileAssignment[cou] = lList[r];
+          shownDescriptions[cou] = lDescription[r];
+          lList.removeAt(r);
+          lDescription.removeAt(r);
+          cou++;
+        } else if (c == 2 && isOma == true) {
+          r = ranNum.nextInt(oList.length);
+          tileAssignment[cou] = oList[r];
+          shownDescriptions[cou] = oList[r];
+          oList.removeAt(r);
+          oDescription.removeAt(r);
+          cou++;
+        } else if (c == 3 && isEdl == true) {
+          r = ranNum.nextInt(eList.length);
+          tileAssignment[cou] = eList[r];
+          shownDescriptions[cou] = eList[r];
+          eList.removeAt(r);
+          eDescription.removeAt(r);
+          cou++;
+        } else if (c == 4 && isRoth == true) {
+          r = ranNum.nextInt(rList.length);
+          tileAssignment[cou] = rList[r];
+          shownDescriptions[cou] = rDescription[r];
+          rDescription.removeAt(r);
+          rList.removeAt(r);
+          cou++;
+        }
       }
     }
-    print("Output from gameList: $tileAssignment");
-    print("GameList Output for shownLongLists: $shownDescriptions");
   }
 }

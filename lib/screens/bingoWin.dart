@@ -6,6 +6,33 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rive/rive.dart';
 import 'dart:async';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'dart:ffi';
+import 'dart:convert';
+import 'package:grouped_list/grouped_list.dart';
+import 'package:rive/rive.dart';
+import 'package:flutter/material.dart';
+import 'package:bingo_application/List/lists.dart';
+import 'package:bingo_application/screens/homescreen.dart';
+import 'package:bingo_application/screens/bingoWin.dart';
+import 'package:bingo_application/screens/bingoDie.dart';
+import 'package:bingo_application/screens/bingoLost.dart';
+import 'package:bingo_application/modelclass.dart';
+import 'package:bingo_application/main.dart';
+import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:bingo_application/panel.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:bingo_application/firebase_options.dart';
+import 'package:bingo_application/screens/messages.dart';
+import 'package:vibration/vibration.dart';
+import 'package:bingo_application/screens/gamescreen.dart';
 
 class winScreen extends StatefulWidget {
   @override
@@ -24,12 +51,12 @@ class winScreenState extends State<winScreen> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 9), (Timer opacTimer) {
+    Timer.periodic(Duration(seconds: 11), (Timer opacTimer) {
       setState(() {
         buttonOpac = 1;
       });
     });
-    Timer.periodic(Duration(seconds: 7), (Timer timer) {
+    Future.delayed(Duration(seconds: 9), () {
       if (_currentPage == 0) {
         end = true;
       } else if (_currentPage == 1) {
@@ -75,6 +102,19 @@ class winScreenState extends State<winScreen> {
                               Color.fromARGB(255, 105, 240, 175),
                             ]))),
                 Align(
+                  alignment: Alignment(0, 0),
+                  child: Container(
+                    height: 900,
+                    child: RiveAnimation.asset(
+                      'assets/Mingeruchi.riv',
+                      artboard: "confetti",
+                      alignment: Alignment.center,
+                      fit: BoxFit.fitHeight,
+                      stateMachines: ['Layer 2'],
+                    ),
+                  ),
+                ),
+                Align(
                   alignment: Alignment(0, .3),
                   child: AnimatedOpacity(
                     opacity: buttonOpac,
@@ -111,7 +151,7 @@ class winScreenState extends State<winScreen> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
             Stack(

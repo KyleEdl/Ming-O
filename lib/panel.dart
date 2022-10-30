@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:bingo_application/screens/homescreen.dart';
-import 'package:bingo_application/screens/gamescreen.dart';
-import 'package:bingo_application/List/lists.dart';
 
 // ignore: must_be_immutable
 class PanelWidget extends StatelessWidget {

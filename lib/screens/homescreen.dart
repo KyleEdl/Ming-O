@@ -1,15 +1,11 @@
-import 'dart:ui';
-import 'dart:math';
 import 'package:bingo_application/modelclass.dart';
 import 'package:flutter/material.dart';
 import 'package:bingo_application/screens/gamescreen.dart';
 import 'package:get_it/get_it.dart';
 import 'package:bingo_application/List/lists.dart';
-import 'package:bingo_application/main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,9 +26,11 @@ class FirstPage extends State<FirstScreen> {
   static bool? isOma = false;
   static bool? isEdl = false;
   static bool? isRoth = false;
+  static bool? isFuneral = false;
   static List tileAssignment = [];
   static List shownDescriptions = [];
-
+  // static String myName = "";
+  // static String myAbilName = "";
   // @override
   // void initState() {
   //   super.initState();
@@ -41,11 +39,11 @@ class FirstPage extends State<FirstScreen> {
   //     DeviceOrientation.portraitUp,
   //   ]);
   // }
-
+  final firebaseInit = Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   Future upload() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    await firebaseInit;
 
     final refUser = FirebaseFirestore.instance
         .collection('usernames')
@@ -69,6 +67,10 @@ class FirstPage extends State<FirstScreen> {
     return isRoth;
   }
 
+  get getisFuneral {
+    return isFuneral;
+  }
+
   get gettileAssignment {
     return tileAssignment;
   }
@@ -78,6 +80,27 @@ class FirstPage extends State<FirstScreen> {
   }
 
   FirstPage();
+
+  Future joinedGame() async {
+    await firebaseInit;
+
+    String name = modelClass.value;
+
+    final refMessages = FirebaseFirestore.instance
+        .collection('messages')
+        .doc('ADMIN: $name Has Joined The Game');
+    await refMessages.set({
+      'username': 'ADMIN',
+      'message': 'ADMIN: $name Has Joined The Game',
+      'created': DateTime.now()
+    });
+  }
+
+  // Future abilityInit() async {
+  //   await Firebase.initializeApp(
+  //     options: DefaultFirebaseOptions.currentPlatform,
+  //   );
+  // }
 
 //launches the tutorial
   launchURL(String url) async {
@@ -95,7 +118,6 @@ class FirstPage extends State<FirstScreen> {
   final PageController _controller = PageController();
 
   //Submit Button is pressed
-  bool _validate = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -137,7 +159,7 @@ class FirstPage extends State<FirstScreen> {
                 ),
 
                 //Page 2
-
+//PageView(physics: NeverScrollableScrollPhysics()),
                 Container(
                   color: Colors.greenAccent,
                   child: Stack(children: <Widget>[
@@ -152,7 +174,7 @@ class FirstPage extends State<FirstScreen> {
                                   color: Colors.green[800])),
                         )),
                     Align(
-                      alignment: Alignment(0, -0.3),
+                      alignment: Alignment(0, -0.15),
                       child: TextField(
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(12),
@@ -165,46 +187,76 @@ class FirstPage extends State<FirstScreen> {
                             ),
                             suffixIcon: IconButton(
                               onPressed: () {
-                                textController.clear();
+                                FocusScopeNode currentFocus =
+                                    FocusScope.of(context);
+                                if (!currentFocus.hasPrimaryFocus) {
+                                  currentFocus.unfocus();
+                                }
+                                modelClass.value = textController.text;
+
+                                if (textController.text.isNotEmpty &&
+                                    !textController.text.contains('ADMIN') &&
+                                    !textController.text.contains('Admin') &&
+                                    !textController.text.contains('admin')) {
+                                  _controller.nextPage(
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeIn,
+                                  );
+                                }
+                                if (textController.text.isEmpty) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red.shade600,
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                      'Please enter name',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ));
+                                }
+
+                                if (textController.text.contains('ADMIN')) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red.shade600,
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                      'Name cannot contain "ADMIN"',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ));
+                                }
+                                if (textController.text.contains('Admin')) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red.shade600,
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                      'Name cannot contain "Admin"',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ));
+                                }
+                                if (textController.text.contains('admin')) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red.shade600,
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                      'Name cannot contain "admin"',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ));
+                                }
                               },
-                              icon: const Icon(Icons.clear),
+                              icon: const Icon(Icons.send),
                             )),
                       ),
                     ),
-                    Align(
-                        alignment: Alignment(0, -.01),
-                        child: MaterialButton(
-                          color: Colors.green[700],
-                          child: const Text(
-                            'Submit',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () {
-                            FocusScopeNode currentFocus =
-                                FocusScope.of(context);
-                            if (!currentFocus.hasPrimaryFocus) {
-                              currentFocus.unfocus();
-                            }
-                            modelClass.value = textController.text;
-
-                            if (textController.text.isNotEmpty) {
-                              setState(() {
-                                print('You did it!');
-                              });
-                              _controller.nextPage(
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeIn,
-                              );
-                            }
-                            if (textController.text.isEmpty) {
-                              setState(() {
-                                print('Please enter name');
-                              });
-                            }
-                          },
-                        )),
                     Align(
                       alignment: Alignment(0, 0.9),
                       child: Container(
@@ -241,9 +293,22 @@ class FirstPage extends State<FirstScreen> {
                           controlAffinity: ListTileControlAffinity.leading,
                           value: isLaura,
                           onChanged: (bool? laura) {
-                            setState(() {
-                              isLaura = laura;
-                            });
+                            if (isFuneral == false) {
+                              setState(() {
+                                isLaura = laura;
+                              });
+                            }
+                            if (isFuneral == true) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                backgroundColor: Colors.red.shade600,
+                                duration: Duration(seconds: 1),
+                                content: Text(
+                                  "Cannot check while Funeral Mode is active",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ));
+                            }
                           },
                           title: Text(
                             'Laura is here',
@@ -260,9 +325,22 @@ class FirstPage extends State<FirstScreen> {
                           controlAffinity: ListTileControlAffinity.leading,
                           value: isOma,
                           onChanged: (bool? oma) {
-                            setState(() {
-                              isOma = oma;
-                            });
+                            if (isFuneral == false) {
+                              setState(() {
+                                isOma = oma;
+                              });
+                            }
+                            if (isFuneral == true) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                backgroundColor: Colors.red.shade600,
+                                duration: Duration(seconds: 1),
+                                content: Text(
+                                  "Cannot check while Funeral Mode is active",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ));
+                            }
                           },
                           title: Text(
                             'Oma is here',
@@ -279,9 +357,22 @@ class FirstPage extends State<FirstScreen> {
                           controlAffinity: ListTileControlAffinity.leading,
                           value: isEdl,
                           onChanged: (bool? edl) {
-                            setState(() {
-                              isEdl = edl;
-                            });
+                            if (isFuneral == false) {
+                              setState(() {
+                                isEdl = edl;
+                              });
+                            }
+                            if (isFuneral == true) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                backgroundColor: Colors.red.shade600,
+                                duration: Duration(seconds: 1),
+                                content: Text(
+                                  "Cannot check while Funeral Mode is active",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ));
+                            }
                           },
                           title: Text(
                             'Heather and David are here',
@@ -299,9 +390,22 @@ class FirstPage extends State<FirstScreen> {
                           controlAffinity: ListTileControlAffinity.leading,
                           value: isRoth,
                           onChanged: (bool? roth) {
-                            setState(() {
-                              isRoth = roth;
-                            });
+                            if (isFuneral == false) {
+                              setState(() {
+                                isRoth = roth;
+                              });
+                            }
+                            if (isFuneral == true) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                backgroundColor: Colors.red.shade600,
+                                duration: Duration(seconds: 1),
+                                content: Text(
+                                  "Cannot check while Funeral Mode is active",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ));
+                            }
                           },
                           activeColor: Colors.green.shade200,
                           title: Text(
@@ -312,6 +416,30 @@ class FirstPage extends State<FirstScreen> {
                           ),
                           subtitle: Text(
                               'Diane, Don, or Kathi will be in attendance'),
+                        )),
+                    Align(
+                        alignment: Alignment(0, 0.1),
+                        child: CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: isFuneral,
+                          onChanged: (bool? funeral) {
+                            setState(() {
+                              isEdl = false;
+                              isOma = false;
+                              isLaura = false;
+                              isRoth = false;
+                              isFuneral = funeral;
+                            });
+                          },
+                          activeColor: Colors.green.shade200,
+                          title: Text(
+                            'Funeral Mode',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red[900]),
+                          ),
+                          subtitle: Text(
+                              'If you are attending a funeral, click this.'),
                         )),
                   ]),
                 ),
@@ -342,7 +470,6 @@ class FirstPage extends State<FirstScreen> {
                         ),
                         onPressed: () async {
                           if (textController.text.isEmpty) {
-                            print('NO!');
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               backgroundColor: Colors.red.shade600,
                               duration: Duration(seconds: 1),
@@ -352,12 +479,24 @@ class FirstPage extends State<FirstScreen> {
                               ),
                             ));
                           }
+                          if (textController.text.contains('ADMIN')) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Colors.red.shade600,
+                              duration: Duration(seconds: 1),
+                              content: Text(
+                                'Name cannot contain "ADMIN"',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                            ));
+                          }
                           if (textController.text.isNotEmpty) {
-                            gameList gl =
-                                new gameList(isLaura, isOma, isEdl, isRoth);
+                            gameList gl = new gameList(
+                                isLaura, isOma, isEdl, isRoth, isFuneral);
 
                             tileAssignment = gl.tileAssignment;
                             shownDescriptions = gl.shownDescriptions;
+                            joinedGame();
+
                             upload();
                             Navigator.push(
                                 context,
@@ -402,10 +541,3 @@ class FirstPage extends State<FirstScreen> {
     );
   }
 }
-/*Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => gamescreen())));*/
-
-              //deep orange
-              //pink600
-              //purpleAccent.shade400
-              //cyan400

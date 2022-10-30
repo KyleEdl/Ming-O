@@ -1,25 +1,22 @@
-import 'dart:ffi';
-import 'dart:convert';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:rive/rive.dart';
 import 'package:flutter/material.dart';
-import 'package:bingo_application/List/lists.dart';
 import 'package:bingo_application/screens/homescreen.dart';
 import 'package:bingo_application/screens/bingoWin.dart';
+import 'package:bingo_application/screens/bingoDie.dart';
+import 'package:bingo_application/screens/bingoLost.dart';
 import 'package:bingo_application/modelclass.dart';
-import 'package:bingo_application/main.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:bingo_application/panel.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bingo_application/firebase_options.dart';
+import 'package:bingo_application/screens/messages.dart';
+import 'package:vibration/vibration.dart';
 
 // import 'package:firebase_database/ui/firebase_animated_list.dart';
 
@@ -32,12 +29,13 @@ class gamescreen extends StatefulWidget {
 
 class gamescreenState extends State<gamescreen> {
   final player = AudioPlayer();
-  int noteRandom = 0;
+  static int noteRandom = 0;
 // List and Currency data
   bool? isLaura;
   bool? isOma;
   bool? isEdl;
   bool? isRoth;
+  bool? isFuneral;
   List tileAssignment = [];
   List shownDescriptions = [];
   List newAssignment = [];
@@ -45,101 +43,198 @@ class gamescreenState extends State<gamescreen> {
   String myName = "";
   String myAbilName = "";
 
+  final firebaseInit = Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   final FirstPage fp = new FirstPage();
   static int points = 1000;
-  int addPointsOne = 25;
-  int addPointsTwo = 25;
-  int addPointsThree = 25;
-  int addPointsFour = 25;
-  int addPointsFive = 25;
-  int addPointsSix = 25;
-  int addPointsSeven = 25;
-  int addPointsEight = 25;
-  int addPointsNine = 25;
-  int addPointsTen = 25;
-  int addPointsEleven = 25;
-  int addPointsTwelve = 25;
-  int addPointsThirteen = 0;
-  int addPointsFourteen = 25;
-  int addPointsFifteen = 25;
-  int addPointsSixteen = 25;
-  int addPointsSeventeen = 25;
-  int addPointsEighteen = 25;
-  int addPointsNineteen = 25;
-  int addPointsTwenty = 25;
-  int addPointsTwentyOne = 25;
-  int addPointsTwentyTwo = 25;
-  int addPointsTwentyThree = 25;
-  int addPointsTwentyFour = 25;
-  int addPointsTwentyFive = 25;
+  static int addPointsOne = 25;
+  static int addPointsTwo = 25;
+  static int addPointsThree = 25;
+  static int addPointsFour = 25;
+  static int addPointsFive = 25;
+  static int addPointsSix = 25;
+  static int addPointsSeven = 25;
+  static int addPointsEight = 25;
+  static int addPointsNine = 25;
+  static int addPointsTen = 25;
+  static int addPointsEleven = 25;
+  static int addPointsTwelve = 25;
+  static int addPointsThirteen = 0;
+  static int addPointsFourteen = 25;
+  static int addPointsFifteen = 25;
+  static int addPointsSixteen = 25;
+  static int addPointsSeventeen = 25;
+  static int addPointsEighteen = 25;
+  static int addPointsNineteen = 25;
+  static int addPointsTwenty = 25;
+  static int addPointsTwentyOne = 25;
+  static int addPointsTwentyTwo = 25;
+  static int addPointsTwentyThree = 25;
+  static int addPointsTwentyFour = 25;
+  static int addPointsTwentyFive = 25;
+  static int twelveTrue = 1;
+
+  var notValue = messages.length;
+
 //
 //
 //
 //
 //ATTACK!!!!!!!!
-  int uncheckSingle = -1;
-  int uncheckTripleOne = -1;
-  int uncheckTripleTwo = -1;
-  int uncheckTripleThree = -1;
+  static int uncheckSingle = -1;
+  static int uncheckTripleOne = -1;
+  static int uncheckTripleTwo = -1;
+  static int uncheckTripleThree = -1;
 
-  int checkedTiles = 1;
+  static int checkedTiles = 1;
 
-//method to create abilities documents?
-  static List abilitiesList = [];
-
-  Future actAbilities() async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-
-    myName = modelClass.value;
-    myAbilName = '$myName-ABILITIES';
-    final refAbilities =
-        FirebaseFirestore.instance.collection('abilities').doc(myAbilName);
-    await refAbilities.set({'TripleAttack': false, 'SingleAttack': false});
+  Timer? timerFalse;
+  static const maxSecondsFalse = 4;
+  int secondsFalse = maxSecondsFalse;
+  void startTimerFalse() {
+    timerFalse = Timer.periodic(Duration(seconds: 1), (_) {
+      if (secondsFalse > 0) {
+        setState(() {
+          secondsFalse--;
+        });
+      } else {
+        stopTimerFalse(reset: true);
+      }
+    });
   }
 
-//
-//
-//
-//
+  void stopTimerFalse({bool reset = true}) {
+    if (reset) {
+      resetTimerFalse();
+    }
+    timerFalse?.cancel();
+  }
 
-  bool tileOnePoints = true;
-  bool tileTwoPoints = true;
-  bool tileThreePoints = true;
-  bool tileFourPoints = true;
-  bool tileFivePoints = true;
-  bool tileSixPoints = true;
-  bool tileSevenPoints = true;
-  bool tileEightPoints = true;
-  bool tileNinePoints = true;
-  bool tileTenPoints = true;
-  bool tileElevenPoints = true;
-  bool tileTwelvePoints = true;
-  bool tileThirteenPoints = true;
-  bool tileFourteenPoints = true;
-  bool tileFifteenPoints = true;
-  bool tileSixteenPoints = true;
-  bool tileSeventeenPoints = true;
-  bool tileEighteenPoints = true;
-  bool tileNineteenPoints = true;
-  bool tileTwentyPoints = true;
-  bool tileTwentyOnePoints = true;
-  bool tileTwentyTwoPoints = true;
-  bool tileTwentyThreePoints = true;
-  bool tileTwentyFourPoints = true;
-  bool tileTwentyFivePoints = true;
+  void resetTimerFalse() async {
+    await firebaseInit;
+    setState(() {
+      secondsFalse = maxSecondsFalse;
+    });
+  }
+
+  Future attackComplete() async {
+    await firebaseInit;
+    String name = modelClass.value;
+
+    final refMessages = FirebaseFirestore.instance
+        .collection('messages')
+        .doc("ADMIN: $name's Attack Completed");
+
+    await refMessages.set({
+      'username': 'ADMIN',
+      'message': 'ADMIN: $name Has Sent A Single Attack',
+      'created': DateTime.now()
+    });
+  }
+
+  Future singleAttackSent() async {
+    await firebaseInit;
+    String name = modelClass.value;
+
+    final refMessages = FirebaseFirestore.instance
+        .collection('messages')
+        .doc('ADMIN: $name Has Sent A Single Attack');
+    await refMessages.set({
+      'username': 'ADMIN',
+      'message': 'ADMIN: $name Has Sent A Single Attack',
+      'created': DateTime.now()
+    });
+  }
+
+  Future tripleAttackSent() async {
+    await firebaseInit;
+    String name = modelClass.value;
+
+    final refMessages = FirebaseFirestore.instance
+        .collection('messages')
+        .doc('ADMIN: $name Has Sent A Triple Attack');
+    await refMessages.set({
+      'username': 'ADMIN',
+      'message': 'ADMIN: $name Has Sent A Triple Attack',
+      'created': DateTime.now()
+    });
+  }
+
+  Future deathSent() async {
+    await firebaseInit;
+    String name = modelClass.value;
+
+    final refMessages = FirebaseFirestore.instance
+        .collection('messages')
+        .doc('ADMIN: $name Has Died');
+    await refMessages.set({
+      'username': 'ADMIN',
+      'message': 'ADMIN: $name Has Died',
+      'created': DateTime.now()
+    });
+  }
+
+  Future winSent() async {
+    await firebaseInit;
+    String name = modelClass.value;
+
+    final refMessages = FirebaseFirestore.instance
+        .collection('messages')
+        .doc('ADMIN: $name Got Ming-O!');
+    await refMessages.set({
+      'username': 'ADMIN',
+      'message': 'ADMIN: $name Got Ming-O!',
+      'created': DateTime.now()
+    });
+  }
+
+  static bool tileOnePoints = true;
+  static bool tileTwoPoints = true;
+  static bool tileThreePoints = true;
+  static bool tileFourPoints = true;
+  static bool tileFivePoints = true;
+  static bool tileSixPoints = true;
+  static bool tileSevenPoints = true;
+  static bool tileEightPoints = true;
+  static bool tileNinePoints = true;
+  static bool tileTenPoints = true;
+  static bool tileElevenPoints = true;
+  static bool tileTwelvePoints = true;
+  static bool tileThirteenPoints = true;
+  static bool tileFourteenPoints = true;
+  static bool tileFifteenPoints = true;
+  static bool tileSixteenPoints = true;
+  static bool tileSeventeenPoints = true;
+  static bool tileEighteenPoints = true;
+  static bool tileNineteenPoints = true;
+  static bool tileTwentyPoints = true;
+  static bool tileTwentyOnePoints = true;
+  static bool tileTwentyTwoPoints = true;
+  static bool tileTwentyThreePoints = true;
+  static bool tileTwentyFourPoints = true;
+  static bool tileTwentyFivePoints = true;
+  static String lastCurrent = "This Is Empty";
+  static bool timerStarter = false;
+
+  //This is to lock out all users once someone has won the game
+  static bool gameLock = false;
 
   //Timer for using an ability
-  double _opacityTimer = 1;
-  static int messageNotification = 0;
+  static double _opacityTimer = 1;
+  static double _opacHM = 0;
+  static bool grace = false;
+  static double _graceOpac = 0;
+  static double _attackOpac = 0.65;
+  static List<String> messages = [];
 
 //cooldown timer
   Timer? timer;
   static const maxSeconds = 60;
   int seconds = maxSeconds;
   void startTimer() {
-    timer = Timer.periodic(Duration(milliseconds: 50), (_) {
+    timer = Timer.periodic(Duration(milliseconds: 1), (_) {
       //set Duration back to seconds: 1 when making offical and maxSeconds = 300 (aka 5 minute timer)
       if (seconds > 0) {
         setState(() {
@@ -165,60 +260,112 @@ class gamescreenState extends State<gamescreen> {
   }
 
 //Ability Animation Timer
+  attackAni() {
+    Future.delayed(Duration(seconds: 1), () {
+      abilityStateMachineInput.value = false;
+      bandageStateMachineInput.value = false;
+    });
+  }
 
-  Timer? timerAni;
-  static const maxSecondsAni = 4;
-  int secondsAni = maxSecondsAni;
-  void startTimerAni() {
-    timerAni = Timer.periodic(Duration(seconds: 1), (_) {
-      //set Duration back to seconds: 1 when making offical and maxSeconds = 300 (aka 5 minute timer)
-      if (secondsAni > 0) {
-        setState(() {
-          secondsAni--;
-        });
+//GRACE TIMER
+
+  static Timer? timerGrace;
+  static const maxSecondsGrace = 10;
+  static int secondsGrace = maxSecondsGrace;
+  void startTimerGrace() {
+    timerGrace = Timer.periodic(Duration(seconds: 1), (_) {
+      Timer(Duration(milliseconds: 20), (() {
+        if (secondsGrace > 0 && grace == true) {
+          setState(() {
+            _graceOpac = 1;
+          });
+
+          secondsGrace--;
+        } else {
+          stopTimerGrace();
+        }
+      }));
+    });
+  }
+
+  void stopTimerGrace() {
+    secondsGrace = maxSecondsGrace;
+    timerGrace?.cancel();
+    startTimerNot();
+    grace = false;
+
+    _graceOpac = 0;
+  }
+
+  Timer? timerCompletion;
+  static const maxSecondsCompletion = 3;
+  static int secondsCompletion = maxSecondsCompletion;
+  void startTimerCompletion() {
+    timerCompletion = Timer.periodic(Duration(seconds: 1), (_) {
+      print('TIMER COMPLETE STARTED');
+      attackComplete();
+      if (secondsCompletion > 0) {
+        secondsCompletion--;
       } else {
-        stopTimerAni(reset: true);
+        stopTimerCompletion(reset: true);
       }
     });
   }
 
-  void stopTimerAni({bool reset = true}) {
+  void stopTimerCompletion({bool reset = true}) {
     if (reset) {
-      resetTimerAni();
+      resetTimerCompletion();
     }
-    timerAni?.cancel();
+    timerCompletion?.cancel();
   }
 
-  void resetTimerAni() {
-    setState(() {
-      secondsAni = maxSecondsAni;
-      abilityStateMachineInput.value = false;
+  void resetTimerCompletion() {
+    secondsCompletion = maxSecondsCompletion;
+  }
+
+  bandageAni() {
+    bandageStateMachineInput.value = true;
+    _onInit;
+    Future.delayed(Duration(seconds: 1), () {
+      bandageStateMachineInput.value = false;
+      setState(() {
+        healthLevel++;
+        healthConditions();
+        _onInit;
+      });
     });
   }
 
+  //Notification Timer
+
 //Page 1 data
-  int tileLockCount = 0;
-  int randThreeLockCount = 0;
-  int bandageCount = 0;
-  bool abilityUseCount = false;
-  double bandageUseCount = 0;
+  static int tileLockCount = 0;
+  static int randThreeLockCount = 0;
+  static int bandageCount = 0;
+  static bool abilityUseCount = false;
+  static double bandageUseCount = 0;
+  static int messageNotification = 0;
+  //int messageNotNum = 0;
+  static int healthLevel = 5;
 
-  int healthLevel = 5;
-
-  bool fiveHearts = true;
-  bool fourHearts = false;
-  bool threeHearts = false;
-  bool twoHearts = false;
-  bool oneHearts = false;
-
+  static bool fiveHearts = true;
+  static bool fourHearts = false;
+  static bool threeHearts = false;
+  static bool twoHearts = false;
+  static bool oneHearts = false;
+  static bool zeroHearts = false;
+  static bool heartMonitor = false;
   late SMIInput<bool> fiveHeartStateMachineInput;
   late SMIInput<bool> fourHeartStateMachineInput;
   late SMIInput<bool> threeHeartStateMachineInput;
   late SMIInput<bool> twoHeartStateMachineInput;
   late SMIInput<bool> oneHeartStateMachineInput;
+  late SMIInput<bool> zeroHeartStateMachineInput;
   late SMIInput<bool> abilityStateMachineInput;
+  late SMIInput<bool> bandageStateMachineInput;
 
   void _onInit(Artboard Idle) {
+    print('Hearts Init Running');
     var controller = StateMachineController.fromArtboard(
       Idle,
       'Heartbeat',
@@ -234,8 +381,12 @@ class gamescreenState extends State<gamescreen> {
         controller.findInput<bool>('twoHearts') as SMIBool;
     oneHeartStateMachineInput =
         controller.findInput<bool>('oneHearts') as SMIBool;
+    zeroHeartStateMachineInput =
+        controller.findInput<bool>('zeroHearts') as SMIBool;
     abilityStateMachineInput =
         controller.findInput<bool>('abilityUseCount') as SMIBool;
+    bandageStateMachineInput =
+        controller.findInput<bool>('bandaidUseCount') as SMIBool;
 
     if (healthLevel == 5) {
       setState(() {
@@ -248,6 +399,8 @@ class gamescreenState extends State<gamescreen> {
         twoHeartStateMachineInput.value = false;
 
         oneHeartStateMachineInput.value = false;
+
+        zeroHeartStateMachineInput.value = false;
       });
     }
     if (healthLevel == 4) {
@@ -261,6 +414,8 @@ class gamescreenState extends State<gamescreen> {
         twoHeartStateMachineInput.value = false;
 
         oneHeartStateMachineInput.value = false;
+
+        zeroHeartStateMachineInput.value = false;
       });
     }
     if (healthLevel == 3) {
@@ -274,6 +429,8 @@ class gamescreenState extends State<gamescreen> {
         twoHeartStateMachineInput.value = false;
 
         oneHeartStateMachineInput.value = false;
+
+        zeroHeartStateMachineInput.value = false;
       });
     }
     if (healthLevel == 2) {
@@ -287,6 +444,8 @@ class gamescreenState extends State<gamescreen> {
         twoHeartStateMachineInput.value = true;
 
         oneHeartStateMachineInput.value = false;
+
+        zeroHeartStateMachineInput.value = false;
       });
     }
     if (healthLevel == 1) {
@@ -300,13 +459,31 @@ class gamescreenState extends State<gamescreen> {
         twoHeartStateMachineInput.value = false;
 
         oneHeartStateMachineInput.value = true;
+
+        zeroHeartStateMachineInput.value = false;
+      });
+    }
+    if (healthLevel == 0) {
+      setState(() {
+        fiveHeartStateMachineInput.value = false;
+
+        fourHeartStateMachineInput.value = false;
+
+        threeHeartStateMachineInput.value = false;
+
+        twoHeartStateMachineInput.value = false;
+
+        oneHeartStateMachineInput.value = false;
+
+        zeroHeartStateMachineInput.value = true;
       });
     }
   }
 
   gamescreenState();
 
-  final values = List.filled(25, false);
+  static List<bool> values = List.filled(25, false);
+  static List<bool> attackVal = List.filled(25, false);
   final List changeStateValues = List.filled(25, false);
   final children = <Widget>[];
   var c = 0;
@@ -332,12 +509,24 @@ class gamescreenState extends State<gamescreen> {
     this.isLaura = isLaura;
   }
 
+  set setisFuneral(bool? isFuneral) {
+    this.isFuneral = isFuneral;
+  }
+
   set settileAssignment(List tileAssignment) {
     this.tileAssignment = tileAssignment;
   }
 
   set setshownDescriptions(List shownDescriptions) {
     this.shownDescriptions = shownDescriptions;
+  }
+
+  set setmessageNotification(int messageNotNum) {
+    messageNotification = messageNotNum;
+  }
+
+  get getmessageNotification {
+    return messageNotification;
   }
 
   get getisLaura {
@@ -356,6 +545,10 @@ class gamescreenState extends State<gamescreen> {
     return isRoth;
   }
 
+  get getisFuneral {
+    return isFuneral;
+  }
+
   get gettileAssignment {
     return tileAssignment;
   }
@@ -371,10 +564,16 @@ class gamescreenState extends State<gamescreen> {
   PageController _controller = PageController(initialPage: 1);
   @override
   void initState() {
+    _onInit;
+    firebaseInit;
     super.initState();
-    setState(() {
-      values[12] = true;
-    });
+    if (timerStarter == false) {
+      timerStarter = true;
+      startTimerNot();
+    }
+
+    // fiveHeartStateMachineInput.value = true;
+    tileTwelve();
     _controller = PageController(initialPage: 1);
   }
 
@@ -386,46 +585,87 @@ class gamescreenState extends State<gamescreen> {
   }
 
 //
-
-  singleUncheckMethod() {
-    uncheckSingle = Random().nextInt(25);
-    if (values[uncheckSingle.toInt()] == true && checkedTiles >= 1) {
-      values[uncheckSingle.toInt()] = false;
-      checkedTiles--;
-      healthLevel--;
-      healthConditions();
-    } else if (checkedTiles == 0) {
-    } else {
-      singleUncheckMethod();
+  tileTwelve() {
+    if (twelveTrue == 1) {
+      setState(() {
+        values[12] = true;
+        twelveTrue--;
+      });
     }
   }
 
-  tripleUncheckMethod() {
-    uncheckTripleOne = Random().nextInt(25);
-    uncheckTripleTwo = Random().nextInt(25);
-    uncheckTripleThree = Random().nextInt(25);
-    if (values[uncheckTripleOne.toInt()] == true &&
-        values[uncheckTripleTwo.toInt()] == true &&
-        values[uncheckTripleThree.toInt()] == true &&
-        uncheckTripleOne.toInt() != uncheckTripleTwo &&
-        uncheckTripleOne.toInt() != uncheckTripleThree &&
-        uncheckTripleTwo.toInt() != values[uncheckTripleOne] &&
-        uncheckTripleTwo.toInt() != uncheckTripleOne &&
-        uncheckTripleThree.toInt() != uncheckTripleOne &&
-        uncheckTripleThree.toInt() != uncheckTripleTwo &&
-        checkedTiles >= 3) {
-      //spacing this out good lord
-      values[uncheckTripleOne.toInt()] = false;
-      values[uncheckTripleTwo.toInt()] = false;
-      values[uncheckTripleThree.toInt()] = false;
-      checkedTiles = checkedTiles - 3;
+  singleUncheckMethod() {
+    Timer(Duration(milliseconds: 20), (() {
+      uncheckSingle = Random().nextInt(25);
 
-      healthLevel--;
-      healthConditions();
-    } else if (checkedTiles <= 2) {
-    } else {
-      tripleUncheckMethod();
-    }
+      if (values[uncheckSingle.toInt()] == true &&
+          checkedTiles >= 1 &&
+          grace != true) {
+        grace = true;
+        Vibration.vibrate(duration: 500);
+        startTimerGrace();
+
+        values[uncheckSingle.toInt()] = false;
+
+        attackVal[uncheckSingle.toInt()] = true;
+
+        checkedTiles--;
+        healthLevel--;
+
+        healthConditions();
+      } else if (checkedTiles == 0) {
+        timerNot?.cancel;
+        Future.delayed(Duration(seconds: 1), () {
+          startTimerNot();
+        });
+      } else {
+        if (grace != true) {
+          singleUncheckMethod();
+        }
+      }
+    }));
+  }
+
+  tripleUncheckMethod() {
+    Timer(Duration(milliseconds: 20), (() {
+      uncheckTripleOne = Random().nextInt(25);
+      uncheckTripleTwo = Random().nextInt(25);
+      uncheckTripleThree = Random().nextInt(25);
+      if (values[uncheckTripleOne.toInt()] == true &&
+          values[uncheckTripleTwo.toInt()] == true &&
+          values[uncheckTripleThree.toInt()] == true &&
+          uncheckTripleOne.toInt() != uncheckTripleTwo &&
+          uncheckTripleOne.toInt() != uncheckTripleThree &&
+          uncheckTripleTwo.toInt() != values[uncheckTripleOne] &&
+          uncheckTripleTwo.toInt() != uncheckTripleOne &&
+          uncheckTripleThree.toInt() != uncheckTripleOne &&
+          uncheckTripleThree.toInt() != uncheckTripleTwo &&
+          checkedTiles >= 3 &&
+          grace != true) {
+        //spacing this out good lord
+        grace = true;
+        startTimerGrace();
+        values[uncheckTripleOne.toInt()] = false;
+        values[uncheckTripleTwo.toInt()] = false;
+        values[uncheckTripleThree.toInt()] = false;
+        attackVal[uncheckTripleOne.toInt()] = true;
+        attackVal[uncheckTripleTwo.toInt()] = true;
+        attackVal[uncheckTripleThree.toInt()] = true;
+        checkedTiles = checkedTiles - 3;
+        Vibration.vibrate(pattern: [250, 500, 250, 500, 250, 1500]);
+        healthLevel--;
+        healthConditions();
+      } else if (checkedTiles <= 2) {
+        timerNot?.cancel();
+        Future.delayed(Duration(seconds: 1), () {
+          startTimerNot();
+        });
+      } else {
+        if (grace != true) {
+          tripleUncheckMethod();
+        }
+      }
+    }));
   }
 
   healthConditions() {
@@ -436,12 +676,15 @@ class gamescreenState extends State<gamescreen> {
         threeHearts == false;
         twoHearts == false;
         oneHearts == false;
+        zeroHearts == false;
 
         fiveHeartStateMachineInput.value = true;
         fourHeartStateMachineInput.value = false;
         threeHeartStateMachineInput.value = false;
         twoHeartStateMachineInput.value = false;
         oneHeartStateMachineInput.value = false;
+
+        heartMonitor = false;
       });
     }
     if (healthLevel == 4) {
@@ -451,12 +694,15 @@ class gamescreenState extends State<gamescreen> {
         threeHearts == false;
         twoHearts == false;
         oneHearts == false;
+        zeroHearts == false;
 
         fiveHeartStateMachineInput.value = false;
         fourHeartStateMachineInput.value = true;
         threeHeartStateMachineInput.value = false;
         twoHeartStateMachineInput.value = false;
         oneHeartStateMachineInput.value = false;
+
+        heartMonitor = false;
       });
     }
     if (healthLevel == 3) {
@@ -466,12 +712,15 @@ class gamescreenState extends State<gamescreen> {
         threeHearts == true;
         twoHearts == false;
         oneHearts == false;
+        zeroHearts == false;
 
         fiveHeartStateMachineInput.value = false;
         fourHeartStateMachineInput.value = false;
         threeHeartStateMachineInput.value = true;
         twoHeartStateMachineInput.value = false;
         oneHeartStateMachineInput.value = false;
+
+        heartMonitor = false;
       });
     }
     if (healthLevel == 2) {
@@ -481,12 +730,15 @@ class gamescreenState extends State<gamescreen> {
         threeHearts == false;
         twoHearts == true;
         oneHearts == false;
+        zeroHearts == false;
 
         fiveHeartStateMachineInput.value = false;
         fourHeartStateMachineInput.value = false;
         threeHeartStateMachineInput.value = false;
         twoHeartStateMachineInput.value = true;
         oneHeartStateMachineInput.value = false;
+
+        heartMonitor = false;
       });
     }
     if (healthLevel == 1) {
@@ -496,28 +748,163 @@ class gamescreenState extends State<gamescreen> {
         threeHearts == false;
         twoHearts == false;
         oneHearts == true;
+        zeroHearts == false;
 
         fiveHeartStateMachineInput.value = false;
         fourHeartStateMachineInput.value = false;
         threeHeartStateMachineInput.value = false;
         twoHeartStateMachineInput.value = false;
         oneHeartStateMachineInput.value = true;
+
+        heartMonitor = true;
       });
     }
 
     if (healthLevel <= 0) {
-      setState(() {
-        healthLevel = 0;
+      healthLevel = 0;
+      fiveHearts == false;
+      fourHearts == false;
+      threeHearts == false;
+      twoHearts == false;
+      oneHearts == false;
+      zeroHearts == true;
+
+      fiveHeartStateMachineInput.value = false;
+      fourHeartStateMachineInput.value = false;
+      threeHeartStateMachineInput.value = false;
+      twoHeartStateMachineInput.value = false;
+      oneHeartStateMachineInput.value = false;
+      zeroHeartStateMachineInput.value = true;
+
+      heartMonitor = true;
+
+      timerNot?.cancel();
+      timerGrace?.cancel();
+      deathSent();
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: ((context) => deathScreen())));
       });
     }
 
     if (healthLevel >= 5) {
+      healthLevel = 5;
+    }
+
+    if (heartMonitor == true) {
+      _opacHM = 0.75;
+    }
+    if (heartMonitor == false) {
+      _opacHM = 0;
+    }
+  }
+
+  Timer? timerNot;
+  static const maxSecondsNot = 2;
+  static int secondsNot = maxSecondsNot;
+  void startTimerNot() {
+    timerNot = Timer.periodic(Duration(seconds: 1), (_) async {
+      if (secondsNot > 0) {
+        await firebaseInit;
+        getMessages();
+        checkAttack();
+        secondsNot--;
+        print('Timer Not:  ' + secondsNot.toString());
+      } else {
+        stopTimerNot(reset: true);
+        getMessages();
+        checkAttack();
+      }
+    });
+  }
+
+  Future<void> stopTimerNot({bool reset = true}) async {
+    if (reset) {
+      await firebaseInit;
+      resetTimerNot();
+      getMessages();
+      checkAttack();
+    }
+  }
+
+  Future<void> resetTimerNot() async {
+    await firebaseInit;
+    checkNewMessages();
+    secondsNot = maxSecondsNot;
+  }
+
+  Future getMessages() async {
+    await firebaseInit;
+    await Future.delayed(Duration(seconds: 1));
+    await FirebaseFirestore.instance
+        .collection('messages')
+        .orderBy('created', descending: true)
+        .get()
+        .then((snapshot) {
+      messages.clear();
+      snapshot.docs.forEach((document) {
+        messages.add(document.reference.id);
+      });
+    });
+
+    if (mounted) {
       setState(() {
-        healthLevel = 5;
+        messages = messages;
       });
     }
   }
 
+  checkAttack() {
+    String name = modelClass.value;
+//CHECK THIS PIECE OUT
+    if (messages.isNotEmpty) {
+      if (messages[0].contains('Has Sent A Single Attack') &&
+          !messages[0].contains(name) &&
+          messages[0] != lastCurrent) {
+        Timer(Duration(milliseconds: 500), (() {
+          print('THE ATTACK IS BEING CHECKED FOR SINGLE');
+          timerGrace?.cancel();
+          timerNot?.cancel();
+          singleUncheckMethod();
+        }));
+      }
+
+      if (messages[0].contains('Has Sent A Triple Attack') &&
+          !messages[0].contains(name) &&
+          messages[0] != lastCurrent) {
+        Timer(Duration(milliseconds: 500), (() {
+          print('THE ATTACK IS BEING CHECKED FOR TRIPLE');
+          timerGrace?.cancel();
+          timerNot?.cancel();
+          tripleUncheckMethod();
+        }));
+      }
+      if (messages[0].contains('ADMIN:') &&
+          messages[0].contains('Got Ming-O!') &&
+          !messages[0].contains(name)) {
+        Timer(Duration(milliseconds: 500), (() {
+          gameLock == true;
+          timerGrace?.cancel();
+          timerNot?.cancel();
+          Future.delayed(Duration(seconds: 2), () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => loseScreen())));
+          });
+        }));
+      }
+    }
+  }
+
+  checkNewMessages() {
+    if (messages.isNotEmpty) {
+      if (lastCurrent != messages[0]) {
+        lastCurrent = messages[0];
+        messageNotification++;
+      }
+    }
+  }
+
+//messageBoardState().getMessages();
   @override
   Widget build(BuildContext context) {
     final isRunning = timer == null ? false : timer!.isActive;
@@ -551,7 +938,6 @@ class gamescreenState extends State<gamescreen> {
 
     gs.settileAssignment = fp.gettileAssignment;
     gs.setshownDescriptions = fp.getshownDescriptions;
-    print("Output from getter from gameScreen: ${gs.gettileAssignment}");
     newAssignment = gs.gettileAssignment;
 
     return WillPopScope(
@@ -584,7 +970,9 @@ class gamescreenState extends State<gamescreen> {
                   width: 5,
                 ),
                 Text(
-                  points.toString(),
+                  (healthLevel.toString()
+                  //secondsGrace.toString()
+                  ),
                   textAlign: TextAlign.center,
                   style: GoogleFonts.quicksand(
                       color: Colors.yellow.shade400.withOpacity(0.75),
@@ -605,7 +993,6 @@ class gamescreenState extends State<gamescreen> {
         backgroundColor: Colors.indigo.shade400,
         body: SlidingUpPanel(
             body: PageView(
-              // physics: NeverScrollableScrollPhysics(),
               controller: _controller,
               children: [
                 //____________________________________________________________________________________________________________________________________________
@@ -619,7 +1006,7 @@ class gamescreenState extends State<gamescreen> {
                       child: Align(
                           alignment: Alignment(0, 0.9),
                           child: Container(
-                            height: 550,
+                            height: 535,
                             child: Padding(
                                 padding: const EdgeInsets.only(right: 3.0),
                                 child: Container(
@@ -664,17 +1051,21 @@ class gamescreenState extends State<gamescreen> {
                                 Radius.circular(20.0),
                               ),
                               onLongPress: () {
-                                if (tileLockCount > 0 && isRunning == false) {
+                                if (tileLockCount > 0 &&
+                                    isRunning == false &&
+                                    gameLock == false) {
                                   setState(() {
-                                    messageNotification++;
-                                    singleUncheckMethod();
                                     startTimer();
-                                    startTimerAni();
+                                    attackAni();
                                     abilityStateMachineInput.value = true;
                                     tileLockCount--;
-                                    //testing
-                                    actAbilities();
+
+                                    singleAttackSent();
+
+                                    Vibration.vibrate(
+                                        duration: 5000, intensities: [255]);
                                   });
+                                  startTimerCompletion();
                                 } else if (tileLockCount <= 0 &&
                                     isRunning == false) {
                                   tileLockCount = 0;
@@ -683,7 +1074,7 @@ class gamescreenState extends State<gamescreen> {
                                     backgroundColor: Colors.red.shade600,
                                     duration: Duration(seconds: 1),
                                     content: Text(
-                                      "You are out of tile locks!",
+                                      "You are out of single tile uncheckers!",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600),
                                     ),
@@ -703,15 +1094,20 @@ class gamescreenState extends State<gamescreen> {
                                 }
                               },
                               child: Ink(
-                                height: 65,
-                                width: 125,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
+                                  height: 65,
+                                  width: 125,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20.0),
+                                    ),
+                                    color: Colors.indigo.shade300,
                                   ),
-                                  color: Colors.indigo.shade300,
-                                ),
-                              ),
+                                  child: RiveAnimation.asset(
+                                      'assets/Mingeruchi.riv',
+                                      artboard: "singleUncheck",
+                                      animations: [],
+                                      fit: BoxFit.fitWidth,
+                                      alignment: Alignment.center)),
                             ),
                           ),
                         ),
@@ -746,16 +1142,22 @@ class gamescreenState extends State<gamescreen> {
                               ),
                               onLongPress: () {
                                 if (randThreeLockCount > 0 &&
-                                    isRunning == false) {
+                                    isRunning == false &&
+                                    gameLock == false) {
                                   setState(() {
                                     startTimer();
                                     randThreeLockCount--;
-                                    tripleUncheckMethod();
-                                    startTimerAni();
+
+                                    tripleAttackSent();
+
+                                    attackAni();
+                                    Vibration.vibrate(
+                                        duration: 5000, intensities: [255]);
                                     abilityStateMachineInput.value = true;
 
                                     //test for abilities
                                   });
+                                  startTimerCompletion();
                                 } else if (randThreeLockCount <= 0 &&
                                     isRunning == false) {
                                   randThreeLockCount = 0;
@@ -764,7 +1166,7 @@ class gamescreenState extends State<gamescreen> {
                                     backgroundColor: Colors.red.shade600,
                                     duration: Duration(seconds: 1),
                                     content: Text(
-                                      "You are out of random 3 locks!",
+                                      "You are out of triple tile uncheckers!",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600),
                                     ),
@@ -784,15 +1186,20 @@ class gamescreenState extends State<gamescreen> {
                                 }
                               },
                               child: Ink(
-                                height: 65,
-                                width: 125,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
+                                  height: 65,
+                                  width: 125,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20.0),
+                                    ),
+                                    color: Colors.teal.shade400,
                                   ),
-                                  color: Colors.teal.shade400,
-                                ),
-                              ),
+                                  child: RiveAnimation.asset(
+                                      'assets/Mingeruchi.riv',
+                                      artboard: "tripleUncheck",
+                                      animations: [],
+                                      fit: BoxFit.fitWidth,
+                                      alignment: Alignment.center)),
                             ),
                           ),
                         ),
@@ -825,27 +1232,34 @@ class gamescreenState extends State<gamescreen> {
                                 Radius.circular(20.0),
                               ),
                               onLongPress: () {
-                                if (bandageCount > 0) {
-                                  setState(() {
-                                    healthLevel++;
-                                    healthConditions();
-                                    bandageCount--;
-                                    bandageUseCount++;
-                                  });
-                                } else if (bandageCount <= 0) {
-                                  bandageCount = 0;
+                                if (healthLevel == 5) {
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     backgroundColor: Colors.red.shade600,
                                     duration: Duration(seconds: 1),
                                     content: Text(
-                                      "You are out of bandages!",
+                                      "You are already full health!",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600),
                                     ),
                                   ));
                                 }
-                              },
+                                if (healthLevel <= 4) {
+                                  bandageAni();
+                                }
+                                if (healthLevel <= 0) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red.shade600,
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                      "There's no saving you! BWAHAHAHAHA!",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ));
+                                }
+                              }, //Long Press
                               child: Ink(
                                   height: 65,
                                   width: 125,
@@ -883,16 +1297,17 @@ class gamescreenState extends State<gamescreen> {
                         opacity: _opacityTimer,
                         duration: const Duration(seconds: 1),
                         child: Container(
-                          height: 120,
-                          width: 120,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                            image: AssetImage('assets/Timer.png'),
-                            fit: BoxFit.fill,
-                          )),
-                        ),
+                            height: 120,
+                            width: 120,
+                            child: RiveAnimation.asset(
+                              'assets/Mingeruchi.riv',
+                              artboard: "hourglass",
+                              animations: [],
+                              fit: BoxFit.fitWidth,
+                              alignment: Alignment.center,
+                            )),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 //____________________________________________________________________________________________________________________________________________
@@ -927,6 +1342,8 @@ class gamescreenState extends State<gamescreen> {
                             values[3] == true &&
                             values[4]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -939,6 +1356,8 @@ class gamescreenState extends State<gamescreen> {
                             values[8] == true &&
                             values[9]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -951,6 +1370,8 @@ class gamescreenState extends State<gamescreen> {
                             values[13] == true &&
                             values[14]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -964,6 +1385,8 @@ class gamescreenState extends State<gamescreen> {
                             values[18] == true &&
                             values[19]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -977,6 +1400,8 @@ class gamescreenState extends State<gamescreen> {
                             values[23] == true &&
                             values[24]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -991,6 +1416,8 @@ class gamescreenState extends State<gamescreen> {
                             values[15] == true &&
                             values[20]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1004,6 +1431,8 @@ class gamescreenState extends State<gamescreen> {
                             values[16] == true &&
                             values[21]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1017,6 +1446,8 @@ class gamescreenState extends State<gamescreen> {
                             values[17] == true &&
                             values[22]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1030,6 +1461,8 @@ class gamescreenState extends State<gamescreen> {
                             values[18] == true &&
                             values[23]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1043,6 +1476,8 @@ class gamescreenState extends State<gamescreen> {
                             values[19] == true &&
                             values[24]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1057,6 +1492,8 @@ class gamescreenState extends State<gamescreen> {
                             values[18] == true &&
                             values[24]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1070,6 +1507,8 @@ class gamescreenState extends State<gamescreen> {
                             values[16] == true &&
                             values[20]) {
                           Future.delayed(Duration.zero, () {
+                            winSent();
+                            timerNot?.cancel();
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -1081,7 +1520,12 @@ class gamescreenState extends State<gamescreen> {
 
                         return GestureDetector(
                           onTap: () async {
-                            setState(() => values[index] = !values[index]);
+                            if (gameLock == false) {
+                              setState(() {
+                                values[index] = !values[index];
+                                attackVal[index] = false;
+                              });
+                            }
                             if (values[index]) {
                               checkedTiles++;
                             } else if (values[index] == false) {
@@ -1094,8 +1538,6 @@ class gamescreenState extends State<gamescreen> {
                                 tileOnePoints = false;
                                 addPointsOne = 0;
                               });
-                              print('Tile One Points');
-                              print(tileOnePoints);
                             }
                             if (values[1] == true && tileTwoPoints == true) {
                               setState(() {
@@ -1304,30 +1746,43 @@ class gamescreenState extends State<gamescreen> {
                                   mode: PlayerMode.mediaPlayer);
                             }
                           },
-                          child: Container(
-                            height: 75,
-                            width: 75,
-                            padding: EdgeInsets.all(.5),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                newAssignment[index],
-                                maxLines: 5,
-                                softWrap: false,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    height: 1.5,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.indigo.shade900),
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 75,
+                                width: 75,
+                                padding: EdgeInsets.all(.5),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    newAssignment[index],
+                                    maxLines: 5,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        height: 1.5,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.indigo.shade900),
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(25),
+                                    color: values[index]
+                                        ? Colors.green.shade300
+                                        : Colors.blue.shade100),
                               ),
-                            ),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: values[index]
-                                    ? Colors.green.shade300
-                                    : Colors.blue.shade100),
+                              Container(
+                                  height: 75,
+                                  width: 75,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(25),
+                                    color: attackVal[index]
+                                        ? Colors.red.withOpacity(_attackOpac)
+                                        : Colors.transparent,
+                                  )),
+                            ],
                           ),
                         );
                       },
@@ -1340,10 +1795,8 @@ class gamescreenState extends State<gamescreen> {
                         child: GestureDetector(
                             onTap: () {
                               if (messageNotification > 0) {
-                                setState(() {
-                                  notOpac == 0;
-                                  messageNotification = 0;
-                                });
+                                notOpac == 0;
+                                messageNotification = 0;
                               }
 
                               Navigator.push(
@@ -1365,26 +1818,73 @@ class gamescreenState extends State<gamescreen> {
                             ))),
                   ),
                   Align(
-                    alignment: Alignment(0.95, 0.63),
-                    child: Opacity(
-                      opacity: notOpac,
+                      alignment: Alignment(0.90, 0.62),
                       child: Container(
-                          height: 30,
-                          width: 30,
+                          height: 25,
+                          width: 25,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.red.shade800),
-                          child: Center(
-                            child: Text(
-                              messageNotification.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            color: Colors.red.withOpacity(notOpac),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20.0),
                             ),
+                          ),
+                          child: Center(
+                              child: Text(
+                            messageNotification.toString(),
+                            style: GoogleFonts.quicksand(
+                                color: Colors.white.withOpacity(notOpac),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18),
+                          )))),
+                  Align(
+                    alignment: Alignment(-0.6, .7),
+                    child: AnimatedOpacity(
+                      opacity: _graceOpac,
+                      duration: const Duration(seconds: 1),
+                      child: Container(
+                          height: 120,
+                          width: 120,
+                          child: RiveAnimation.asset(
+                            'assets/Mingeruchi.riv',
+                            artboard: "hourglass",
+                            animations: [],
+                            fit: BoxFit.fitWidth,
+                            alignment: Alignment.center,
                           )),
                     ),
                   ),
+                  Align(
+                    alignment: Alignment(-0.6, .9),
+                    child: AnimatedOpacity(
+                      opacity: _opacHM,
+                      duration: const Duration(seconds: 1),
+                      child: Container(
+                          height: 120,
+                          width: 120,
+                          child: RiveAnimation.asset(
+                            'assets/Mingeruchi.riv',
+                            artboard: "heartMonitor",
+                            animations: [],
+                            fit: BoxFit.fitWidth,
+                            alignment: Alignment.center,
+                          )),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment(-0.4, .75),
+                    child: Container(
+                      height: 0,
+                      width: 0,
+                      child: RiveAnimation.asset(
+                        'assets/Mingeruchi.riv',
+                        artboard: "Idle",
+                        alignment: Alignment.bottomCenter,
+                        fit: BoxFit.fitHeight,
+                        stateMachines: ['Heartbeat'],
+                        onInit: _onInit,
+                      ),
+                    ),
+                  )
                 ]),
 
                 //____________________________________________________________________________________________________________________________________________
@@ -1433,15 +1933,20 @@ class gamescreenState extends State<gamescreen> {
                                 }
                               },
                               child: Ink(
-                                height: 65,
-                                width: 125,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
+                                  height: 65,
+                                  width: 125,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20.0),
+                                    ),
+                                    color: Colors.indigo.shade300,
                                   ),
-                                  color: Colors.indigo.shade300,
-                                ),
-                              ),
+                                  child: RiveAnimation.asset(
+                                      'assets/Mingeruchi.riv',
+                                      artboard: "singleUncheck",
+                                      animations: [],
+                                      fit: BoxFit.fitWidth,
+                                      alignment: Alignment.center)),
                             ),
                           ),
                         ),
@@ -1557,15 +2062,20 @@ class gamescreenState extends State<gamescreen> {
                                 }
                               },
                               child: Ink(
-                                height: 65,
-                                width: 125,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
+                                  height: 65,
+                                  width: 125,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20.0),
+                                    ),
+                                    color: Colors.teal.shade400,
                                   ),
-                                  color: Colors.teal.shade400,
-                                ),
-                              ),
+                                  child: RiveAnimation.asset(
+                                      'assets/Mingeruchi.riv',
+                                      artboard: "tripleUncheck",
+                                      animations: [],
+                                      fit: BoxFit.fitWidth,
+                                      alignment: Alignment.center)),
                             ),
                           ),
                         ),
@@ -1789,239 +2299,3 @@ class gamescreenState extends State<gamescreen> {
     );
   }
 }
-
-class messageBoard extends StatefulWidget {
-  @override
-  messageBoardState createState() => messageBoardState();
-}
-
-ModelClass modelClass = GetIt.instance.get<ModelClass>();
-
-class messageBoardState extends State<messageBoard> {
-  ModelClass modelClass = GetIt.instance.get<ModelClass>();
-  final apiKey = "AIzaSyChJLKaNpQ5no0pM_wnQtFv0TjVdRS58mc";
-  final chatController = TextEditingController();
-  // int notMess = gamescreenState.messageNotification;
-
-  final CollectionReference userRef =
-      FirebaseFirestore.instance.collection('usernames');
-  final CollectionReference collectionRef =
-      FirebaseFirestore.instance.collection('messages');
-
-  static List messages = [];
-
-  Future getMessages() async {
-    await FirebaseFirestore.instance
-        .collection('messages')
-        .orderBy('created', descending: true)
-        .get()
-        .then((snapshot) {
-      messages.clear();
-      snapshot.docs.forEach((document) {
-        print(document.reference);
-        messages.add(document.reference.id);
-      });
-    });
-
-    if (mounted) {
-      setState(() {
-        messages = messages;
-      });
-    }
-  }
-
-  // @override
-  // void initState() {
-  //   getMessages();
-  //   super.initState();
-  // }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-//Zack also writes code here
-  String message = "";
-
-  Future uploadMessage(String message) async {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    this.message = message;
-
-    final refMessages =
-        FirebaseFirestore.instance.collection('messages').doc(message);
-    await refMessages.set({
-      'username': modelClass.value.toString(),
-      'message': message.toString(),
-      'created': DateTime.now()
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Scaffold(
-            appBar: AppBar(
-                foregroundColor: Colors.blue,
-                title: Row(
-                  children: [
-                    Text(modelClass.value,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.quicksand(
-                            color: Colors.black.withOpacity(0.5),
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      width: 195,
-                    ),
-                  ],
-                ),
-                elevation: 0,
-                backgroundColor: Colors.deepOrange.shade300,
-                automaticallyImplyLeading: true),
-            body: Hero(
-              tag: 'message',
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      decoration:
-                          BoxDecoration(color: Colors.deepOrange.shade100),
-                      child: FutureBuilder(
-                        future: getMessages(),
-                        builder: (context, snapshot) {
-                          print('Future Builder:' + getMessages().toString());
-                          return Material(
-                            color: Colors.deepOrange.shade100,
-                            child: ListView.builder(
-                              reverse: true,
-                              itemCount: messages.length,
-                              itemBuilder: ((context, index) {
-                                return ListTile(
-                                  title: Text(
-                                    messages[index],
-                                    style: GoogleFonts.quicksand(
-                                        color: Colors.black.withOpacity(0.7),
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                );
-                              }),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  Material(
-                    color: Colors.deepOrange.shade100,
-                    child: TextField(
-                      controller: chatController,
-                      textInputAction: TextInputAction.send,
-                      onSubmitted: (value) {
-                        if (chatController.text.isNotEmpty) {
-                          //Zack writes code here
-                          FocusScope.of(context).unfocus();
-                          uploadMessage(modelClass.value.toString() +
-                              ': ' +
-                              chatController.text);
-                          chatController.clear();
-                        }
-                      },
-                      textCapitalization: TextCapitalization.sentences,
-                      autocorrect: true,
-                      enableSuggestions: true,
-                      onTap: () {},
-                      decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white54,
-                          labelText: 'Chat Here',
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(width: 0),
-                              gapPadding: 10,
-                              borderRadius: BorderRadius.circular(25)),
-                          labelStyle: TextStyle(
-                            color: Colors.blue[700],
-                          ),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              if (chatController.text.isNotEmpty) {
-                                //Zack writes code here
-                                FocusScope.of(context).unfocus();
-                                uploadMessage(modelClass.value.toString() +
-                                    ': ' +
-                                    chatController.text);
-                                chatController.clear();
-                              } else {
-                                print(messages);
-
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  backgroundColor: Colors.red.shade600,
-                                  duration: Duration(seconds: 1),
-                                  content: Text(
-                                    "Message can't be blank",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                ));
-                              }
-                            },
-                            icon: const Icon(Icons.send),
-                          )),
-                    ),
-                  ),
-                ],
-              ),
-            )),
-      );
-}
-
-/*body: Hero(
-                tag: 'message',
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment(0, 0.9),
-                      child: Material(
-                        child: TextField(
-                          controller: chatController,
-                          decoration: InputDecoration(
-                              labelText: 'Chat Here',
-                              labelStyle: TextStyle(
-                                color: Colors.blue[700],
-                              ),
-                              suffixIcon: IconButton(
-                                onPressed: () async {
-                                  if (chatController.text.isEmpty) {
-                                    getMessages();
-                                    print(messages);
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor: Colors.red.shade600,
-                                      duration: Duration(seconds: 1),
-                                      content: Text(
-                                        "Message can't be blank",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ));
-                                  } else {
-                                    //Zack writes code here
-                                    FocusScope.of(context).unfocus();
-                                    uploadMessage(chatController.text);
-                                    chatController.clear();
-                                  }
-                                },
-                                icon: const Icon(Icons.send),
-                              )),
-                        ),
-                      ),
-                    ),
-                  ],
-                ))*/

@@ -7,13 +7,13 @@ import 'package:rive/rive.dart';
 import 'dart:async';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
-class winScreen extends StatefulWidget {
+class loseScreen extends StatefulWidget {
   @override
-  winScreenState createState() => winScreenState();
+  loseScreenState createState() => loseScreenState();
 }
 
 @override
-class winScreenState extends State<winScreen> {
+class loseScreenState extends State<loseScreen> {
   final PageController _controller = PageController(initialPage: 1);
 
   int _currentPage = 1;
@@ -24,12 +24,12 @@ class winScreenState extends State<winScreen> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 9), (Timer opacTimer) {
+    Timer.periodic(Duration(seconds: 11), (Timer opacTimer) {
       setState(() {
         buttonOpac = 1;
       });
     });
-    Timer.periodic(Duration(seconds: 7), (Timer timer) {
+    Future.delayed(Duration(seconds: 9), () {
       if (_currentPage == 0) {
         end = true;
       } else if (_currentPage == 1) {
@@ -60,10 +60,10 @@ class winScreenState extends State<winScreen> {
             Stack(
               children: [
                 Container(
-                    color: Color.fromARGB(255, 35, 135, 236),
+                    color: Colors.blueGrey.shade700,
                     child: Align(
                         alignment: Alignment(0, -0.5),
-                        child: GradientText('Ming-O!',
+                        child: GradientText('You Lost!',
                             style: GoogleFonts.quicksand(
                               fontSize: 72,
                               fontWeight: FontWeight.bold,
@@ -74,6 +74,18 @@ class winScreenState extends State<winScreen> {
                               Color.fromARGB(255, 0, 230, 119),
                               Color.fromARGB(255, 105, 240, 175),
                             ]))),
+                Align(
+                  alignment: Alignment(0, 0),
+                  child: Container(
+                    height: 900,
+                    child: RiveAnimation.asset(
+                      'assets/Mingeruchi.riv',
+                      artboard: "confetti",
+                      alignment: Alignment.center,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                ),
                 Align(
                   alignment: Alignment(0, .3),
                   child: AnimatedOpacity(
@@ -111,13 +123,13 @@ class winScreenState extends State<winScreen> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
             Stack(
               children: [
                 Container(
-                  color: Color.fromARGB(255, 35, 135, 236),
+                  color: Colors.blueGrey.shade700,
                 ),
                 Align(
                   alignment: Alignment(0, 0.85),
@@ -126,7 +138,7 @@ class winScreenState extends State<winScreen> {
                     height: 450,
                     child: RiveAnimation.asset(
                       'assets/Mingeruchi.riv',
-                      artboard: "Win ",
+                      artboard: "Lose",
                       alignment: Alignment.center,
                       fit: BoxFit.fitHeight,
                     ),
