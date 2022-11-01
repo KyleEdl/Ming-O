@@ -17,6 +17,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:bingo_application/firebase_options.dart';
 import 'package:bingo_application/screens/messages.dart';
 import 'package:vibration/vibration.dart';
+import 'package:flutter/services.dart';
 
 // import 'package:firebase_database/ui/firebase_animated_list.dart';
 
@@ -36,6 +37,8 @@ class gamescreenState extends State<gamescreen> {
   bool? isEdl;
   bool? isRoth;
   bool? isFuneral;
+  bool? isBar;
+  bool? isParty;
   List tileAssignment = [];
   List shownDescriptions = [];
   List newAssignment = [];
@@ -564,6 +567,7 @@ class gamescreenState extends State<gamescreen> {
   PageController _controller = PageController(initialPage: 1);
   @override
   void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     _onInit;
     firebaseInit;
     super.initState();
@@ -1343,6 +1347,8 @@ class gamescreenState extends State<gamescreen> {
                             values[3] == true &&
                             values[4]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
+
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1357,6 +1363,7 @@ class gamescreenState extends State<gamescreen> {
                             values[8] == true &&
                             values[9]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1371,6 +1378,7 @@ class gamescreenState extends State<gamescreen> {
                             values[13] == true &&
                             values[14]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1386,6 +1394,7 @@ class gamescreenState extends State<gamescreen> {
                             values[18] == true &&
                             values[19]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1401,6 +1410,7 @@ class gamescreenState extends State<gamescreen> {
                             values[23] == true &&
                             values[24]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1417,6 +1427,7 @@ class gamescreenState extends State<gamescreen> {
                             values[15] == true &&
                             values[20]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1432,6 +1443,7 @@ class gamescreenState extends State<gamescreen> {
                             values[16] == true &&
                             values[21]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1447,6 +1459,7 @@ class gamescreenState extends State<gamescreen> {
                             values[17] == true &&
                             values[22]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1462,6 +1475,7 @@ class gamescreenState extends State<gamescreen> {
                             values[18] == true &&
                             values[23]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1477,6 +1491,7 @@ class gamescreenState extends State<gamescreen> {
                             values[19] == true &&
                             values[24]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1493,6 +1508,7 @@ class gamescreenState extends State<gamescreen> {
                             values[18] == true &&
                             values[24]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(
@@ -1508,6 +1524,7 @@ class gamescreenState extends State<gamescreen> {
                             values[16] == true &&
                             values[20]) {
                           Future.delayed(Duration.zero, () {
+                            timerGrace?.cancel();
                             winSent();
                             timerNot?.cancel();
                             Navigator.push(

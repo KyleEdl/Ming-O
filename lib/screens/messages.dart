@@ -22,6 +22,7 @@ import 'package:bingo_application/screens/messages.dart';
 import 'package:vibration/vibration.dart';
 import 'package:bingo_application/screens/gamescreen.dart';
 import 'package:bingo_application/screens/adminChat.dart';
+import 'package:flutter/services.dart';
 
 class messageBoard extends StatefulWidget {
   @override
@@ -49,6 +50,8 @@ class messageBoardState extends State<messageBoard> {
   }
 
   Future getMessagesChat() async {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')

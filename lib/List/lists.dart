@@ -120,31 +120,132 @@ class gameList {
   ];
 
   List fList = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-    '22',
-    '23',
-    '24',
-    '25',
+    'NPC underdressed or dramatically dressed',
+    'NPC is drunk',
+    'Technical Difficulties',
+    'NPC cries loudly',
+    'Selfie with the deceased',
+    'Awkward pew shuffle',
+    '"How are you doing?" ',
+    "Meet 3 NPCs you don't know",
+    '"I remember when you were a baby"',
+    "'They're in a better place'",
+    'Insensitive joke is made',
+    'Skip the burial',
+    "Cars don't stop for procession",
+    'NPC is eager to leave',
+    'NPC wants to go to a restaurant',
+    '"Who invited this person?"',
+    'Rainy day',
+    'Kid playing on phone / tablet',
+    'Awkward touch',
+    'NPC gossips about deceased',
+    'Bible verse quoted',
+    "You're mistaken for someone else",
+    "NPC's argue over the will",
+    'Ex-Lover attends funeral',
+    'Amazing grace is not sung',
+    'Priest tells awkward joke',
+    '"They died too soon"',
+    'NPC overstays welcome',
+    'A hug leads to crying',
+    'Awkard cough / sneeze',
+    'NPC is a loud nose blower',
+    "'I didn't like them anyways'",
+    '"They owed me money"',
+  ];
+  List bList = [
+    "NPC's have sex in the bathroom",
+    'NPC gets touchy',
+    'Bar has live music',
+    'Get drunk',
+    'Someone throws up',
+    'NPC insist on driving drunk',
+    'Cops are called',
+    'Song plays that nobody vibes with',
+    'NPC buys you a drink',
+    "Bar doesn't have what you want",
+    'Bar forgets your drink',
+    'Couple being too handsy',
+    'Bartender gets flirty',
+    'NPC gets flirty',
+    "NPC thinks you're someone else",
+    'Fight breaks out',
+    "NPC's chant 'Shots! Shots! Shots!'",
+    'NPC pissed their pants',
+    'NPC falls over',
+    "NPC won't shut up",
+    'NPC laughs outrageously',
+    "NPC's go to Waffle House",
+    "NPC's are bar hopping",
+    'Roofie attempt is made',
+    'NPC is on drugs',
+    'Someone cries',
+    'Music is too loud',
+    'Tacky shit tacked on the wall',
+    'NPC wearing a bandana',
+    'Motorcycle crew rolls in',
+    'NPC has a mullet',
+    'Bathroom has graffiti',
+    'Call the number on the bathroom stall',
+    'Drunk NPC dances alone',
+    'Dollar bill on the wall',
+    'Bathroom stall door missing',
+    'Group of frat / srat are present',
+    'NPC is clearly underage',
+    '"Light ice"',
+    "There's a popcorn machine",
+    'Someone orders just a soda / water',
+    'No toilet paper in the bathroom',
+    'Shit not in the toilet',
+    'A toilet is clogged',
+    'Bar food is cold / lukewarm',
+    'NPC is a birthday boy/girl',
+    'Lost purse / wallet / card / cash',
+    'Drunk NPC leaves to walk around town',
+    'NPC is showing lots of chest hair',
+    'NPC has a tramp stamp',
+    'NPC has a neck tattoo',
+    'NPC is bar hopping',
+  ];
+  List pList = [
+    "NPC's have sex in the bathroom",
+    'NPC gets touchy',
+    '"Who invited this NPC?"',
+    'Get drunk',
+    'Someone throws up',
+    'NPC insist on driving drunk',
+    'Cops are called',
+    'Song plays that nobody vibes with',
+    'NPC arrives late',
+    'NPC goes on a beer run',
+    'NPC is asleep on couch',
+    'NPC gets flirty',
+    'You spot a loner NPC',
+    'Fight breaks out',
+    'Host kicks someone out',
+    "NPC's gossip about other guest",
+    'A party game is played',
+    "NPC won't shut up",
+    'Cupid Shuffle is played',
+    "NPC's go to Waffle House",
+    "NPC's are party hopping",
+    'Roofie attempt is made',
+    'NPC is on drugs',
+    'Someone cries',
+    'Music is too loud',
+    'NPC orders their own food',
+    'Couple being too handsy',
+    'NPC does a magic trick',
+    'NPC tries to show off dance moves',
+    'NPC hurts themselves while dancing',
+    'Place gets trashed',
+    'Host wants guest to clean up',
+    'Host leaves the party',
+    'Too dark in the room',
+    'NPC bumps into you',
+    'Something breaks',
+    'Someone screams for no reason',
   ];
 
   // Universal Description
@@ -266,31 +367,132 @@ class gameList {
   ];
 
   List fDescription = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-    '22',
-    '23',
-    '24',
-    '25',
+    'NPC is underdressed for the funeral or dramatically overdressed for the funeral.',
+    'NPC is drunk at any point during the funeral.',
+    "Mic cuts out, music doesn't play, mic too low, etc.",
+    'NPC cries loudly.',
+    'A selfie is taken with the deceased.',
+    'Awkward pew shuffle occurs so someone can get in or out.',
+    '"How are you doing?" is asked to you or an NPC. \n You must hear this being asked.',
+    "Meet 3 NPCs you don't know.",
+    '"I remember when you were a baby" is said to you directly.',
+    "'They're in a better place' is said at the funeral.",
+    'You or another makes an insensitive joke.',
+    'You decide to not join the procession to the burial site and do not stick around for the burial',
+    'Precisely what the tile says',
+    'NPC is eager to leave the funeral. The NPC must make a clear comment stating this.',
+    'NPC wants to go to a restaurant. The NPC must make a clear comment stating this.',
+    '"Who invited this person?" or something of that sort is asked. \n You must hear this being asked.',
+    "It's raining during the funeral / burial.",
+    'Precisely what the tile says.',
+    'You are touched awkwardly by an NPC.',
+    'NPC gossips about deceased. \n You must hear this in a discussion.',
+    'Bible verse is quoted. \n You must hear this.',
+    "You're mistaken for someone else.",
+    "NPC's argue over the will. \n You must witness this happening.",
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    '"They died too soon" is said. \n You must hear this being said.',
+    'Precisely what the tile says.',
+    'A hug leads to crying. \n You must witness this happening.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    "'I didn't like them anyways' is said. \n You must hear this being said.",
+    '"They owed me money" is said. \n You must hear this being said.',
+  ];
+  List bDescription = [
+    "NPC's have sex in the bathroom. \n You must witness this happening either by hearing or seeing.",
+    'NPC gets touchy. This must be witnessed. If any NPC is getting touchy with another (or you), this tile is valid.',
+    'Precisely what the tile says.',
+    "This is an easy one. Just keep drinking until you know you're drunk. Tipsy or buzzed do not apply!",
+    'An NPC or you throw up.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Song plays that nobody vibes with. Nobody means nobody. If someone is having a good time, you cannot check this tile off.',
+    'Precisely what the tile says.',
+    "Bar doesn't have what you want. This applies to actual bar drinks. You cannot be denied a pint of goose blood and check off this tile!",
+    'Precisely what the tile says.',
+    'Hand down pants, hand under the shirt, tongue kissing, tit grabbing, dick grinding, or butt touching all apply',
+    'Bartender gets flirty. This can apply to you or an NPC. \n You must witness this happen.',
+    'NPC gets flirty. This can apply to your or an NPC. \n You must witness this happen.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    "Precisely what the tile says. However, the chant doesn't have to be exactly 3 times. The chant just needs to be a valid chant.",
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    "NPC won't stop talking to you or others. This must be witnessed to apply.",
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'If you cannot hear yourself talk, this tile applies.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Motorcycle crew rolls in',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Call the number on the bathroom stall. You do not have to get an answer, you just need to have made an attempt.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    "Group of frat / srat are present. If it's just a group of college kids, this also can apply.",
+    'NPC is clearly underage. If you cannot prove that they are underage, you need 3 people to agree they seem to be underage.',
+    '"Light ice" is requested. \n You must hear this or say this.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+  ];
+  List pDescription = [
+    "NPC's have sex in the bathroom. \n You must witness this happening either by hearing or seeing.",
+    'NPC gets touchy. This must be witnessed. If any NPC is getting touchy with another (or you), this tile is valid.',
+    "'Who invited this NPC?' or something of that sort is asked. \n You must hear this being asked.",
+    "This is an easy one. Just keep drinking until you know you're drunk. Tipsy or buzzed do not apply!",
+    'An NPC or you throw up.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Song plays that nobody vibes with. Nobody means nobody. If someone is having a good time, you cannot check this tile off.',
+    'Precisely what the tile says.',
+    "NPC goes on a beer run. If you're told to go on a beer run, make someone else do it.",
+    'Precisely what the tile says.',
+    'NPC gets flirty. This can apply to your or an NPC. \n You must witness this happen.',
+    'You spot a loner NPC. This is someone who is alone most of the time, keeping to themselves, not bothering anybody.',
+    'Precisely what the tile says.',
+    'Host kicks someone out. This can be an NPC or you.',
+    "NPC's gossip about other guest. \n You must hear gossip being said.",
+    'Precisely what the tile says.',
+    "NPC won't stop talking to you or others. This must be witnessed to apply.",
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Precisely what the tile says.',
+    'Someone cries. This can be an NPC or you. It must be actual crying!',
+    'If you cannot hear yourself talk, this tile applies.',
+    'Precisely what the tile says.',
+    'Hand down pants, hand under the shirt, tongue kissing, tit grabbing, dick grinding, or butt touching all apply',
+    'NPC does a magic trick. \n You must witness this happening.',
+    'NPC tries to show off dance moves. \n You must witness this happening.',
+    'NPC hurts themselves while dancing. \n You must witness this happening.',
+    'Precisely what the tile says.',
+    'Host wants guest to clean up. \n You must hear this mentioned directly from the host.',
+    'Precisely what the tile says.',
+    'If you or an NPC has to turn on a flashlight to get around, this applies.',
+    'Precisely what the tile says.',
+    'If you or an NPC breaks something, this counts.',
+    'If an you or an NPC scream for no reason, this applies.'
   ];
 
   List shownDescriptions = List.filled(25, "");
@@ -305,16 +507,27 @@ class gameList {
   bool? isEdl;
   bool? isRoth;
   bool? isFuneral;
+  bool? isBar;
+  bool? isParty;
   String tmp = '';
   var y = 0;
 
   gameList(
-      bool? isLaura, bool? isOma, bool? isEdl, bool? isRoth, bool? isFuneral) {
+    bool? isLaura,
+    bool? isOma,
+    bool? isEdl,
+    bool? isRoth,
+    bool? isFuneral,
+    bool? isBar,
+    bool? isParty,
+  ) {
     this.isLaura = isLaura;
     this.isOma = isOma;
     this.isEdl = isEdl;
     this.isRoth = isRoth;
     this.isFuneral = isFuneral;
+    this.isBar = isBar;
+    this.isParty = isParty;
 
     if (isLaura == true) {
       randList = 1;
@@ -331,6 +544,12 @@ class gameList {
     if (isFuneral == true) {
       randList = 5;
     }
+    if (isBar == true) {
+      randList = 6;
+    }
+    if (isParty == true) {
+      randList = 7;
+    }
 
     while (cou < 25) {
       if (isFuneral == true) {
@@ -339,6 +558,20 @@ class gameList {
         shownDescriptions[cou] = fDescription[r];
         fList.removeAt(r);
         fDescription.removeAt(r);
+        cou++;
+      } else if (isBar == true) {
+        r = ranNum.nextInt(bList.length);
+        tileAssignment[cou] = bList[r];
+        shownDescriptions[cou] = bDescription[r];
+        bList.removeAt(r);
+        bDescription.removeAt(r);
+        cou++;
+      } else if (isParty == true) {
+        r = ranNum.nextInt(pList.length);
+        tileAssignment[cou] = pList[r];
+        shownDescriptions[cou] = pDescription[r];
+        pList.removeAt(r);
+        pDescription.removeAt(r);
         cou++;
       } else {
         c = ranNum.nextInt(randList + 1);
