@@ -23,12 +23,13 @@ import 'package:flutter/services.dart';
 
 // import 'package:just_audio/just_audio.dart';
 
-class gamescreen extends StatefulWidget {
+class gamescreenBar extends StatefulWidget {
   @override
-  gamescreenState createState() => gamescreenState();
+  gamescreenBarState createState() => gamescreenBarState();
 }
 
-class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
+class gamescreenBarState extends State<gamescreenBar>
+    with WidgetsBindingObserver {
   final player = AudioPlayer();
   static int noteRandom = 0;
 // List and Currency data
@@ -130,8 +131,6 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc(fs.getgameMode)
-        .collection(fs.getgameMode)
         .doc("ADMIN: $name's Attack Completed");
 
     await refMessages.set({
@@ -368,13 +367,13 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
   late SMIInput<bool> abilityStateMachineInput;
   late SMIInput<bool> bandageStateMachineInput;
 
-  void _onInit(Artboard Idle) {
+  void _onInit(Artboard IdleBAR) {
     print('Hearts Init Running');
     var controller = StateMachineController.fromArtboard(
-      Idle,
+      IdleBAR,
       'Heartbeat',
     )!;
-    Idle.addController(controller);
+    IdleBAR.addController(controller);
     fiveHeartStateMachineInput =
         controller.findInput<bool>('fiveHearts') as SMIBool;
     fourHeartStateMachineInput =
@@ -484,7 +483,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
     }
   }
 
-  gamescreenState();
+  gamescreenBarState();
 
   static List<bool> values = List.filled(25, false);
   static List<bool> attackVal = List.filled(25, false);
@@ -585,9 +584,8 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     _controller.dispose();
-
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -938,7 +936,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
     final panelHeightOpen = MediaQuery.of(context).size.height * 0.885;
     final panelHeightClosed = MediaQuery.of(context).size.height * 0.075;
 
-    final gamescreenState gs = gamescreenState();
+    final gamescreenBarState gs = gamescreenBarState();
 
 //cooldown is running
     if (isRunning == true) {
@@ -1028,7 +1026,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                 Stack(
                   children: [
                     Container(
-                      color: Color.fromRGBO(255, 138, 101, 1),
+                      color: Colors.deepPurple.shade400,
                       child: Align(
                           alignment: Alignment(0, 0.9),
                           child: Container(
@@ -1039,17 +1037,17 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                                   child: GestureDetector(
                                     onTap: () async {
                                       await player.play(
-                                          AssetSource('MingSqueak.mp3'),
+                                          AssetSource('MingGulp.mp3'),
                                           mode: PlayerMode.mediaPlayer);
                                     },
                                     onDoubleTap: () async {
                                       await player.play(
-                                          AssetSource('MingSqueak.mp3'),
+                                          AssetSource('MingGulp.mp3'),
                                           mode: PlayerMode.mediaPlayer);
                                     },
                                     child: RiveAnimation.asset(
-                                      'assets/Mingeruchi.riv',
-                                      artboard: "Idle",
+                                      'assets/MingeruchiBAR.riv',
+                                      artboard: "IdleBAR",
                                       alignment: Alignment.bottomCenter,
                                       fit: BoxFit.fitHeight,
                                       stateMachines: ['Heartbeat'],
@@ -1066,7 +1064,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                         Align(
                           alignment: Alignment(-0.8, -0.85),
                           child: Material(
-                            color: Color.fromRGBO(255, 138, 101, 1),
+                            color: Colors.deepPurple.shade400,
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor:
@@ -1156,7 +1154,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                         Align(
                           alignment: Alignment(-0.8, -0.6),
                           child: Material(
-                            color: Color.fromRGBO(255, 138, 101, 1),
+                            color: Colors.deepPurple.shade400,
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor:
@@ -1248,7 +1246,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                         Align(
                           alignment: Alignment(-0.8, -0.35),
                           child: Material(
-                            color: Color.fromRGBO(255, 138, 101, 1),
+                            color: Colors.deepPurple.shade400,
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor: Colors.red.shade700.withOpacity(0.5),
@@ -1296,7 +1294,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                                       ),
                                       color: Colors.red.shade400),
                                   child: RiveAnimation.asset(
-                                    'assets/Mingeruchi.riv',
+                                    'assets/MingeruchiBAR.riv',
                                     artboard: "Bandage",
                                     animations: [],
                                     fit: BoxFit.fitWidth,
@@ -1940,8 +1938,8 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                       height: 0,
                       width: 0,
                       child: RiveAnimation.asset(
-                        'assets/Mingeruchi.riv',
-                        artboard: "Idle",
+                        'assets/MingeruchiBAR.riv',
+                        artboard: "IdleBAR",
                         alignment: Alignment.bottomCenter,
                         fit: BoxFit.fitHeight,
                         stateMachines: ['Heartbeat'],
@@ -2262,7 +2260,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                                       ),
                                       color: Colors.red.shade400),
                                   child: RiveAnimation.asset(
-                                      'assets/Mingeruchi.riv',
+                                      'assets/MingeruchiBAR.riv',
                                       artboard: "Bandage",
                                       animations: [],
                                       fit: BoxFit.fitWidth,
@@ -2346,9 +2344,9 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, .8),
+                      alignment: Alignment(0, .9),
                       child: Container(
-                        height: 450,
+                        height: 350,
                         child: RiveAnimation.asset(
                           'assets/Mingeruchi.riv',
                           artboard: "money",

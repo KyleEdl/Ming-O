@@ -30,6 +30,7 @@ class messageBoard extends StatefulWidget {
 }
 
 ModelClass modelClass = GetIt.instance.get<ModelClass>();
+FirstPage fs = new FirstPage();
 
 class messageBoardState extends State<messageBoard> {
   ModelClass modelClass = GetIt.instance.get<ModelClass>();
@@ -55,6 +56,8 @@ class messageBoardState extends State<messageBoard> {
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
+        .doc(fs.getgameMode)
+        .collection(fs.getgameMode)
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -92,8 +95,11 @@ class messageBoardState extends State<messageBoard> {
     );
     this.message = message;
 
-    final refMessages =
-        FirebaseFirestore.instance.collection('messages').doc(message);
+    final refMessages = FirebaseFirestore.instance
+        .collection('messages')
+        .doc(fs.getgameMode)
+        .collection(fs.getgameMode)
+        .doc(message);
     await refMessages.set({
       'username': modelClass.value.toString(),
       'message': message.toString(),

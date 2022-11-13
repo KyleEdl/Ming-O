@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rive/rive.dart';
 import 'dart:async';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
-import 'package:bingo_application/screens/gamescreen.dart';
 
 class deathScreen extends StatefulWidget {
   @override
@@ -132,16 +131,16 @@ class deathScreenState extends State<deathScreen> {
                 Align(
                   alignment: Alignment(0, 0.85),
                   child: Container(
-                    color: Colors.blueGrey.shade700,
-                    height: 450,
+                    color: Colors.black,
+                    height: 900,
                     child: RiveAnimation.asset(
                       'assets/Mingeruchi.riv',
-                      artboard: "Win ",
+                      artboard: "Death",
                       alignment: Alignment.center,
                       fit: BoxFit.fitHeight,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ]));

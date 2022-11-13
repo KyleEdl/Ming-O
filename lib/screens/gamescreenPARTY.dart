@@ -23,14 +23,16 @@ import 'package:flutter/services.dart';
 
 // import 'package:just_audio/just_audio.dart';
 
-class gamescreen extends StatefulWidget {
+class gamescreenParty extends StatefulWidget {
   @override
-  gamescreenState createState() => gamescreenState();
+  gamescreenPartyState createState() => gamescreenPartyState();
 }
 
-class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
+class gamescreenPartyState extends State<gamescreenParty>
+    with WidgetsBindingObserver {
   final player = AudioPlayer();
   static int noteRandom = 0;
+  static int EDMRandom = 0;
 // List and Currency data
   bool? isLaura;
   bool? isOma;
@@ -130,8 +132,6 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc(fs.getgameMode)
-        .collection(fs.getgameMode)
         .doc("ADMIN: $name's Attack Completed");
 
     await refMessages.set({
@@ -225,7 +225,6 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
   static String lastCurrent = "This Is Empty";
   static bool timerStarter = false;
   bool appActive = true;
-
   //This is to lock out all users once someone has won the game
   static bool gameLock = false;
 
@@ -484,7 +483,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
     }
   }
 
-  gamescreenState();
+  gamescreenPartyState();
 
   static List<bool> values = List.filled(25, false);
   static List<bool> attackVal = List.filled(25, false);
@@ -616,6 +615,19 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
     }
   }
 
+  playEDM() async {
+    EDMRandom = Random().nextInt(4);
+    if (EDMRandom == 0) {
+      await player.play(AssetSource('EDM1.wav'), mode: PlayerMode.mediaPlayer);
+    }
+    if (EDMRandom == 1) {
+      await player.play(AssetSource('EDM2.wav'), mode: PlayerMode.mediaPlayer);
+    }
+    if (EDMRandom == 2) {
+      await player.play(AssetSource('EDM3.wav'), mode: PlayerMode.mediaPlayer);
+    }
+  }
+
   singleUncheckMethod() {
     Timer(Duration(milliseconds: 20), (() {
       uncheckSingle = Random().nextInt(25);
@@ -712,6 +724,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
         heartMonitor = false;
       });
+      player.play(AssetSource('CD5.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 4) {
       setState(() {
@@ -730,6 +743,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
         heartMonitor = false;
       });
+      player.play(AssetSource('CD4.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 3) {
       setState(() {
@@ -748,6 +762,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
         heartMonitor = false;
       });
+      player.play(AssetSource('CD3.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 2) {
       setState(() {
@@ -766,6 +781,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
         heartMonitor = false;
       });
+      player.play(AssetSource('CD2.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 1) {
       setState(() {
@@ -784,6 +800,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
         heartMonitor = true;
       });
+      player.play(AssetSource('CD1.mp3'), mode: PlayerMode.mediaPlayer);
     }
 
     if (healthLevel <= 0) {
@@ -803,7 +820,10 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
       zeroHeartStateMachineInput.value = true;
 
       heartMonitor = true;
-
+      Future.delayed(Duration(milliseconds: 1300), () {
+        player.play(AssetSource('GlassShatter.mp3'),
+            mode: PlayerMode.mediaPlayer);
+      });
       timerNot?.cancel();
       timerGrace?.cancel();
       deathSent();
@@ -938,7 +958,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
     final panelHeightOpen = MediaQuery.of(context).size.height * 0.885;
     final panelHeightClosed = MediaQuery.of(context).size.height * 0.075;
 
-    final gamescreenState gs = gamescreenState();
+    final gamescreenPartyState gs = gamescreenPartyState();
 
 //cooldown is running
     if (isRunning == true) {
@@ -1028,7 +1048,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                 Stack(
                   children: [
                     Container(
-                      color: Color.fromRGBO(255, 138, 101, 1),
+                      color: Color.fromARGB(255, 38, 32, 49),
                       child: Align(
                           alignment: Alignment(0, 0.9),
                           child: Container(
@@ -1037,18 +1057,16 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                                 padding: const EdgeInsets.only(right: 3.0),
                                 child: Container(
                                   child: GestureDetector(
-                                    onTap: () async {
-                                      await player.play(
-                                          AssetSource('MingSqueak.mp3'),
+                                    onTap: () {
+                                      player.play(AssetSource('MingSqueak.mp3'),
                                           mode: PlayerMode.mediaPlayer);
                                     },
                                     onDoubleTap: () async {
-                                      await player.play(
-                                          AssetSource('MingSqueak.mp3'),
+                                      player.play(AssetSource('MingSqueak.mp3'),
                                           mode: PlayerMode.mediaPlayer);
                                     },
                                     child: RiveAnimation.asset(
-                                      'assets/Mingeruchi.riv',
+                                      'assets/MingeruchiPARTY.riv',
                                       artboard: "Idle",
                                       alignment: Alignment.bottomCenter,
                                       fit: BoxFit.fitHeight,
@@ -1066,7 +1084,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                         Align(
                           alignment: Alignment(-0.8, -0.85),
                           child: Material(
-                            color: Color.fromRGBO(255, 138, 101, 1),
+                            color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor:
@@ -1085,6 +1103,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                                     attackAni();
                                     abilityStateMachineInput.value = true;
                                     tileLockCount--;
+                                    playEDM();
 
                                     singleAttackSent();
 
@@ -1156,7 +1175,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                         Align(
                           alignment: Alignment(-0.8, -0.6),
                           child: Material(
-                            color: Color.fromRGBO(255, 138, 101, 1),
+                            color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor:
@@ -1175,7 +1194,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                                     randThreeLockCount--;
 
                                     tripleAttackSent();
-
+                                    playEDM();
                                     attackAni();
                                     Vibration.vibrate(
                                         duration: 5000, intensities: [255]);
@@ -1248,7 +1267,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                         Align(
                           alignment: Alignment(-0.8, -0.35),
                           child: Material(
-                            color: Color.fromRGBO(255, 138, 101, 1),
+                            color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor: Colors.red.shade700.withOpacity(0.5),
@@ -1909,7 +1928,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                           height: 120,
                           width: 120,
                           child: RiveAnimation.asset(
-                            'assets/Mingeruchi.riv',
+                            'assets/MingeruchiPARTY.riv',
                             artboard: "Angel",
                             animations: [],
                             fit: BoxFit.fitWidth,
@@ -1940,7 +1959,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                       height: 0,
                       width: 0,
                       child: RiveAnimation.asset(
-                        'assets/Mingeruchi.riv',
+                        'assets/MingeruchiPARTY.riv',
                         artboard: "Idle",
                         alignment: Alignment.bottomCenter,
                         fit: BoxFit.fitHeight,
@@ -2346,9 +2365,9 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, .8),
+                      alignment: Alignment(0, .9),
                       child: Container(
-                        height: 450,
+                        height: 350,
                         child: RiveAnimation.asset(
                           'assets/Mingeruchi.riv',
                           artboard: "money",

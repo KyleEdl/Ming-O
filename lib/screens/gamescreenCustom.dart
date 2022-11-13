@@ -23,12 +23,13 @@ import 'package:flutter/services.dart';
 
 // import 'package:just_audio/just_audio.dart';
 
-class gamescreen extends StatefulWidget {
+class gamescreenCustom extends StatefulWidget {
   @override
-  gamescreenState createState() => gamescreenState();
+  gamescreenCustomState createState() => gamescreenCustomState();
 }
 
-class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
+class gamescreenCustomState extends State<gamescreenCustom>
+    with WidgetsBindingObserver {
   final player = AudioPlayer();
   static int noteRandom = 0;
 // List and Currency data
@@ -484,7 +485,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
     }
   }
 
-  gamescreenState();
+  gamescreenCustomState();
 
   static List<bool> values = List.filled(25, false);
   static List<bool> attackVal = List.filled(25, false);
@@ -937,9 +938,14 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
     final panelHeightOpen = MediaQuery.of(context).size.height * 0.885;
     final panelHeightClosed = MediaQuery.of(context).size.height * 0.075;
+/* Zack # 
 
-    final gamescreenState gs = gamescreenState();
+need to check this before uncommenting. Wasn't sure if I needed to just match it to this files class names or not. 
+Errors underneath of this will be resolved once this is corrected
 
+This issue is one line below. Not sure if that will cause issues starting at line 971
+*/
+    final gamescreenCustomState gs = gamescreenCustomState();
 //cooldown is running
     if (isRunning == true) {
       setState(() {

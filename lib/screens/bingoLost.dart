@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:bingo_application/screens/gamescreen.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rive/rive.dart';
 import 'dart:async';
@@ -68,12 +68,7 @@ class loseScreenState extends State<loseScreen> {
                               fontSize: 72,
                               fontWeight: FontWeight.bold,
                             ),
-                            colors: [
-                              Color.fromARGB(255, 1, 190, 80),
-                              Color.fromARGB(255, 0, 200, 83),
-                              Color.fromARGB(255, 0, 230, 119),
-                              Color.fromARGB(255, 105, 240, 175),
-                            ]))),
+                            colors: [Colors.orange]))),
                 Align(
                   alignment: Alignment(0, 0),
                   child: Container(
@@ -134,7 +129,7 @@ class loseScreenState extends State<loseScreen> {
                 Align(
                   alignment: Alignment(0, 0.85),
                   child: Container(
-                    color: Color.fromARGB(255, 35, 135, 236),
+                    color: Colors.blueGrey.shade700,
                     height: 450,
                     child: RiveAnimation.asset(
                       'assets/Mingeruchi.riv',

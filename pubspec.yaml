@@ -58,6 +58,7 @@ dependencies:
   audioplayers: ^1.1.0
   simple_gradient_text: ^1.2.4
   vibration: ^1.7.6
+  flutter_keyboard_visibility: ^5.4.0
   
 
   

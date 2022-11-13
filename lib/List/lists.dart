@@ -50,7 +50,7 @@ class gameList {
     'Laura is missing',
     'Laura talks about work',
     'Laura gets touchy',
-    'Laura rejects concerns for her wellbeing',
+    'Laura rejects concerns\n of herself',
     'Laura eats less than others',
     'Laura falls',
     'Laura talks about her appearance',
@@ -81,7 +81,6 @@ class gameList {
   // Edl List
   List eList = [
     'Heather rejects a compliment',
-    'David only visibly shows \n disagreement',
     'Heather talks about vaccines',
     'Heather doesn’t get to the point',
     'Heather talks about her diet',
@@ -116,11 +115,12 @@ class gameList {
     'Rothwells need to leave early',
     "Rothwell's leave later than expected",
     'Diane pulls Laura aside',
-    'Diane talks about not having enough\n vacation',
+    'Diane does not get enough vacation',
   ];
 
   List fList = [
-    'NPC underdressed or dramatically dressed',
+    'NPC underdressed',
+    'NPC overdressed',
     'NPC is drunk',
     'Technical Difficulties',
     'NPC cries loudly',
@@ -187,7 +187,7 @@ class gameList {
     'Motorcycle crew rolls in',
     'NPC has a mullet',
     'Bathroom has graffiti',
-    'Call the number on the bathroom stall',
+    'Call the # on bathroom walls',
     'Drunk NPC dances alone',
     'Dollar bill on the wall',
     'Bathroom stall door missing',
@@ -247,7 +247,7 @@ class gameList {
     'Something breaks',
     'Someone screams for no reason',
   ];
-
+  List cList = []; //Zack # 3
   // Universal Description
   List uDescription = [
     "Caleb makes a subtle reference to his sexuality or defends his sexuality in conversation with NPCs",
@@ -328,7 +328,6 @@ class gameList {
   // Edl Description
   List eDescription = [
     'If someone compliments Heather and she disagrees, this tile is qualified',
-    'If someone is talking about a controversial topic with David present and he doesn’t add to the conversation, this tile is qualified',
     'If Heather mentions vaccines, this tile is qualified',
     'If Heather is talking for more than 15 seconds without getting to the point, this tile is qualified',
     'If Heather mentions she’s dieting, this tile is qualified',
@@ -367,7 +366,8 @@ class gameList {
   ];
 
   List fDescription = [
-    'NPC is underdressed for the funeral or dramatically overdressed for the funeral.',
+    'NPC is underdressed for the funeral',
+    'NPC is overdressed. They are a bit excessive.',
     'NPC is drunk at any point during the funeral.',
     "Mic cuts out, music doesn't play, mic too low, etc.",
     'NPC cries loudly.',
@@ -494,6 +494,7 @@ class gameList {
     'If you or an NPC breaks something, this counts.',
     'If an you or an NPC scream for no reason, this applies.'
   ];
+  List cDescription = []; //Zack # 4
 
   List shownDescriptions = List.filled(25, "");
   final List tileAssignment = List.filled(25, "");
@@ -509,18 +510,12 @@ class gameList {
   bool? isFuneral;
   bool? isBar;
   bool? isParty;
+  bool? isUniversal;
   String tmp = '';
   var y = 0;
 
-  gameList(
-    bool? isLaura,
-    bool? isOma,
-    bool? isEdl,
-    bool? isRoth,
-    bool? isFuneral,
-    bool? isBar,
-    bool? isParty,
-  ) {
+  gameList(bool? isLaura, bool? isOma, bool? isEdl, bool? isRoth,
+      bool? isFuneral, bool? isBar, bool? isParty, bool? isUniversal) {
     this.isLaura = isLaura;
     this.isOma = isOma;
     this.isEdl = isEdl;
@@ -528,7 +523,14 @@ class gameList {
     this.isFuneral = isFuneral;
     this.isBar = isBar;
     this.isParty = isParty;
+    this.isUniversal = isUniversal;
 
+    if (isUniversal == false &&
+        isFuneral == false &&
+        isBar == false &&
+        isParty == false) {
+      randList = 0;
+    }
     if (isLaura == true) {
       randList = 1;
     }
@@ -552,64 +554,68 @@ class gameList {
     }
 
     while (cou < 25) {
-      if (isFuneral == true) {
-        r = ranNum.nextInt(fList.length);
-        tileAssignment[cou] = fList[r];
-        shownDescriptions[cou] = fDescription[r];
-        fList.removeAt(r);
-        fDescription.removeAt(r);
-        cou++;
-      } else if (isBar == true) {
-        r = ranNum.nextInt(bList.length);
-        tileAssignment[cou] = bList[r];
-        shownDescriptions[cou] = bDescription[r];
-        bList.removeAt(r);
-        bDescription.removeAt(r);
-        cou++;
-      } else if (isParty == true) {
-        r = ranNum.nextInt(pList.length);
-        tileAssignment[cou] = pList[r];
-        shownDescriptions[cou] = pDescription[r];
-        pList.removeAt(r);
-        pDescription.removeAt(r);
-        cou++;
+      if (randList == 0) {
+        break;
       } else {
-        c = ranNum.nextInt(randList + 1);
-        if (c == 0) {
-          r = ranNum.nextInt(uList.length);
-          tileAssignment[cou] = uList[r];
-          shownDescriptions[cou] = uDescription[r];
-          uList.removeAt(r);
-          uDescription.removeAt(r);
+        if (isFuneral == true) {
+          r = ranNum.nextInt(fList.length);
+          tileAssignment[cou] = fList[r];
+          shownDescriptions[cou] = fDescription[r];
+          fList.removeAt(r);
+          fDescription.removeAt(r);
           cou++;
-        } else if (c == 1 && isLaura == true) {
-          r = ranNum.nextInt(lList.length);
-          tileAssignment[cou] = lList[r];
-          shownDescriptions[cou] = lDescription[r];
-          lList.removeAt(r);
-          lDescription.removeAt(r);
+        } else if (isBar == true) {
+          r = ranNum.nextInt(bList.length);
+          tileAssignment[cou] = bList[r];
+          shownDescriptions[cou] = bDescription[r];
+          bList.removeAt(r);
+          bDescription.removeAt(r);
           cou++;
-        } else if (c == 2 && isOma == true) {
-          r = ranNum.nextInt(oList.length);
-          tileAssignment[cou] = oList[r];
-          shownDescriptions[cou] = oList[r];
-          oList.removeAt(r);
-          oDescription.removeAt(r);
+        } else if (isParty == true) {
+          r = ranNum.nextInt(pList.length);
+          tileAssignment[cou] = pList[r];
+          shownDescriptions[cou] = pDescription[r];
+          pList.removeAt(r);
+          pDescription.removeAt(r);
           cou++;
-        } else if (c == 3 && isEdl == true) {
-          r = ranNum.nextInt(eList.length);
-          tileAssignment[cou] = eList[r];
-          shownDescriptions[cou] = eList[r];
-          eList.removeAt(r);
-          eDescription.removeAt(r);
-          cou++;
-        } else if (c == 4 && isRoth == true) {
-          r = ranNum.nextInt(rList.length);
-          tileAssignment[cou] = rList[r];
-          shownDescriptions[cou] = rDescription[r];
-          rDescription.removeAt(r);
-          rList.removeAt(r);
-          cou++;
+        } else {
+          c = ranNum.nextInt(randList + 1);
+          if (c == 0) {
+            r = ranNum.nextInt(uList.length);
+            tileAssignment[cou] = uList[r];
+            shownDescriptions[cou] = uDescription[r];
+            uList.removeAt(r);
+            uDescription.removeAt(r);
+            cou++;
+          } else if (c == 1 && isLaura == true) {
+            r = ranNum.nextInt(lList.length);
+            tileAssignment[cou] = lList[r];
+            shownDescriptions[cou] = lDescription[r];
+            lList.removeAt(r);
+            lDescription.removeAt(r);
+            cou++;
+          } else if (c == 2 && isOma == true) {
+            r = ranNum.nextInt(oList.length);
+            tileAssignment[cou] = oList[r];
+            shownDescriptions[cou] = oList[r];
+            oList.removeAt(r);
+            oDescription.removeAt(r);
+            cou++;
+          } else if (c == 3 && isEdl == true) {
+            r = ranNum.nextInt(eList.length);
+            tileAssignment[cou] = eList[r];
+            shownDescriptions[cou] = eList[r];
+            eList.removeAt(r);
+            eDescription.removeAt(r);
+            cou++;
+          } else if (c == 4 && isRoth == true) {
+            r = ranNum.nextInt(rList.length);
+            tileAssignment[cou] = rList[r];
+            shownDescriptions[cou] = rDescription[r];
+            rDescription.removeAt(r);
+            rList.removeAt(r);
+            cou++;
+          }
         }
       }
     }
