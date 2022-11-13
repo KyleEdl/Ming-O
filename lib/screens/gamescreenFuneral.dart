@@ -15,7 +15,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bingo_application/firebase_options.dart';
-import 'package:bingo_application/screens/messages.dart';
+import 'package:bingo_application/screens/messagesFuneral.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter/services.dart';
 
@@ -45,7 +45,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
   List tileAssignment = [];
   List shownDescriptions = [];
   List newAssignment = [];
-  List messageFromClass = messageBoardState.messages;
+  List messageFromClass = messageBoardFuneralState.messages;
   String myName = "";
   String myAbilName = "";
 
@@ -131,6 +131,8 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('funeral')
+        .collection('funeral')
         .doc("ADMIN: $name's Attack Completed");
 
     await refMessages.set({
@@ -146,6 +148,8 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('funeral')
+        .collection('funeral')
         .doc('ADMIN: $name Has Sent A Single Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -160,6 +164,8 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('funeral')
+        .collection('funeral')
         .doc('ADMIN: $name Has Sent A Triple Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -174,6 +180,8 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('funeral')
+        .collection('funeral')
         .doc('ADMIN: $name Has Died');
     await refMessages.set({
       'username': 'ADMIN',
@@ -188,6 +196,8 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('funeral')
+        .collection('funeral')
         .doc('ADMIN: $name Got Ming-O!');
     await refMessages.set({
       'username': 'ADMIN',
@@ -862,6 +872,8 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
+        .doc('funeral')
+        .collection('funeral')
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -1853,7 +1865,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
                   Align(
                     alignment: Alignment(0.90, 0.75),
                     child: Hero(
-                        tag: 'message',
+                        tag: 'messageFuneral',
                         child: GestureDetector(
                             onTap: () {
                               if (messageNotification > 0) {
@@ -1867,7 +1879,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
                                       builder: ((
                                     context,
                                   ) =>
-                                          messageBoard())));
+                                          messageBoardFuneral())));
                             },
                             child: Container(
                               height: 70,

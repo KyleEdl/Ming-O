@@ -44,7 +44,10 @@ class FirstPage extends State<FirstScreen> {
   static String gameMode = '';
   static bool? isUniversal = false;
   static bool? isCustom = false;
+  static bool? docExists = false;
+  static String gameKey = "";
   static int customKey = (Random().nextInt(100000) + 10000);
+  static String gameKeySet = customKey.toString();
   double mingOpac = 1;
   // static String myName = "";
   // static String myAbilName = "";
@@ -87,6 +90,10 @@ class FirstPage extends State<FirstScreen> {
     return customKey;
   }
 
+  get getgameKeySet {
+    return gameKeySet;
+  }
+
   get getgameMode {
     return gameMode;
   }
@@ -109,6 +116,10 @@ class FirstPage extends State<FirstScreen> {
 
   get getshownDescriptions {
     return shownDescriptions;
+  }
+
+  get getgameKey {
+    return gameKey;
   }
 
   FirstPage();
@@ -142,6 +153,25 @@ class FirstPage extends State<FirstScreen> {
       await launch(url);
     } else {
       throw 'Could not launch $url';
+    }
+  }
+
+  Future customDocFind(String docID) async {
+    final refMessages =
+        await FirebaseFirestore.instance.collection('CUSTOM').doc(docID);
+    final doc = await refMessages.get();
+    print(doc);
+    if (doc.exists) {
+      docExists = true;
+      print(doc.exists);
+      print(docExists);
+      print(docID);
+    }
+    if (!doc.exists) {
+      docExists = false;
+      print(doc.exists);
+      print(docExists);
+      print(docID);
     }
   }
 
@@ -759,28 +789,40 @@ class FirstPage extends State<FirstScreen> {
                                                 //Zack # 1
                                                 if (textControllerKey
                                                     .text.isNotEmpty) {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: ((context) =>
-                                                              customReadyScreen())));
+                                                  gameKey =
+                                                      textControllerKey.text;
+                                                  customDocFind(
+                                                      textControllerKey.text);
+                                                  Future.delayed(
+                                                      Duration(seconds: 1), () {
+                                                    if (docExists == false) {
+                                                      textControllerKey.clear();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                              SnackBar(
+                                                        backgroundColor:
+                                                            Colors.red.shade600,
+                                                        duration: Duration(
+                                                            seconds: 1),
+                                                        content: Text(
+                                                          "KEY DOES NOT EXIST!",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                        ),
+                                                      ));
+                                                    } else {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: ((context) =>
+                                                                  customReadyScreen())));
+                                                    }
+                                                  });
                                                 }
-                                                if (!textControllerKey.text
-                                                    .contains('AERFAMILY')) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    backgroundColor:
-                                                        Colors.red.shade600,
-                                                    duration:
-                                                        Duration(seconds: 1),
-                                                    content: Text(
-                                                      "Invalid Custom Key",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ));
-                                                }
+
                                                 if (textControllerKey.text
                                                     .contains('AERFAMILY')) {
                                                   setState(() {

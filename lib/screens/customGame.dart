@@ -36,13 +36,18 @@ class customPage extends State<customScreen> {
       options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    final refMessages = FirebaseFirestore.instance
+    final refMessages =
+        FirebaseFirestore.instance.collection('CUSTOM').doc(fp.getgameMode);
+
+    refMessages.set({'GAME ID': fp.getgameMode});
+
+    final refMessage = FirebaseFirestore.instance
         .collection('CUSTOM')
         .doc(fp.getgameMode)
         .collection('list')
         .doc(customList[i]);
 
-    await refMessages.set({'CUST LIST': customList[i], 'INDEX': cout});
+    await refMessage.set({'CUST LIST': customList[i], 'INDEX': cout});
   }
 
   get getcustomList {
@@ -69,19 +74,20 @@ class customPage extends State<customScreen> {
           ),
           elevation: 0,
           backgroundColor: Colors.tealAccent.shade400,
-          automaticallyImplyLeading: true,
+          leading: Builder(builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: (() {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => FirstScreen())));
+              }),
+            );
+          }),
           //automaticallyImplyLeading: true,
         ),
         body: Container(
           color: Colors.tealAccent.shade700,
           child: Stack(children: [
-            Container(
-              height: 70,
-              child: Text(''),
-            ),
-            Container(
-              height: 140,
-            ),
             ListView.builder(
                 itemCount: 50,
                 itemBuilder: ((context, index) {

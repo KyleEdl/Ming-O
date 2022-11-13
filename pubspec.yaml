@@ -60,7 +60,6 @@ dependencies:
   vibration: ^1.7.6
   flutter_keyboard_visibility: ^5.4.0
   
-
   
 
 dev_dependencies:

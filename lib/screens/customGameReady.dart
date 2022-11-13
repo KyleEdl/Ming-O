@@ -16,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bingo_application/firebase_options.dart';
 import 'package:flutter/services.dart';
+import 'package:bingo_application/modelclass.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class customReadyScreen extends StatefulWidget {
@@ -28,7 +29,20 @@ class customReadyScreen extends StatefulWidget {
 class customReadyPage extends State<customReadyScreen> {
   double buttonOpac = 0;
   double hourGlassOpac = 1;
+  static String gameKey = "";
+  FirstPage fs = new FirstPage();
   bool gameReady = false;
+  static List tileAssignment = List.filled(25, "");
+  static List shownDescriptions = List.filled(25, '');
+  List cList = [];
+  List cDescription = [];
+  int r = 0;
+  int cou = 0;
+  ModelClass modelClass = GetIt.instance.get<ModelClass>();
+  final firebaseInit = Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  var ranNum = new Random();
   @override
   void initState() {
     super.initState();
@@ -41,7 +55,93 @@ class customReadyPage extends State<customReadyScreen> {
     });
   }
 
+  get gettileAssignment {
+    return tileAssignment;
+  }
+
+  get getshownDescriptions {
+    return shownDescriptions;
+  }
+
+  get getgameKey {
+    return gameKey;
+  }
+
+  Future joinedGame() async {
+    await firebaseInit;
+
+    String name = modelClass.value;
+
+    final refMessages = FirebaseFirestore.instance
+        .collection('messages')
+        .doc(gameKey)
+        .collection(gameKey)
+        .doc('ADMIN: $name Has Joined The Game');
+    await refMessages.set({
+      'username': 'ADMIN',
+      'message': 'ADMIN: $name Has Joined The Game',
+      'created': DateTime.now()
+    });
+  }
+
+  buildLists() {
+    print(cList);
+    while (cou < 25) {
+      r = ranNum.nextInt(cList.length);
+      tileAssignment[cou] = cList[r];
+      shownDescriptions[cou] = cDescription[r];
+      cList.removeAt(r);
+      cDescription.removeAt(r);
+      cou++;
+    }
+  }
+
+  Future getLists() async {
+    await FirebaseFirestore.instance
+        .collection('CUSTOM')
+        .doc(gameKey)
+        .collection('list')
+        .orderBy('INDEX', descending: true)
+        .get()
+        .then((snapshot) {
+      cList.clear();
+      snapshot.docs.forEach((document) {
+        cList.add(document.reference.id);
+      });
+    });
+
+    if (mounted) {
+      setState(() {
+        cList = cList;
+      });
+    }
+
+    await FirebaseFirestore.instance
+        .collection('CUSTOM')
+        .doc(gameKey)
+        .collection('desc')
+        .orderBy('INDEX', descending: true)
+        .get()
+        .then((snapshot) {
+      cDescription.clear();
+      snapshot.docs.forEach((document) {
+        cDescription.add(document.reference.id);
+      });
+    });
+
+    if (mounted) {
+      setState(() {
+        cDescription = cDescription;
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
+    if (fs.getgameKey == "") {
+      gameKey = fs.getgameKeySet;
+    } else {
+      gameKey = fs.getgameKey.toString();
+    }
     return GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -51,6 +151,24 @@ class customReadyPage extends State<customReadyScreen> {
               color: Colors.deepPurpleAccent[100],
               child: Stack(
                 children: [
+                  Align(
+                      alignment: Alignment(-0.8, 0.9),
+                      child: GestureDetector(
+                        onTap: (() {}),
+                        child: Container(
+                            height: 80,
+                            width: 80,
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(80)),
+                              color: Colors.blueGrey.shade600.withOpacity(.3),
+                            ),
+                            child: Icon(
+                              Icons.arrow_back,
+                              size: 26,
+                              color: Colors.blueGrey.shade900.withOpacity(.8),
+                            )),
+                      )),
                   Align(
                       alignment: Alignment(0, -0.5),
                       child: AnimatedOpacity(
@@ -69,7 +187,7 @@ class customReadyPage extends State<customReadyScreen> {
                   Align(
                       alignment: Alignment(0, -0.5),
                       child: Container(
-                        child: Text("Your Game Key is:" /* Zack # 2*/,
+                        child: Text("Your Game Key is: $gameKey" /* Zack # 2*/,
                             textAlign: TextAlign.center,
                             style: GoogleFonts.quicksand(
                                 fontWeight: FontWeight.bold,
@@ -89,11 +207,16 @@ class customReadyPage extends State<customReadyScreen> {
                             ),
                             onPressed: () {
                               if (gameReady == true) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) =>
-                                            gamescreenCustom())));
+                                getLists();
+                                joinedGame();
+                                Future.delayed(Duration(seconds: 3), () {
+                                  buildLists();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) =>
+                                              gamescreenCustom())));
+                                });
                               } else {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(

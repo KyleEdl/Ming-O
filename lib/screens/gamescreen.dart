@@ -130,8 +130,8 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc(fs.getgameMode)
-        .collection(fs.getgameMode)
+        .doc('AERFAMILY')
+        .collection('AERFAMILY')
         .doc("ADMIN: $name's Attack Completed");
 
     await refMessages.set({
@@ -147,6 +147,8 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('AERFAMILY')
+        .collection('AERFAMILY')
         .doc('ADMIN: $name Has Sent A Single Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -161,6 +163,8 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('AERFAMILY')
+        .collection('AERFAMILY')
         .doc('ADMIN: $name Has Sent A Triple Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -175,6 +179,8 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('AERFAMILY')
+        .collection('AERFAMILY')
         .doc('ADMIN: $name Has Died');
     await refMessages.set({
       'username': 'ADMIN',
@@ -189,6 +195,8 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('AERFAMILY')
+        .collection('AERFAMILY')
         .doc('ADMIN: $name Got Ming-O!');
     await refMessages.set({
       'username': 'ADMIN',
@@ -864,6 +872,8 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
+        .doc('AERFAMILY')
+        .collection('AERFAMILY')
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {

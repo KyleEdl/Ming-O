@@ -15,9 +15,11 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bingo_application/firebase_options.dart';
-import 'package:bingo_application/screens/messages.dart';
+import 'package:bingo_application/screens/messagesCustom.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter/services.dart';
+import 'package:bingo_application/screens/customGameReady.dart';
+import 'package:bingo_application/screens/panelCustom.dart';
 
 // import 'package:firebase_database/ui/firebase_animated_list.dart';
 
@@ -45,9 +47,10 @@ class gamescreenCustomState extends State<gamescreenCustom>
   List tileAssignment = [];
   List shownDescriptions = [];
   List newAssignment = [];
-  List messageFromClass = messageBoardState.messages;
+  List messageFromClass = messageBoardCustomState.messages;
   String myName = "";
   String myAbilName = "";
+  customReadyPage cr = new customReadyPage();
 
   final firebaseInit = Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -131,8 +134,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc(fs.getgameMode)
-        .collection(fs.getgameMode)
+        .doc(cr.getgameKey)
+        .collection(cr.getgameKey)
         .doc("ADMIN: $name's Attack Completed");
 
     await refMessages.set({
@@ -148,6 +151,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc(cr.getgameKey)
+        .collection(cr.getgameKey)
         .doc('ADMIN: $name Has Sent A Single Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -162,6 +167,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc(cr.getgameKey)
+        .collection(cr.getgameKey)
         .doc('ADMIN: $name Has Sent A Triple Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -176,6 +183,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc(cr.getgameKey)
+        .collection(cr.getgameKey)
         .doc('ADMIN: $name Has Died');
     await refMessages.set({
       'username': 'ADMIN',
@@ -190,6 +199,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc(cr.getgameKey)
+        .collection(cr.getgameKey)
         .doc('ADMIN: $name Got Ming-O!');
     await refMessages.set({
       'username': 'ADMIN',
@@ -865,6 +876,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
+        .doc(cr.getgameKey)
+        .collection(cr.getgameKey)
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -968,9 +981,9 @@ This issue is one line below. Not sure if that will cause issues starting at lin
       });
     }
 
-    gs.settileAssignment = fp.gettileAssignment;
-    gs.setshownDescriptions = fp.getshownDescriptions;
-    newAssignment = gs.gettileAssignment;
+    gs.settileAssignment = cr.gettileAssignment;
+    gs.setshownDescriptions = cr.getshownDescriptions;
+    newAssignment = cr.gettileAssignment;
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -1861,7 +1874,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                   Align(
                     alignment: Alignment(0.90, 0.75),
                     child: Hero(
-                        tag: 'message',
+                        tag: 'messageCustom',
                         child: GestureDetector(
                             onTap: () {
                               if (messageNotification > 0) {
@@ -1875,7 +1888,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                                       builder: ((
                                     context,
                                   ) =>
-                                          messageBoard())));
+                                          messageBoardCustom())));
                             },
                             child: Container(
                               height: 70,
@@ -2373,8 +2386,8 @@ This issue is one line below. Not sure if that will cause issues starting at lin
             color: Colors.purple.shade200,
             parallaxEnabled: true,
             parallaxOffset: .2,
-            panelBuilder: (controller) => PanelWidget(
-                  gs.gettileAssignment,
+            panelBuilder: (controller) => PanelWidgetCustom(
+                  cr.gettileAssignment,
                   controller: controller,
                 )),
       ),

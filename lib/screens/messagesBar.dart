@@ -20,19 +20,19 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:bingo_application/firebase_options.dart';
 import 'package:bingo_application/screens/messages.dart';
 import 'package:vibration/vibration.dart';
-import 'package:bingo_application/screens/gamescreen.dart';
 import 'package:bingo_application/screens/adminChat.dart';
 import 'package:flutter/services.dart';
+import 'package:bingo_application/screens/gamescreenBAR.dart';
 
-class messageBoard extends StatefulWidget {
+class messageBoardBar extends StatefulWidget {
   @override
-  messageBoardState createState() => messageBoardState();
+  messageBoardBarState createState() => messageBoardBarState();
 }
 
 ModelClass modelClass = GetIt.instance.get<ModelClass>();
 FirstPage fs = new FirstPage();
 
-class messageBoardState extends State<messageBoard> {
+class messageBoardBarState extends State<messageBoardBar> {
   ModelClass modelClass = GetIt.instance.get<ModelClass>();
   final apiKey = "AIzaSyChJLKaNpQ5no0pM_wnQtFv0TjVdRS58mc";
   final chatController = TextEditingController();
@@ -45,7 +45,7 @@ class messageBoardState extends State<messageBoard> {
   static List messagesCheck = [];
   static List messages = [];
   static String lastCurrent = "";
-  gamescreenState gs = new gamescreenState();
+  gamescreenBarState gs = new gamescreenBarState();
   get messageNotification {
     return messageNotification;
   }
@@ -56,8 +56,8 @@ class messageBoardState extends State<messageBoard> {
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
-        .doc('AERFAMILY')
-        .collection('AERFAMILY')
+        .doc('bar')
+        .collection('bar')
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -97,8 +97,8 @@ class messageBoardState extends State<messageBoard> {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('AERFAMILY')
-        .collection('AERFAMILY')
+        .doc('bar')
+        .collection('bar')
         .doc(message);
     await refMessages.set({
       'username': modelClass.value.toString(),
@@ -134,21 +134,22 @@ class messageBoardState extends State<messageBoard> {
                 return IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: (() {
-                    gamescreenState.lastCurrent = gamescreenState.messages[0];
+                    gamescreenBarState.lastCurrent =
+                        gamescreenBarState.messages[0];
                     setState(() {
-                      gamescreenState.messageNotification = 0;
+                      gamescreenBarState.messageNotification = 0;
                     });
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => gamescreen())));
+                            builder: ((context) => gamescreenBar())));
                   }),
                 );
               }),
               //automaticallyImplyLeading: true,
             ),
             body: Hero(
-              tag: 'message',
+              tag: 'messageBar',
               child: Column(
                 children: [
                   Expanded(
@@ -241,7 +242,7 @@ class messageBoardState extends State<messageBoard> {
                                 chatController.clear();
                               } else if (chatController.text
                                   .contains('/admin9245')) {
-                                gamescreenState().timerNot?.cancel();
+                                gamescreenBarState().timerNot?.cancel();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

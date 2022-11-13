@@ -15,7 +15,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:bingo_application/firebase_options.dart';
-import 'package:bingo_application/screens/messages.dart';
+import 'package:bingo_application/screens/messagesParty.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter/services.dart';
 
@@ -46,7 +46,7 @@ class gamescreenPartyState extends State<gamescreenParty>
   List tileAssignment = [];
   List shownDescriptions = [];
   List newAssignment = [];
-  List messageFromClass = messageBoardState.messages;
+  List messageFromClass = messageBoardPartyState.messages;
   String myName = "";
   String myAbilName = "";
 
@@ -132,6 +132,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('party')
+        .collection('party')
         .doc("ADMIN: $name's Attack Completed");
 
     await refMessages.set({
@@ -147,6 +149,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('party')
+        .collection('party')
         .doc('ADMIN: $name Has Sent A Single Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -161,6 +165,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('party')
+        .collection('party')
         .doc('ADMIN: $name Has Sent A Triple Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -175,6 +181,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('party')
+        .collection('party')
         .doc('ADMIN: $name Has Died');
     await refMessages.set({
       'username': 'ADMIN',
@@ -189,6 +197,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
+        .doc('party')
+        .collection('party')
         .doc('ADMIN: $name Got Ming-O!');
     await refMessages.set({
       'username': 'ADMIN',
@@ -884,6 +894,8 @@ class gamescreenPartyState extends State<gamescreenParty>
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
+        .doc('party')
+        .collection('party')
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -1874,7 +1886,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                   Align(
                     alignment: Alignment(0.90, 0.75),
                     child: Hero(
-                        tag: 'message',
+                        tag: 'messageParty',
                         child: GestureDetector(
                             onTap: () {
                               if (messageNotification > 0) {
@@ -1888,7 +1900,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                                       builder: ((
                                     context,
                                   ) =>
-                                          messageBoard())));
+                                          messageBoardParty())));
                             },
                             child: Container(
                               height: 70,

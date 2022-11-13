@@ -247,7 +247,7 @@ class gameList {
     'Something breaks',
     'Someone screams for no reason',
   ];
-  List cList = []; //Zack # 3
+
   // Universal Description
   List uDescription = [
     "Caleb makes a subtle reference to his sexuality or defends his sexuality in conversation with NPCs",
@@ -494,7 +494,6 @@ class gameList {
     'If you or an NPC breaks something, this counts.',
     'If an you or an NPC scream for no reason, this applies.'
   ];
-  List cDescription = []; //Zack # 4
 
   List shownDescriptions = List.filled(25, "");
   final List tileAssignment = List.filled(25, "");
