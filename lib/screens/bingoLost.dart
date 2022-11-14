@@ -76,7 +76,7 @@ class loseScreenState extends State<loseScreen> {
                     height: 900,
                     child: RiveAnimation.asset(
                       'assets/Mingeruchi.riv',
-                      artboard: "confetti",
+                      artboard: "Tears",
                       alignment: Alignment.center,
                       fit: BoxFit.fitHeight,
                     ),
