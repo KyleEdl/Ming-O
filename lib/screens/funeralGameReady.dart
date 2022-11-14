@@ -112,24 +112,6 @@ class funeralReadyPage extends State<funeralReadyScreen> {
               child: Stack(
                 children: [
                   Align(
-                      alignment: Alignment(-0.8, 0.9),
-                      child: GestureDetector(
-                        onTap: (() {}),
-                        child: Container(
-                            height: 80,
-                            width: 80,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(80)),
-                              color: Colors.blueGrey.shade600.withOpacity(.3),
-                            ),
-                            child: Icon(
-                              Icons.arrow_back,
-                              size: 26,
-                              color: Colors.blueGrey.shade900.withOpacity(.8),
-                            )),
-                      )),
-                  Align(
                       alignment: Alignment(0, -0.5),
                       child: AnimatedOpacity(
                           opacity: hourGlassOpac,

@@ -34,7 +34,7 @@ class gamescreenBarState extends State<gamescreenBar>
     with WidgetsBindingObserver {
   final player = AudioPlayer();
   static int noteRandom = 0;
-  static int EDMRandom = 0;
+
 // List and Currency data
   bool? isLaura;
   bool? isOma;
@@ -635,19 +635,6 @@ class gamescreenBarState extends State<gamescreenBar>
     }
   }
 
-  playEDM() async {
-    EDMRandom = Random().nextInt(4);
-    if (EDMRandom == 0) {
-      await player.play(AssetSource('EDM1.wav'), mode: PlayerMode.mediaPlayer);
-    }
-    if (EDMRandom == 1) {
-      await player.play(AssetSource('EDM2.wav'), mode: PlayerMode.mediaPlayer);
-    }
-    if (EDMRandom == 2) {
-      await player.play(AssetSource('EDM3.wav'), mode: PlayerMode.mediaPlayer);
-    }
-  }
-
   singleUncheckMethod() {
     Timer(Duration(milliseconds: 20), (() {
       uncheckSingle = Random().nextInt(25);
@@ -744,7 +731,6 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = false;
       });
-      player.play(AssetSource('CD5.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 4) {
       setState(() {
@@ -763,7 +749,6 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = false;
       });
-      player.play(AssetSource('CD4.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 3) {
       setState(() {
@@ -782,7 +767,6 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = false;
       });
-      player.play(AssetSource('CD3.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 2) {
       setState(() {
@@ -801,7 +785,6 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = false;
       });
-      player.play(AssetSource('CD2.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 1) {
       setState(() {
@@ -820,7 +803,6 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = true;
       });
-      player.play(AssetSource('CD1.mp3'), mode: PlayerMode.mediaPlayer);
     }
 
     if (healthLevel <= 0) {
@@ -840,10 +822,7 @@ class gamescreenBarState extends State<gamescreenBar>
       zeroHeartStateMachineInput.value = true;
 
       heartMonitor = true;
-      Future.delayed(Duration(milliseconds: 1300), () {
-        player.play(AssetSource('GlassShatter.mp3'),
-            mode: PlayerMode.mediaPlayer);
-      });
+
       timerNot?.cancel();
       timerGrace?.cancel();
       deathSent();
@@ -1070,7 +1049,7 @@ class gamescreenBarState extends State<gamescreenBar>
                 Stack(
                   children: [
                     Container(
-                      color: Color.fromARGB(255, 38, 32, 49),
+                      color: Colors.deepPurple.shade400,
                       child: Align(
                           alignment: Alignment(0, 0.9),
                           child: Container(
@@ -1106,7 +1085,7 @@ class gamescreenBarState extends State<gamescreenBar>
                         Align(
                           alignment: Alignment(-0.8, -0.85),
                           child: Material(
-                            color: Color.fromARGB(255, 38, 32, 49),
+                            color: Colors.deepPurple.shade400,
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor:
@@ -1125,7 +1104,6 @@ class gamescreenBarState extends State<gamescreenBar>
                                     attackAni();
                                     abilityStateMachineInput.value = true;
                                     tileLockCount--;
-                                    playEDM();
 
                                     singleAttackSent();
 
@@ -1197,7 +1175,7 @@ class gamescreenBarState extends State<gamescreenBar>
                         Align(
                           alignment: Alignment(-0.8, -0.6),
                           child: Material(
-                            color: Color.fromARGB(255, 38, 32, 49),
+                            color: Colors.deepPurple.shade400,
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor:
@@ -1216,7 +1194,7 @@ class gamescreenBarState extends State<gamescreenBar>
                                     randThreeLockCount--;
 
                                     tripleAttackSent();
-                                    playEDM();
+
                                     attackAni();
                                     Vibration.vibrate(
                                         duration: 5000, intensities: [255]);
@@ -1289,7 +1267,7 @@ class gamescreenBarState extends State<gamescreenBar>
                         Align(
                           alignment: Alignment(-0.8, -0.35),
                           child: Material(
-                            color: Color.fromARGB(255, 38, 32, 49),
+                            color: Colors.deepPurple.shade400,
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor: Colors.red.shade700.withOpacity(0.5),

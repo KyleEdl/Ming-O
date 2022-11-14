@@ -86,12 +86,7 @@ class customDescPage extends State<customDescScreen> {
           ),
           elevation: 0,
           backgroundColor: Colors.tealAccent.shade400,
-          leading: Builder(builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: (() {}),
-            );
-          }),
+          automaticallyImplyLeading: false,
         ),
         body: Container(
           color: Colors.tealAccent.shade700,
