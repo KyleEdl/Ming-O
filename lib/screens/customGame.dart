@@ -64,7 +64,10 @@ class customPage extends State<customScreen> {
           foregroundColor: Colors.blue,
           title: Row(
             children: [
-              Text('Custom Key: ' + fp.getcustomKey.toString(),
+              SizedBox(
+                width: 50,
+              ),
+              Text('Tile Creator',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.quicksand(
                       color: Colors.black.withOpacity(0.5),

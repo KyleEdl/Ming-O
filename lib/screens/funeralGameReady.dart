@@ -85,10 +85,10 @@ class funeralReadyPage extends State<funeralReadyScreen> {
         .collection('messages')
         .doc(gameKey)
         .collection(gameKey)
-        .doc('ADMIN: $name Has Joined The Game');
+        .doc('ADMIN: $name Has Joined $gameKey');
     await refMessages.set({
       'username': 'ADMIN',
-      'message': 'ADMIN: $name Has Joined The Game',
+      'message': 'ADMIN: $name Has Joined $gameKey',
       'created': DateTime.now()
     });
   }
@@ -129,12 +129,24 @@ class funeralReadyPage extends State<funeralReadyScreen> {
                   Align(
                       alignment: Alignment(0, -0.5),
                       child: Container(
-                        child: Text("Your Game Key is: $gameKey" /* Zack # 2*/,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.quicksand(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                color: Colors.deepPurple[900])),
+                        child: GestureDetector(
+                          onTap: () {
+                            Clipboard.setData(new ClipboardData(text: gameKey))
+                                .then((_) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          'Custom Key Copied to Clipboard')));
+                            });
+                          },
+                          child: Text(
+                              "Your Game Key is: \n$gameKey" /* Zack # 2*/,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.quicksand(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.deepPurple[900])),
+                        ),
                       )),
                   Align(
                       alignment: Alignment(0, 0),

@@ -76,7 +76,10 @@ class customDescPage extends State<customDescScreen> {
           foregroundColor: Colors.blue,
           title: Row(
             children: [
-              Text('Custom Key: ' + fp.getcustomKey.toString(),
+              SizedBox(
+                width: 50,
+              ),
+              Text('Tile Description Creator',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.quicksand(
                       color: Colors.black.withOpacity(0.5),

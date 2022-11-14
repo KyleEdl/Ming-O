@@ -928,6 +928,23 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
           });
         }));
       }
+      if (messages[0].contains('ADMIN:') &&
+          messages[0].contains('Got Ming-O!') &&
+          messages[0].contains(name)) {
+        Timer(Duration(milliseconds: 500), (() {
+          gameLock == true;
+          timerGrace?.cancel();
+          timerNot?.cancel();
+          Future.delayed(Duration(seconds: 2), () async {
+            await FirebaseFirestore.instance
+                .collection('messages')
+                .doc('AERFAMILY')
+                .delete();
+            Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => winScreen())));
+          });
+        }));
+      }
     }
   }
 
@@ -1378,52 +1395,21 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[2] == true &&
                             values[3] == true &&
                             values[4]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
                         if (values[5] == true &&
                             values[6] == true &&
                             values[7] == true &&
                             values[8] == true &&
                             values[9]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
                         if (values[10] == true &&
                             values[11] == true &&
                             values[12] == true &&
                             values[13] == true &&
                             values[14]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
                         if (values[15] == true &&
@@ -1431,17 +1417,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[17] == true &&
                             values[18] == true &&
                             values[19]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
                         if (values[20] == true &&
@@ -1449,17 +1425,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[22] == true &&
                             values[23] == true &&
                             values[24]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
 //VERTICAL
@@ -1468,17 +1434,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[10] == true &&
                             values[15] == true &&
                             values[20]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
                         if (values[1] == true &&
@@ -1486,17 +1442,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[11] == true &&
                             values[16] == true &&
                             values[21]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
                         if (values[2] == true &&
@@ -1504,17 +1450,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[12] == true &&
                             values[17] == true &&
                             values[22]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
                         if (values[3] == true &&
@@ -1522,17 +1458,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[13] == true &&
                             values[18] == true &&
                             values[23]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
                         if (values[4] == true &&
@@ -1540,17 +1466,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[14] == true &&
                             values[19] == true &&
                             values[24]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
 //DIAGONAL
@@ -1559,17 +1475,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[12] == true &&
                             values[18] == true &&
                             values[24]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
                         if (values[4] == true &&
@@ -1577,17 +1483,7 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                             values[12] == true &&
                             values[16] == true &&
                             values[20]) {
-                          Future.delayed(Duration.zero, () {
-                            timerGrace?.cancel();
-                            winSent();
-                            timerNot?.cancel();
-                          });
-                          Future.delayed(Duration(seconds: 2), () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => winScreen())));
-                          });
+                          winSent();
                         }
 
                         values[index];
