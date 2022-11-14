@@ -18,6 +18,8 @@ import 'package:bingo_application/firebase_options.dart';
 import 'package:bingo_application/screens/messagesBar.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter/services.dart';
+import 'package:bingo_application/screens/barGameReady.dart';
+import 'package:bingo_application/screens/panelBar.dart';
 
 // import 'package:firebase_database/ui/firebase_animated_list.dart';
 
@@ -32,6 +34,7 @@ class gamescreenBarState extends State<gamescreenBar>
     with WidgetsBindingObserver {
   final player = AudioPlayer();
   static int noteRandom = 0;
+  static int EDMRandom = 0;
 // List and Currency data
   bool? isLaura;
   bool? isOma;
@@ -42,8 +45,8 @@ class gamescreenBarState extends State<gamescreenBar>
   bool? isParty;
   bool? isCustom;
   bool? isUniversal;
-  List tileAssignment = [];
-  List shownDescriptions = [];
+  static List tileAssignment = [];
+  static List shownDescriptions = [];
   List newAssignment = [];
   List messageFromClass = messageBoardBarState.messages;
   String myName = "";
@@ -54,6 +57,7 @@ class gamescreenBarState extends State<gamescreenBar>
   );
 
   final FirstPage fp = new FirstPage();
+  barReadyPage pr = new barReadyPage();
   static int points = 25;
   static int addPointsOne = 25;
   static int addPointsTwo = 25;
@@ -131,8 +135,8 @@ class gamescreenBarState extends State<gamescreenBar>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('bar')
-        .collection('bar')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc("ADMIN: $name's Attack Completed");
 
     await refMessages.set({
@@ -148,8 +152,8 @@ class gamescreenBarState extends State<gamescreenBar>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('bar')
-        .collection('bar')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc('ADMIN: $name Has Sent A Single Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -164,8 +168,8 @@ class gamescreenBarState extends State<gamescreenBar>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('bar')
-        .collection('bar')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc('ADMIN: $name Has Sent A Triple Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -180,8 +184,8 @@ class gamescreenBarState extends State<gamescreenBar>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('bar')
-        .collection('bar')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc('ADMIN: $name Has Died');
     await refMessages.set({
       'username': 'ADMIN',
@@ -196,8 +200,8 @@ class gamescreenBarState extends State<gamescreenBar>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('bar')
-        .collection('bar')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc('ADMIN: $name Got Ming-O!');
     await refMessages.set({
       'username': 'ADMIN',
@@ -233,8 +237,8 @@ class gamescreenBarState extends State<gamescreenBar>
   static bool tileTwentyFivePoints = true;
   static String lastCurrent = "This Is Empty";
   static bool timerStarter = false;
+  static String gameKey = '';
   bool appActive = true;
-
   //This is to lock out all users once someone has won the game
   static bool gameLock = false;
 
@@ -248,10 +252,10 @@ class gamescreenBarState extends State<gamescreenBar>
 
 //cooldown timer
   Timer? timer;
-  static const maxSeconds = 60;
+  static const maxSeconds = 300;
   int seconds = maxSeconds;
   void startTimer() {
-    timer = Timer.periodic(Duration(milliseconds: 1), (_) {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
       //set Duration back to seconds: 1 when making offical and maxSeconds = 300 (aka 5 minute timer)
       if (seconds > 0) {
         setState(() {
@@ -377,13 +381,13 @@ class gamescreenBarState extends State<gamescreenBar>
   late SMIInput<bool> abilityStateMachineInput;
   late SMIInput<bool> bandageStateMachineInput;
 
-  void _onInit(Artboard IdleBAR) {
+  void _onInit(Artboard Idle) {
     print('Hearts Init Running');
     var controller = StateMachineController.fromArtboard(
-      IdleBAR,
+      Idle,
       'Heartbeat',
     )!;
-    IdleBAR.addController(controller);
+    Idle.addController(controller);
     fiveHeartStateMachineInput =
         controller.findInput<bool>('fiveHearts') as SMIBool;
     fourHeartStateMachineInput =
@@ -493,7 +497,13 @@ class gamescreenBarState extends State<gamescreenBar>
     }
   }
 
-  gamescreenBarState();
+  gamescreenBarState() {
+    if (fp.getgameKey == '') {
+      gameKey = fp.getgameKeySet;
+    } else {
+      gameKey = fp.getgameKey.toString();
+    }
+  }
 
   static List<bool> values = List.filled(25, false);
   static List<bool> attackVal = List.filled(25, false);
@@ -526,13 +536,13 @@ class gamescreenBarState extends State<gamescreenBar>
     this.isFuneral = isFuneral;
   }
 
-  set settileAssignment(List tileAssignment) {
-    this.tileAssignment = tileAssignment;
-  }
+  // set settileAssignment(List tileAssignment) {
+  //   this.tileAssignment = tileAssignment;
+  // }
 
-  set setshownDescriptions(List shownDescriptions) {
-    this.shownDescriptions = shownDescriptions;
-  }
+  // set setshownDescriptions(List shownDescriptions) {
+  //   this.shownDescriptions = shownDescriptions;
+  // }
 
   set setmessageNotification(int messageNotNum) {
     messageNotification = messageNotNum;
@@ -594,8 +604,9 @@ class gamescreenBarState extends State<gamescreenBar>
 
   @override
   void dispose() {
-    _controller.dispose();
     WidgetsBinding.instance.removeObserver(this);
+    _controller.dispose();
+
     super.dispose();
   }
 
@@ -621,6 +632,19 @@ class gamescreenBarState extends State<gamescreenBar>
         values[12] = true;
         twelveTrue--;
       });
+    }
+  }
+
+  playEDM() async {
+    EDMRandom = Random().nextInt(4);
+    if (EDMRandom == 0) {
+      await player.play(AssetSource('EDM1.wav'), mode: PlayerMode.mediaPlayer);
+    }
+    if (EDMRandom == 1) {
+      await player.play(AssetSource('EDM2.wav'), mode: PlayerMode.mediaPlayer);
+    }
+    if (EDMRandom == 2) {
+      await player.play(AssetSource('EDM3.wav'), mode: PlayerMode.mediaPlayer);
     }
   }
 
@@ -720,6 +744,7 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = false;
       });
+      player.play(AssetSource('CD5.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 4) {
       setState(() {
@@ -738,6 +763,7 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = false;
       });
+      player.play(AssetSource('CD4.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 3) {
       setState(() {
@@ -756,6 +782,7 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = false;
       });
+      player.play(AssetSource('CD3.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 2) {
       setState(() {
@@ -774,6 +801,7 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = false;
       });
+      player.play(AssetSource('CD2.mp3'), mode: PlayerMode.mediaPlayer);
     }
     if (healthLevel == 1) {
       setState(() {
@@ -792,6 +820,7 @@ class gamescreenBarState extends State<gamescreenBar>
 
         heartMonitor = true;
       });
+      player.play(AssetSource('CD1.mp3'), mode: PlayerMode.mediaPlayer);
     }
 
     if (healthLevel <= 0) {
@@ -811,7 +840,10 @@ class gamescreenBarState extends State<gamescreenBar>
       zeroHeartStateMachineInput.value = true;
 
       heartMonitor = true;
-
+      Future.delayed(Duration(milliseconds: 1300), () {
+        player.play(AssetSource('GlassShatter.mp3'),
+            mode: PlayerMode.mediaPlayer);
+      });
       timerNot?.cancel();
       timerGrace?.cancel();
       deathSent();
@@ -872,8 +904,8 @@ class gamescreenBarState extends State<gamescreenBar>
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
-        .doc('bar')
-        .collection('bar')
+        .doc(gameKey)
+        .collection(gameKey)
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -972,9 +1004,9 @@ class gamescreenBarState extends State<gamescreenBar>
       });
     }
 
-    gs.settileAssignment = fp.gettileAssignment;
-    gs.setshownDescriptions = fp.getshownDescriptions;
-    newAssignment = gs.gettileAssignment;
+    tileAssignment = pr.gettileAssignment;
+    shownDescriptions = pr.getshownDescriptions;
+    newAssignment = pr.gettileAssignment;
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -1038,7 +1070,7 @@ class gamescreenBarState extends State<gamescreenBar>
                 Stack(
                   children: [
                     Container(
-                      color: Colors.deepPurple.shade400,
+                      color: Color.fromARGB(255, 38, 32, 49),
                       child: Align(
                           alignment: Alignment(0, 0.9),
                           child: Container(
@@ -1047,19 +1079,17 @@ class gamescreenBarState extends State<gamescreenBar>
                                 padding: const EdgeInsets.only(right: 3.0),
                                 child: Container(
                                   child: GestureDetector(
-                                    onTap: () async {
-                                      await player.play(
-                                          AssetSource('MingGulp.mp3'),
+                                    onTap: () {
+                                      player.play(AssetSource('MingGulp.mp3'),
                                           mode: PlayerMode.mediaPlayer);
                                     },
                                     onDoubleTap: () async {
-                                      await player.play(
-                                          AssetSource('MingGulp.mp3'),
+                                      player.play(AssetSource('MingGulp.mp3'),
                                           mode: PlayerMode.mediaPlayer);
                                     },
                                     child: RiveAnimation.asset(
                                       'assets/MingeruchiBAR.riv',
-                                      artboard: "IdleBAR",
+                                      artboard: "Idle",
                                       alignment: Alignment.bottomCenter,
                                       fit: BoxFit.fitHeight,
                                       stateMachines: ['Heartbeat'],
@@ -1076,7 +1106,7 @@ class gamescreenBarState extends State<gamescreenBar>
                         Align(
                           alignment: Alignment(-0.8, -0.85),
                           child: Material(
-                            color: Colors.deepPurple.shade400,
+                            color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor:
@@ -1095,6 +1125,7 @@ class gamescreenBarState extends State<gamescreenBar>
                                     attackAni();
                                     abilityStateMachineInput.value = true;
                                     tileLockCount--;
+                                    playEDM();
 
                                     singleAttackSent();
 
@@ -1166,7 +1197,7 @@ class gamescreenBarState extends State<gamescreenBar>
                         Align(
                           alignment: Alignment(-0.8, -0.6),
                           child: Material(
-                            color: Colors.deepPurple.shade400,
+                            color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor:
@@ -1185,7 +1216,7 @@ class gamescreenBarState extends State<gamescreenBar>
                                     randThreeLockCount--;
 
                                     tripleAttackSent();
-
+                                    playEDM();
                                     attackAni();
                                     Vibration.vibrate(
                                         duration: 5000, intensities: [255]);
@@ -1258,7 +1289,7 @@ class gamescreenBarState extends State<gamescreenBar>
                         Align(
                           alignment: Alignment(-0.8, -0.35),
                           child: Material(
-                            color: Colors.deepPurple.shade400,
+                            color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
                               splashFactory: InkRipple.splashFactory,
                               splashColor: Colors.red.shade700.withOpacity(0.5),
@@ -1919,7 +1950,7 @@ class gamescreenBarState extends State<gamescreenBar>
                           height: 120,
                           width: 120,
                           child: RiveAnimation.asset(
-                            'assets/Mingeruchi.riv',
+                            'assets/MingeruchiBAR.riv',
                             artboard: "Angel",
                             animations: [],
                             fit: BoxFit.fitWidth,
@@ -1951,7 +1982,7 @@ class gamescreenBarState extends State<gamescreenBar>
                       width: 0,
                       child: RiveAnimation.asset(
                         'assets/MingeruchiBAR.riv',
-                        artboard: "IdleBAR",
+                        artboard: "Idle",
                         alignment: Alignment.bottomCenter,
                         fit: BoxFit.fitHeight,
                         stateMachines: ['Heartbeat'],
@@ -2377,7 +2408,7 @@ class gamescreenBarState extends State<gamescreenBar>
             color: Colors.purple.shade200,
             parallaxEnabled: true,
             parallaxOffset: .2,
-            panelBuilder: (controller) => PanelWidget(
+            panelBuilder: (controller) => BarPanelWidget(
                   gs.gettileAssignment,
                   controller: controller,
                 )),

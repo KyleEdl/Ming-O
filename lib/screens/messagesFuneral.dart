@@ -1,3 +1,4 @@
+import 'package:bingo_application/screens/gamescreenFuneral.dart';
 import 'package:flutter/material.dart';
 import 'package:bingo_application/List/lists.dart';
 import 'package:bingo_application/screens/homescreen.dart';
@@ -37,7 +38,8 @@ class messageBoardFuneralState extends State<messageBoardFuneral> {
   final apiKey = "AIzaSyChJLKaNpQ5no0pM_wnQtFv0TjVdRS58mc";
   final chatController = TextEditingController();
   // int notMess = gamescreenFuneralState.messageNotification;
-
+  final FirstPage fp = new FirstPage();
+  String gameKey = '';
   final CollectionReference userRef =
       FirebaseFirestore.instance.collection('usernames');
   final CollectionReference collectionRef =
@@ -53,11 +55,17 @@ class messageBoardFuneralState extends State<messageBoardFuneral> {
   Future getMessagesChat() async {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
+    if (fp.getgameKey == '') {
+      gameKey = fp.getgameKeySet;
+    } else {
+      gameKey = fp.getgameKey.toString();
+    }
+
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
-        .doc('funeral')
-        .collection('funeral')
+        .doc(gameKey)
+        .collection(gameKey)
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -97,8 +105,8 @@ class messageBoardFuneralState extends State<messageBoardFuneral> {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc(fs.getgameMode)
-        .collection(fs.getgameMode)
+        .doc(gameKey)
+        .collection(gameKey)
         .doc(message);
     await refMessages.set({
       'username': modelClass.value.toString(),
@@ -134,11 +142,19 @@ class messageBoardFuneralState extends State<messageBoardFuneral> {
                 return IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: (() {
+                    // gamescreenPartyState.lastCurrent =
+                    //     gamescreenPartyState.messages[0];
+                    // setState(() {
+                    //   gamescreenPartyState.messageNotification = 0;
+                    // });
+
                     gamescreenFuneralState.lastCurrent =
                         gamescreenFuneralState.messages[0];
-                    setState(() {
-                      gamescreenFuneralState.messageNotification = 0;
-                    });
+                    setState(
+                      () {
+                        gamescreenFuneralState.messageNotification = 0;
+                      },
+                    );
                     Navigator.push(
                         context,
                         MaterialPageRoute(

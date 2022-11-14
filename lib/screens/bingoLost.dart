@@ -63,12 +63,13 @@ class loseScreenState extends State<loseScreen> {
                     color: Colors.blueGrey.shade700,
                     child: Align(
                         alignment: Alignment(0, -0.5),
-                        child: GradientText('You Lost!',
-                            style: GoogleFonts.quicksand(
+                        child: Text(
+                          'You Lost!',
+                          style: GoogleFonts.quicksand(
                               fontSize: 72,
                               fontWeight: FontWeight.bold,
-                            ),
-                            colors: [Colors.orange]))),
+                              color: Colors.orange),
+                        ))),
                 Align(
                   alignment: Alignment(0, 0),
                   child: Container(

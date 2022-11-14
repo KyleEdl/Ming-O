@@ -1,3 +1,4 @@
+import 'package:bingo_application/screens/gamescreenBAR.dart';
 import 'package:flutter/material.dart';
 import 'package:bingo_application/List/lists.dart';
 import 'package:bingo_application/screens/homescreen.dart';
@@ -20,9 +21,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:bingo_application/firebase_options.dart';
 import 'package:bingo_application/screens/messages.dart';
 import 'package:vibration/vibration.dart';
+import 'package:bingo_application/screens/gamescreenBAR.dart';
 import 'package:bingo_application/screens/adminChat.dart';
 import 'package:flutter/services.dart';
-import 'package:bingo_application/screens/gamescreenBAR.dart';
 
 class messageBoardBar extends StatefulWidget {
   @override
@@ -36,8 +37,9 @@ class messageBoardBarState extends State<messageBoardBar> {
   ModelClass modelClass = GetIt.instance.get<ModelClass>();
   final apiKey = "AIzaSyChJLKaNpQ5no0pM_wnQtFv0TjVdRS58mc";
   final chatController = TextEditingController();
-  // int notMess = gamescreenState.messageNotification;
-
+  // int notMess = gamescreenFuneralState.messageNotification;
+  final FirstPage fp = new FirstPage();
+  String gameKey = '';
   final CollectionReference userRef =
       FirebaseFirestore.instance.collection('usernames');
   final CollectionReference collectionRef =
@@ -53,11 +55,17 @@ class messageBoardBarState extends State<messageBoardBar> {
   Future getMessagesChat() async {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
+    if (fp.getgameKey == '') {
+      gameKey = fp.getgameKeySet;
+    } else {
+      gameKey = fp.getgameKey.toString();
+    }
+
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
-        .doc('bar')
-        .collection('bar')
+        .doc(gameKey)
+        .collection(gameKey)
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -97,8 +105,8 @@ class messageBoardBarState extends State<messageBoardBar> {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('bar')
-        .collection('bar')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc(message);
     await refMessages.set({
       'username': modelClass.value.toString(),
@@ -134,11 +142,19 @@ class messageBoardBarState extends State<messageBoardBar> {
                 return IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: (() {
+                    // gamescreenPartyState.lastCurrent =
+                    //     gamescreenPartyState.messages[0];
+                    // setState(() {
+                    //   gamescreenPartyState.messageNotification = 0;
+                    // });
+
                     gamescreenBarState.lastCurrent =
                         gamescreenBarState.messages[0];
-                    setState(() {
-                      gamescreenBarState.messageNotification = 0;
-                    });
+                    setState(
+                      () {
+                        gamescreenBarState.messageNotification = 0;
+                      },
+                    );
                     Navigator.push(
                         context,
                         MaterialPageRoute(

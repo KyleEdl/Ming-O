@@ -38,7 +38,8 @@ class messageBoardPartyState extends State<messageBoardParty> {
   final apiKey = "AIzaSyChJLKaNpQ5no0pM_wnQtFv0TjVdRS58mc";
   final chatController = TextEditingController();
   // int notMess = gamescreenFuneralState.messageNotification;
-
+  final FirstPage fp = new FirstPage();
+  String gameKey = '';
   final CollectionReference userRef =
       FirebaseFirestore.instance.collection('usernames');
   final CollectionReference collectionRef =
@@ -54,11 +55,17 @@ class messageBoardPartyState extends State<messageBoardParty> {
   Future getMessagesChat() async {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
+    if (fp.getgameKey == '') {
+      gameKey = fp.getgameKeySet;
+    } else {
+      gameKey = fp.getgameKey.toString();
+    }
+
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
-        .doc('party')
-        .collection('party')
+        .doc(gameKey)
+        .collection(gameKey)
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -98,8 +105,8 @@ class messageBoardPartyState extends State<messageBoardParty> {
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc(fs.getgameMode)
-        .collection(fs.getgameMode)
+        .doc(gameKey)
+        .collection(gameKey)
         .doc(message);
     await refMessages.set({
       'username': modelClass.value.toString(),

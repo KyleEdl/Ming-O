@@ -247,10 +247,10 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
 
 //cooldown timer
   Timer? timer;
-  static const maxSeconds = 60;
+  static const maxSeconds = 300;
   int seconds = maxSeconds;
   void startTimer() {
-    timer = Timer.periodic(Duration(milliseconds: 1), (_) {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
       //set Duration back to seconds: 1 when making offical and maxSeconds = 300 (aka 5 minute timer)
       if (seconds > 0) {
         setState(() {
@@ -2356,9 +2356,9 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
                       ),
                     ),
                     Align(
-                      alignment: Alignment(0, .8),
+                      alignment: Alignment(0, .9),
                       child: Container(
-                        height: 450,
+                        height: 350,
                         child: RiveAnimation.asset(
                           'assets/Mingeruchi.riv',
                           artboard: "money",

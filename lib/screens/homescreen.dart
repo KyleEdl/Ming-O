@@ -1,6 +1,10 @@
 import 'package:bingo_application/modelclass.dart';
 import 'package:bingo_application/screens/customGame.dart';
 import 'package:bingo_application/screens/customGameReady.dart';
+import 'package:bingo_application/screens/barGameReady.dart';
+import 'package:bingo_application/screens/funeralGameReady.dart';
+import 'package:bingo_application/screens/partyGameReady.dart';
+
 import 'package:bingo_application/screens/gamescreenFuneral.dart';
 import 'package:bingo_application/screens/gamescreenPARTY.dart';
 import 'package:flutter/material.dart';
@@ -122,7 +126,42 @@ class FirstPage extends State<FirstScreen> {
     return gameKey;
   }
 
+  get getisUniversal {
+    return isUniversal;
+  }
+
   FirstPage();
+  set setisLaura(bool? isL) {
+    isLaura = isL;
+  }
+
+  set setisOma(bool? isO) {
+    isOma = isO;
+  }
+
+  set setisEdl(bool? isE) {
+    isEdl = isE;
+  }
+
+  set setisRoth(bool? isR) {
+    isRoth = isR;
+  }
+
+  set setisFuneral(bool? isF) {
+    isFuneral = isF;
+  }
+
+  set setisParty(bool? isP) {
+    isParty = isP;
+  }
+
+  set setisBar(bool? isB) {
+    isBar = isB;
+  }
+
+  set setisUniversal(bool? isU) {
+    isUniversal = isU;
+  }
 
   Future joinedGame() async {
     await firebaseInit;
@@ -157,21 +196,37 @@ class FirstPage extends State<FirstScreen> {
   }
 
   Future customDocFind(String docID) async {
-    final refMessages =
-        await FirebaseFirestore.instance.collection('CUSTOM').doc(docID);
-    final doc = await refMessages.get();
-    print(doc);
-    if (doc.exists) {
-      docExists = true;
-      print(doc.exists);
-      print(docExists);
-      print(docID);
-    }
-    if (!doc.exists) {
-      docExists = false;
-      print(doc.exists);
-      print(docExists);
-      print(docID);
+    if (docID.contains('BAR') ||
+        docID.contains('PARTY') ||
+        docID.contains('FUNERAL')) {
+      final refMessages =
+          await FirebaseFirestore.instance.collection('messages').doc(docID);
+      final doc = await refMessages.get();
+
+      if (doc.exists) {
+        docExists = true;
+      }
+
+      if (!doc.exists) {
+        docExists = false;
+      }
+    } else {
+      final refMessages =
+          await FirebaseFirestore.instance.collection('CUSTOM').doc(docID);
+      final doc = await refMessages.get();
+      print(doc);
+      if (doc.exists) {
+        docExists = true;
+        print(doc.exists);
+        print(docExists);
+        print(docID);
+      }
+      if (!doc.exists) {
+        docExists = false;
+        print(doc.exists);
+        print(docExists);
+        print(docID);
+      }
     }
   }
 
@@ -688,9 +743,87 @@ class FirstPage extends State<FirstScreen> {
                                           alignment: Alignment(.99, .99),
                                           child: GestureDetector(
                                             onTap: () {
-                                              Navigator.of(context,
-                                                      rootNavigator: true)
-                                                  .pop();
+                                              if (isBar == true ||
+                                                  textControllerKey.text
+                                                      .contains('BAR')) {
+                                                gameKeySet = "BAR" +
+                                                    (Random().nextInt(1000) +
+                                                            100)
+                                                        .toString();
+                                                isBar = true;
+                                                gameList gl = new gameList(
+                                                    isLaura,
+                                                    isOma,
+                                                    isEdl,
+                                                    isRoth,
+                                                    isFuneral,
+                                                    isBar,
+                                                    isParty,
+                                                    isUniversal);
+                                                tileAssignment =
+                                                    gl.tileAssignment;
+                                                shownDescriptions =
+                                                    gl.shownDescriptions;
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            barReadyScreen())));
+                                              }
+                                              if (isFuneral == true ||
+                                                  textControllerKey.text
+                                                      .contains('FUNERAL')) {
+                                                gameKeySet = "FUNERAL" +
+                                                    (Random().nextInt(1000) +
+                                                            100)
+                                                        .toString();
+                                                isFuneral = true;
+                                                gameList gl = new gameList(
+                                                    isLaura,
+                                                    isOma,
+                                                    isEdl,
+                                                    isRoth,
+                                                    isFuneral,
+                                                    isBar,
+                                                    isParty,
+                                                    isUniversal);
+                                                tileAssignment =
+                                                    gl.tileAssignment;
+                                                shownDescriptions =
+                                                    gl.shownDescriptions;
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            funeralReadyScreen())));
+                                              }
+                                              if (isParty == true ||
+                                                  textControllerKey.text
+                                                      .contains('PARTY')) {
+                                                gameKeySet = "PARTY" +
+                                                    (Random().nextInt(1000) +
+                                                            100)
+                                                        .toString();
+                                                isParty = true;
+                                                gameList gl = new gameList(
+                                                    isLaura,
+                                                    isOma,
+                                                    isEdl,
+                                                    isRoth,
+                                                    isFuneral,
+                                                    isBar,
+                                                    isParty,
+                                                    isUniversal);
+                                                tileAssignment =
+                                                    gl.tileAssignment;
+                                                shownDescriptions =
+                                                    gl.shownDescriptions;
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            partyReadyScreen())));
+                                              }
                                             },
                                             child: Container(
                                               height: 60,
@@ -814,17 +947,63 @@ class FirstPage extends State<FirstScreen> {
                                                         ),
                                                       ));
                                                     } else {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: ((context) =>
-                                                                  customReadyScreen())));
+                                                      if (textControllerKey.text
+                                                          .contains('BAR')) {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    ((context) =>
+                                                                        barReadyScreen())));
+                                                      }
+                                                      if (textControllerKey.text
+                                                          .contains('PARTY')) {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    ((context) =>
+                                                                        partyReadyScreen())));
+                                                      }
+                                                      if (textControllerKey.text
+                                                          .contains(
+                                                              'FUNERAL')) {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    ((context) =>
+                                                                        funeralReadyScreen())));
+                                                      }
+                                                      if (!textControllerKey
+                                                              .text
+                                                              .contains(
+                                                                  'FUNERAL') &&
+                                                          !textControllerKey
+                                                              .text
+                                                              .contains(
+                                                                  'PARTY') &&
+                                                          !textControllerKey
+                                                              .text
+                                                              .contains(
+                                                                  'BAR')) {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    ((context) =>
+                                                                        customReadyScreen())));
+                                                      }
                                                     }
                                                   });
                                                 }
 
                                                 if (textControllerKey.text
                                                     .contains('AERFAMILY')) {
+                                                  Navigator.of(context,
+                                                          rootNavigator: true)
+                                                      .pop();
+
                                                   setState(() {
                                                     isFuneral = false;
                                                     isBar = false;
@@ -1130,11 +1309,11 @@ class FirstPage extends State<FirstScreen> {
                                                                                 Radius.circular(20.0),
                                                                               ),
                                                                               onTap: () {
-                                                                                Navigator.pop(context);
                                                                                 _controller.nextPage(
                                                                                   duration: Duration(milliseconds: 300),
                                                                                   curve: Curves.easeIn,
                                                                                 );
+                                                                                Navigator.of(context, rootNavigator: true).pop();
                                                                               },
                                                                               child: Ink(
                                                                                   height: 65,
@@ -1275,7 +1454,9 @@ class FirstPage extends State<FirstScreen> {
                                 MaterialPageRoute(
                                     builder: ((context) => gamescreen())));
                           }
-                          if (textController.text.isNotEmpty && isBar == true) {
+                          if (textController.text.isNotEmpty && isBar == true ||
+                              textControllerKey.text.contains('BAR')) {
+                            isBar = true;
                             gameList gl = new gameList(isLaura, isOma, isEdl,
                                 isRoth, isFuneral, isBar, isParty, isUniversal);
 
@@ -1285,14 +1466,11 @@ class FirstPage extends State<FirstScreen> {
                               gameMode = 'bar';
                             }
                             joinedGame();
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => gamescreenBar())));
                           }
                           if (textController.text.isNotEmpty &&
-                              isParty == true) {
+                                  isParty == true ||
+                              textControllerKey.text.contains('PARTY')) {
+                            isParty = true;
                             gameList gl = new gameList(isLaura, isOma, isEdl,
                                 isRoth, isFuneral, isBar, isParty, isUniversal);
 
@@ -1302,14 +1480,11 @@ class FirstPage extends State<FirstScreen> {
                               gameMode = 'party';
                             }
                             joinedGame();
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => gamescreenParty())));
                           }
                           if (textController.text.isNotEmpty &&
-                              isFuneral == true) {
+                                  isFuneral == true ||
+                              textControllerKey.text.contains('FUNERAL')) {
+                            isFuneral = true;
                             gameList gl = new gameList(isLaura, isOma, isEdl,
                                 isRoth, isFuneral, isBar, isParty, isUniversal);
 
@@ -1319,12 +1494,6 @@ class FirstPage extends State<FirstScreen> {
                               gameMode = 'funeral';
                             }
                             joinedGame();
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) =>
-                                        gamescreenFuneral())));
                           }
                         },
                       ),

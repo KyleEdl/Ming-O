@@ -18,6 +18,8 @@ import 'package:bingo_application/firebase_options.dart';
 import 'package:bingo_application/screens/messagesParty.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter/services.dart';
+import 'package:bingo_application/screens/partyGameReady.dart';
+import 'package:bingo_application/screens/panelParty.dart';
 
 // import 'package:firebase_database/ui/firebase_animated_list.dart';
 
@@ -43,8 +45,8 @@ class gamescreenPartyState extends State<gamescreenParty>
   bool? isParty;
   bool? isCustom;
   bool? isUniversal;
-  List tileAssignment = [];
-  List shownDescriptions = [];
+  static List tileAssignment = [];
+  static List shownDescriptions = [];
   List newAssignment = [];
   List messageFromClass = messageBoardPartyState.messages;
   String myName = "";
@@ -55,6 +57,7 @@ class gamescreenPartyState extends State<gamescreenParty>
   );
 
   final FirstPage fp = new FirstPage();
+  partyReadyPage pr = new partyReadyPage();
   static int points = 25;
   static int addPointsOne = 25;
   static int addPointsTwo = 25;
@@ -132,8 +135,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('party')
-        .collection('party')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc("ADMIN: $name's Attack Completed");
 
     await refMessages.set({
@@ -149,8 +152,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('party')
-        .collection('party')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc('ADMIN: $name Has Sent A Single Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -165,8 +168,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('party')
-        .collection('party')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc('ADMIN: $name Has Sent A Triple Attack');
     await refMessages.set({
       'username': 'ADMIN',
@@ -181,8 +184,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('party')
-        .collection('party')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc('ADMIN: $name Has Died');
     await refMessages.set({
       'username': 'ADMIN',
@@ -197,8 +200,8 @@ class gamescreenPartyState extends State<gamescreenParty>
 
     final refMessages = FirebaseFirestore.instance
         .collection('messages')
-        .doc('party')
-        .collection('party')
+        .doc(gameKey)
+        .collection(gameKey)
         .doc('ADMIN: $name Got Ming-O!');
     await refMessages.set({
       'username': 'ADMIN',
@@ -234,6 +237,7 @@ class gamescreenPartyState extends State<gamescreenParty>
   static bool tileTwentyFivePoints = true;
   static String lastCurrent = "This Is Empty";
   static bool timerStarter = false;
+  static String gameKey = '';
   bool appActive = true;
   //This is to lock out all users once someone has won the game
   static bool gameLock = false;
@@ -248,10 +252,10 @@ class gamescreenPartyState extends State<gamescreenParty>
 
 //cooldown timer
   Timer? timer;
-  static const maxSeconds = 60;
+  static const maxSeconds = 300;
   int seconds = maxSeconds;
   void startTimer() {
-    timer = Timer.periodic(Duration(milliseconds: 1), (_) {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
       //set Duration back to seconds: 1 when making offical and maxSeconds = 300 (aka 5 minute timer)
       if (seconds > 0) {
         setState(() {
@@ -493,7 +497,13 @@ class gamescreenPartyState extends State<gamescreenParty>
     }
   }
 
-  gamescreenPartyState();
+  gamescreenPartyState() {
+    if (fp.getgameKey == '') {
+      gameKey = fp.getgameKeySet;
+    } else {
+      gameKey = fp.getgameKey.toString();
+    }
+  }
 
   static List<bool> values = List.filled(25, false);
   static List<bool> attackVal = List.filled(25, false);
@@ -526,13 +536,13 @@ class gamescreenPartyState extends State<gamescreenParty>
     this.isFuneral = isFuneral;
   }
 
-  set settileAssignment(List tileAssignment) {
-    this.tileAssignment = tileAssignment;
-  }
+  // set settileAssignment(List tileAssignment) {
+  //   this.tileAssignment = tileAssignment;
+  // }
 
-  set setshownDescriptions(List shownDescriptions) {
-    this.shownDescriptions = shownDescriptions;
-  }
+  // set setshownDescriptions(List shownDescriptions) {
+  //   this.shownDescriptions = shownDescriptions;
+  // }
 
   set setmessageNotification(int messageNotNum) {
     messageNotification = messageNotNum;
@@ -894,8 +904,8 @@ class gamescreenPartyState extends State<gamescreenParty>
     await Future.delayed(Duration(seconds: 1));
     await FirebaseFirestore.instance
         .collection('messages')
-        .doc('party')
-        .collection('party')
+        .doc(gameKey)
+        .collection(gameKey)
         .orderBy('created', descending: true)
         .get()
         .then((snapshot) {
@@ -994,9 +1004,9 @@ class gamescreenPartyState extends State<gamescreenParty>
       });
     }
 
-    gs.settileAssignment = fp.gettileAssignment;
-    gs.setshownDescriptions = fp.getshownDescriptions;
-    newAssignment = gs.gettileAssignment;
+    tileAssignment = pr.gettileAssignment;
+    shownDescriptions = pr.getshownDescriptions;
+    newAssignment = pr.gettileAssignment;
 
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -2398,7 +2408,7 @@ class gamescreenPartyState extends State<gamescreenParty>
             color: Colors.purple.shade200,
             parallaxEnabled: true,
             parallaxOffset: .2,
-            panelBuilder: (controller) => PanelWidget(
+            panelBuilder: (controller) => PartyPanelWidget(
                   gs.gettileAssignment,
                   controller: controller,
                 )),
