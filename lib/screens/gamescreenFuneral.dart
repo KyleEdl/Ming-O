@@ -1113,7 +1113,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.85),
+                          alignment: Alignment(-0.8, -0.7),
                           child: Material(
                             color: Colors.brown.shade300,
                             child: InkWell(
@@ -1190,7 +1190,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.8),
+                            alignment: Alignment(-0.8, -0.725),
                             child: Text(
                               'x ' + tileLockCount.toString(),
                               style: TextStyle(
@@ -1203,7 +1203,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.6),
+                          alignment: Alignment(-0.8, -0.4),
                           child: Material(
                             color: Colors.brown.shade300,
                             child: InkWell(
@@ -1282,7 +1282,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.575),
+                            alignment: Alignment(-0.8, -0.425),
                             child: Text(
                               'x ' + randThreeLockCount.toString(),
                               style: TextStyle(
@@ -1295,7 +1295,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.35),
+                          alignment: Alignment(-0.8, -0.1),
                           child: Material(
                             color: Colors.brown.shade300,
                             child: InkWell(
@@ -1358,7 +1358,7 @@ class gamescreenFuneralState extends State<gamescreenFuneral>
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.325),
+                            alignment: Alignment(-0.8, -0.15),
                             child: Text(
                               'x ' + bandageCount.toString(),
                               style: TextStyle(

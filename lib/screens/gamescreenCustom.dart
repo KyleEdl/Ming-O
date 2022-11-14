@@ -1100,7 +1100,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.85),
+                          alignment: Alignment(-0.8, -0.7),
                           child: Material(
                             color: Color.fromRGBO(255, 138, 101, 1),
                             child: InkWell(
@@ -1177,7 +1177,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.8),
+                            alignment: Alignment(-0.8, -0.725),
                             child: Text(
                               'x ' + tileLockCount.toString(),
                               style: TextStyle(
@@ -1190,7 +1190,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.6),
+                          alignment: Alignment(-0.8, -0.4),
                           child: Material(
                             color: Color.fromRGBO(255, 138, 101, 1),
                             child: InkWell(
@@ -1269,7 +1269,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.575),
+                            alignment: Alignment(-0.8, -0.425),
                             child: Text(
                               'x ' + randThreeLockCount.toString(),
                               style: TextStyle(
@@ -1282,7 +1282,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.35),
+                          alignment: Alignment(-0.8, -0.1),
                           child: Material(
                             color: Color.fromRGBO(255, 138, 101, 1),
                             child: InkWell(
@@ -1345,7 +1345,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.325),
+                            alignment: Alignment(-0.8, -0.15),
                             child: Text(
                               'x ' + bandageCount.toString(),
                               style: TextStyle(

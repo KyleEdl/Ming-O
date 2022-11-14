@@ -1,4 +1,4 @@
-package com.example.bingo_application
+package com.ming.mingo
 
 import io.flutter.embedding.android.FlutterActivity
 

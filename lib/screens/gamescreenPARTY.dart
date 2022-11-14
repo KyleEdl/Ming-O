@@ -1121,7 +1121,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.85),
+                          alignment: Alignment(-0.8, -0.7),
                           child: Material(
                             color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
@@ -1199,7 +1199,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.8),
+                            alignment: Alignment(-0.8, -0.725),
                             child: Text(
                               'x ' + tileLockCount.toString(),
                               style: TextStyle(
@@ -1212,7 +1212,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.6),
+                          alignment: Alignment(-0.8, -0.4),
                           child: Material(
                             color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
@@ -1291,7 +1291,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.575),
+                            alignment: Alignment(-0.8, -0.425),
                             child: Text(
                               'x ' + randThreeLockCount.toString(),
                               style: TextStyle(
@@ -1304,7 +1304,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                     Row(
                       children: [
                         Align(
-                          alignment: Alignment(-0.8, -0.35),
+                          alignment: Alignment(-0.8, -0.1),
                           child: Material(
                             color: Color.fromARGB(255, 38, 32, 49),
                             child: InkWell(
@@ -1367,7 +1367,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                           width: 15,
                         ),
                         Align(
-                            alignment: Alignment(-0.8, -0.325),
+                            alignment: Alignment(-0.8, -0.15),
                             child: Text(
                               'x ' + bandageCount.toString(),
                               style: TextStyle(
