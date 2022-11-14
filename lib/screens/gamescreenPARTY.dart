@@ -1091,7 +1091,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                       child: Align(
                           alignment: Alignment(0, 0.9),
                           child: Container(
-                            height: 535,
+                            height: 475,
                             child: Padding(
                                 padding: const EdgeInsets.only(right: 3.0),
                                 child: Container(

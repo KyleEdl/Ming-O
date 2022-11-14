@@ -1068,7 +1068,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
                       child: Align(
                           alignment: Alignment(0, 0.9),
                           child: Container(
-                            height: 535,
+                            height: 475,
                             child: Padding(
                                 padding: const EdgeInsets.only(right: 3.0),
                                 child: Container(
