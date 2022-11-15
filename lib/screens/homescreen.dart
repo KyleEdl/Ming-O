@@ -250,36 +250,47 @@ class FirstPage extends State<FirstScreen> {
           resizeToAvoidBottomInset: true,
           body: Stack(children: [
             PageView(
+              physics: NeverScrollableScrollPhysics(),
               controller: _controller,
               children: [
                 // Page 1
-                Container(
-                  color: Colors.cyan,
-                  child: Stack(children: <Widget>[
-                    Align(
-                        alignment: Alignment(0, -0.5),
+                Listener(
+                  onPointerMove: (moveEvent) {
+                    if (moveEvent.delta.dx < 0) {
+                      _controller.nextPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                      );
+                    }
+                  },
+                  child: Container(
+                    color: Colors.cyan,
+                    child: Stack(children: <Widget>[
+                      Align(
+                          alignment: Alignment(0, -0.5),
+                          child: Container(
+                            child: Text("Welcome to Ming-O!",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.quicksand(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 36,
+                                    color: Colors.cyan[900])),
+                          )),
+                      Align(
+                        alignment: Alignment(0, .8),
                         child: Container(
-                          child: Text("Welcome to Ming-O!",
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.quicksand(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 36,
-                                  color: Colors.cyan[900])),
-                        )),
-                    Align(
-                      alignment: Alignment(0, .8),
-                      child: Container(
-                        height: 550,
-                        width: 650,
-                        child: RiveAnimation.asset(
-                          'assets/Mingeruchi.riv',
-                          artboard: "Wave",
-                          alignment: Alignment.bottomCenter,
-                          fit: BoxFit.fitHeight,
+                          height: 550,
+                          width: 650,
+                          child: RiveAnimation.asset(
+                            'assets/Mingeruchi.riv',
+                            artboard: "Wave",
+                            alignment: Alignment.bottomCenter,
+                            fit: BoxFit.fitHeight,
+                          ),
                         ),
-                      ),
-                    )
-                  ]),
+                      )
+                    ]),
+                  ),
                 ),
 
                 //Page 2
@@ -381,6 +392,13 @@ class FirstPage extends State<FirstScreen> {
                                 },
                                 icon: const Icon(Icons.send),
                               )),
+                          textInputAction: TextInputAction.go,
+                          onSubmitted: (value) {
+                            _controller.nextPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeIn,
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -405,968 +423,982 @@ class FirstPage extends State<FirstScreen> {
                 ),
 
                 //Page 3
-                Container(
-                  color: Colors.pink[300],
-                  child: Stack(children: <Widget>[
-                    Align(
-                        alignment: Alignment(0, -0.7),
-                        child: Container(
-                          child: Text("Select an option",
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.quicksand(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.pink[900])),
-                        )),
-                    Align(
-                      alignment: Alignment(0, -0.2),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (textController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.red.shade600,
-                              duration: Duration(seconds: 1),
-                              content: Text(
-                                'Please enter name',
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                            ));
-                          }
-                          if (textController.text.isNotEmpty) {
-                            showDialog(
-                                context: context,
-                                builder: ((context) => AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(32))),
-                                    backgroundColor: Colors.pink[300],
-                                    title: Center(
-                                      child: Text(
-                                        'Select a Featured Mode',
-                                        style: GoogleFonts.quicksand(
-                                            color: Colors.pink[700],
-                                            fontWeight: FontWeight.bold),
+                Listener(
+                  onPointerMove: (moveEvent) {
+                    if (moveEvent.delta.dx > 0) {
+                      _controller.previousPage(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeIn,
+                      );
+                    }
+                  },
+                  child: Container(
+                    color: Colors.pink[300],
+                    child: Stack(children: <Widget>[
+                      Align(
+                          alignment: Alignment(0, -0.7),
+                          child: Container(
+                            child: Text("Select an option",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.quicksand(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Colors.pink[900])),
+                          )),
+                      Align(
+                        alignment: Alignment(0, -0.2),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (textController.text.isEmpty) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                backgroundColor: Colors.red.shade600,
+                                duration: Duration(seconds: 1),
+                                content: Text(
+                                  'Please enter name',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ));
+                            }
+                            if (textController.text.isNotEmpty) {
+                              showDialog(
+                                  context: context,
+                                  builder: ((context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(32))),
+                                      backgroundColor: Colors.pink[300],
+                                      title: Center(
+                                        child: Text(
+                                          'Select a Featured Mode',
+                                          style: GoogleFonts.quicksand(
+                                              color: Colors.pink[700],
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    content: StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSetter setState) {
-                                      return Stack(children: [
-                                        Align(
-                                            alignment: Alignment(0, -0.8),
-                                            child: CheckboxListTile(
-                                              controlAffinity:
-                                                  ListTileControlAffinity
-                                                      .leading,
-                                              value: isFuneral,
-                                              onChanged: (bool? funeral) {
-                                                setState(() {
-                                                  isEdl = false;
-                                                  isOma = false;
-                                                  isLaura = false;
-                                                  isRoth = false;
-                                                  isFuneral = funeral;
-                                                  isBar = false;
-                                                  isParty = false;
-                                                });
-                                                gameMode = 'funeral';
-                                                if (isBar == true) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    backgroundColor:
-                                                        Colors.red.shade600,
-                                                    duration:
-                                                        Duration(seconds: 1),
-                                                    content: Text(
-                                                      "Cannot check while Bar Mode is active",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ));
-                                                }
-                                                if (isParty == true) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    backgroundColor:
-                                                        Colors.red.shade600,
-                                                    duration:
-                                                        Duration(seconds: 1),
-                                                    content: Text(
-                                                      "Cannot check while Party Mode is active",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ));
-                                                }
-                                              },
-                                              activeColor:
-                                                  Colors.green.shade200,
-                                              title: Text(
-                                                'Funeral Mode',
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.red[900]),
-                                              ),
-                                              subtitle: Text(
-                                                  'If you are attending a funeral, click this.'),
-                                            )),
-                                        Align(
-                                            alignment: Alignment(0, -0.5),
-                                            child: CheckboxListTile(
-                                              controlAffinity:
-                                                  ListTileControlAffinity
-                                                      .leading,
-                                              value: isBar,
-                                              onChanged: (bool? bar) {
-                                                setState(() {
-                                                  isEdl = false;
-                                                  isOma = false;
-                                                  isLaura = false;
-                                                  isRoth = false;
-                                                  isFuneral = false;
-                                                  isBar = bar;
-                                                  isParty = false;
-                                                });
-                                                gameMode = 'bar';
-                                                if (isFuneral == true) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    backgroundColor:
-                                                        Colors.red.shade600,
-                                                    duration:
-                                                        Duration(seconds: 1),
-                                                    content: Text(
-                                                      "Cannot check while Funeral Mode is active",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ));
-                                                }
-
-                                                if (isParty == true) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    backgroundColor:
-                                                        Colors.red.shade600,
-                                                    duration:
-                                                        Duration(seconds: 1),
-                                                    content: Text(
-                                                      "Cannot check while Party Mode is active",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ));
-                                                }
-                                              },
-                                              activeColor:
-                                                  Colors.green.shade200,
-                                              title: Text(
-                                                'Bar Mode',
-                                                style: TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.yellow[700]),
-                                              ),
-                                              subtitle: Text(
-                                                  'If you are at the bar, click this.'),
-                                            )),
-                                        Align(
-                                            alignment: Alignment(0, -0.2),
-                                            child: CheckboxListTile(
-                                              controlAffinity:
-                                                  ListTileControlAffinity
-                                                      .leading,
-                                              value: isParty,
-                                              onChanged: (bool? party) {
-                                                setState(() {
-                                                  isEdl = false;
-                                                  isOma = false;
-                                                  isLaura = false;
-                                                  isRoth = false;
-                                                  isFuneral = false;
-                                                  isBar = false;
-                                                  isParty = party;
-                                                });
-                                                gameMode = 'party';
-                                                if (isFuneral == true) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    backgroundColor:
-                                                        Colors.red.shade600,
-                                                    duration:
-                                                        Duration(seconds: 1),
-                                                    content: Text(
-                                                      "Cannot check while Funeral Mode is active",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ));
-                                                }
-                                                if (isBar == true) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    backgroundColor:
-                                                        Colors.red.shade600,
-                                                    duration:
-                                                        Duration(seconds: 1),
-                                                    content: Text(
-                                                      "Cannot check while Bar Mode is active",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ));
-                                                }
-                                              },
-                                              activeColor:
-                                                  Colors.green.shade200,
-                                              title: GradientText('Party Mode',
+                                      content: StatefulBuilder(builder:
+                                          (BuildContext context,
+                                              StateSetter setState) {
+                                        return Stack(children: [
+                                          Align(
+                                              alignment: Alignment(0, -0.8),
+                                              child: CheckboxListTile(
+                                                controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .leading,
+                                                value: isFuneral,
+                                                onChanged: (bool? funeral) {
+                                                  setState(() {
+                                                    isEdl = false;
+                                                    isOma = false;
+                                                    isLaura = false;
+                                                    isRoth = false;
+                                                    isFuneral = funeral;
+                                                    isBar = false;
+                                                    isParty = false;
+                                                  });
+                                                  gameMode = 'funeral';
+                                                  if (isBar == true) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red.shade600,
+                                                      duration:
+                                                          Duration(seconds: 1),
+                                                      content: Text(
+                                                        "Cannot check while Bar Mode is active",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ));
+                                                  }
+                                                  if (isParty == true) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red.shade600,
+                                                      duration:
+                                                          Duration(seconds: 1),
+                                                      content: Text(
+                                                        "Cannot check while Party Mode is active",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ));
+                                                  }
+                                                },
+                                                activeColor:
+                                                    Colors.green.shade200,
+                                                title: Text(
+                                                  'Funeral Mode',
                                                   style: TextStyle(
+                                                      fontSize: 18,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      fontSize: 18),
-                                                  gradientType:
-                                                      GradientType.linear,
-                                                  gradientDirection:
-                                                      GradientDirection.ltr,
-                                                  colors: [
-                                                    Colors.red.shade700,
-                                                    Colors.pink,
-                                                    Colors.purple,
-                                                    Colors.deepPurple,
-                                                    Colors.deepPurple,
-                                                    Colors.indigo,
-                                                    Colors.teal,
-                                                    Colors.green,
-                                                    Colors.orange,
-                                                    Colors.deepOrange,
-                                                  ]),
-                                              subtitle: Text(
-                                                  'If you are at a party, click this.'),
-                                            )),
-                                        Align(
-                                          alignment: Alignment(0, 0.2),
-                                          child: Text(
-                                            'Or',
-                                            style: GoogleFonts.quicksand(
-                                                color: Colors.pink[700],
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment(0, .7),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              if (textController.text.isEmpty) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                  backgroundColor:
-                                                      Colors.red.shade600,
-                                                  duration:
-                                                      Duration(seconds: 1),
-                                                  content: Text(
-                                                    'Username is required to continue...',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ));
-                                              }
-                                              if (textController.text
-                                                  .contains('ADMIN')) {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                  backgroundColor:
-                                                      Colors.red.shade600,
-                                                  duration:
-                                                      Duration(seconds: 1),
-                                                  content: Text(
-                                                    'Name cannot contain "ADMIN"',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ));
-                                              }
-                                              if (textController
-                                                  .text.isNotEmpty) {
-                                                setState(() {
-                                                  isEdl = false;
-                                                  isOma = false;
-                                                  isLaura = false;
-                                                  isRoth = false;
-                                                  isFuneral = false;
-                                                  isBar = false;
-                                                  isParty = false;
-                                                  isCustom = true;
-                                                });
-                                                if (isCustom == true) {
-                                                  gameMode =
-                                                      customKey.toString();
-                                                }
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: ((context) =>
-                                                            customScreen())));
-                                              }
-                                            },
-                                            child: Container(
-                                              height: 80,
-                                              width: 160,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(20.0),
+                                                      color: Colors.red[900]),
                                                 ),
-                                                color: Colors.pink.shade700,
-                                              ),
-                                              child: Center(
-                                                  child: Text(
-                                                'Create Custom',
-                                                style: GoogleFonts.quicksand(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16),
+                                                subtitle: Text(
+                                                    'If you are attending a funeral, click this.'),
                                               )),
-                                            ),
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment(.99, .99),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              if (isBar == true ||
-                                                  textControllerKey.text
-                                                      .contains('BAR')) {
-                                                gameKeySet = "BAR" +
-                                                    (Random().nextInt(1000) +
-                                                            100)
-                                                        .toString();
-                                                isBar = true;
-                                                gameList gl = new gameList(
-                                                    isLaura,
-                                                    isOma,
-                                                    isEdl,
-                                                    isRoth,
-                                                    isFuneral,
-                                                    isBar,
-                                                    isParty,
-                                                    isUniversal);
-                                                tileAssignment =
-                                                    gl.tileAssignment;
-                                                shownDescriptions =
-                                                    gl.shownDescriptions;
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: ((context) =>
-                                                            barReadyScreen())));
-                                              }
-                                              if (isFuneral == true ||
-                                                  textControllerKey.text
-                                                      .contains('FUNERAL')) {
-                                                gameKeySet = "FUNERAL" +
-                                                    (Random().nextInt(1000) +
-                                                            100)
-                                                        .toString();
-                                                isFuneral = true;
-                                                gameList gl = new gameList(
-                                                    isLaura,
-                                                    isOma,
-                                                    isEdl,
-                                                    isRoth,
-                                                    isFuneral,
-                                                    isBar,
-                                                    isParty,
-                                                    isUniversal);
-                                                tileAssignment =
-                                                    gl.tileAssignment;
-                                                shownDescriptions =
-                                                    gl.shownDescriptions;
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: ((context) =>
-                                                            funeralReadyScreen())));
-                                              }
-                                              if (isParty == true ||
-                                                  textControllerKey.text
-                                                      .contains('PARTY')) {
-                                                gameKeySet = "PARTY" +
-                                                    (Random().nextInt(1000) +
-                                                            100)
-                                                        .toString();
-                                                isParty = true;
-                                                gameList gl = new gameList(
-                                                    isLaura,
-                                                    isOma,
-                                                    isEdl,
-                                                    isRoth,
-                                                    isFuneral,
-                                                    isBar,
-                                                    isParty,
-                                                    isUniversal);
-                                                tileAssignment =
-                                                    gl.tileAssignment;
-                                                shownDescriptions =
-                                                    gl.shownDescriptions;
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: ((context) =>
-                                                            partyReadyScreen())));
-                                              }
-                                            },
-                                            child: Container(
-                                              height: 60,
-                                              width: 90,
-                                              decoration: BoxDecoration(
-                                                  color: Colors
-                                                      .greenAccent.shade400
-                                                      .withOpacity(.7),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          75)),
-                                              child: Center(
-                                                  child: Text(
-                                                'Next',
-                                                style: GoogleFonts.quicksand(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                  color: Colors.green.shade900,
-                                                ),
-                                              )),
-                                            ),
-                                          ),
-                                        ),
-                                      ]);
-                                    }))));
-                          }
-                        },
-                        child: Container(
-                          height: 80,
-                          width: 160,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20.0),
-                            ),
-                            color: Colors.pink.shade700,
-                          ),
-                          child: Center(
-                              child: Text(
-                            'Host Game',
-                            style: GoogleFonts.quicksand(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          )),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment(0, 0.3),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (textController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.red.shade600,
-                              duration: Duration(seconds: 1),
-                              content: Text(
-                                'Please enter name',
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                            ));
-                          }
-                          if (textController.text.isNotEmpty) {
-                            showDialog(
-                                context: context,
-                                builder: ((context) => AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(32))),
-                                    backgroundColor: Colors.pink[300],
-                                    title: Center(
-                                      child: Text(
-                                        'Join Game',
-                                        style: GoogleFonts.quicksand(
-                                            color: Colors.pink[700],
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    content: StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSetter setState) {
-                                      return TextField(
-                                        inputFormatters: [
-                                          LengthLimitingTextInputFormatter(12),
-                                        ],
-                                        controller: textControllerKey,
-                                        decoration: InputDecoration(
-                                            labelText: 'Custom Key',
-                                            labelStyle: TextStyle(
-                                              color: Colors.pink[900],
-                                            ),
-                                            suffixIcon: IconButton(
-                                              onPressed: () {
-                                                FocusScopeNode currentFocus =
-                                                    FocusScope.of(context);
-
-                                                //Zack # 1
-                                                if (textControllerKey
-                                                    .text.isNotEmpty) {
-                                                  gameKey =
-                                                      textControllerKey.text;
-                                                  customDocFind(
-                                                      textControllerKey.text);
-                                                  Future.delayed(
-                                                      Duration(seconds: 1), () {
-                                                    if (docExists == false) {
-                                                      textControllerKey.clear();
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                        backgroundColor:
-                                                            Colors.red.shade600,
-                                                        duration: Duration(
-                                                            seconds: 1),
-                                                        content: Text(
-                                                          "KEY DOES NOT EXIST!",
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      ));
-                                                    } else {
-                                                      if (textControllerKey.text
-                                                          .contains('BAR')) {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    ((context) =>
-                                                                        barReadyScreen())));
-                                                      }
-                                                      if (textControllerKey.text
-                                                          .contains('PARTY')) {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    ((context) =>
-                                                                        partyReadyScreen())));
-                                                      }
-                                                      if (textControllerKey.text
-                                                          .contains(
-                                                              'FUNERAL')) {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    ((context) =>
-                                                                        funeralReadyScreen())));
-                                                      }
-                                                      if (!textControllerKey
-                                                              .text
-                                                              .contains(
-                                                                  'FUNERAL') &&
-                                                          !textControllerKey
-                                                              .text
-                                                              .contains(
-                                                                  'PARTY') &&
-                                                          !textControllerKey
-                                                              .text
-                                                              .contains(
-                                                                  'BAR')) {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    ((context) =>
-                                                                        customReadyScreen())));
-                                                      }
-                                                    }
-                                                  });
-                                                }
-
-                                                if (textControllerKey.text
-                                                    .contains('AERFAMILY')) {
-                                                  Navigator.of(context,
-                                                          rootNavigator: true)
-                                                      .pop();
-
+                                          Align(
+                                              alignment: Alignment(0, -0.5),
+                                              child: CheckboxListTile(
+                                                controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .leading,
+                                                value: isBar,
+                                                onChanged: (bool? bar) {
                                                   setState(() {
+                                                    isEdl = false;
+                                                    isOma = false;
+                                                    isLaura = false;
+                                                    isRoth = false;
+                                                    isFuneral = false;
+                                                    isBar = bar;
+                                                    isParty = false;
+                                                  });
+                                                  gameMode = 'bar';
+                                                  if (isFuneral == true) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red.shade600,
+                                                      duration:
+                                                          Duration(seconds: 1),
+                                                      content: Text(
+                                                        "Cannot check while Funeral Mode is active",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ));
+                                                  }
+
+                                                  if (isParty == true) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red.shade600,
+                                                      duration:
+                                                          Duration(seconds: 1),
+                                                      content: Text(
+                                                        "Cannot check while Party Mode is active",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ));
+                                                  }
+                                                },
+                                                activeColor:
+                                                    Colors.green.shade200,
+                                                title: Text(
+                                                  'Bar Mode',
+                                                  style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          Colors.yellow[700]),
+                                                ),
+                                                subtitle: Text(
+                                                    'If you are at the bar, click this.'),
+                                              )),
+                                          Align(
+                                              alignment: Alignment(0, -0.2),
+                                              child: CheckboxListTile(
+                                                controlAffinity:
+                                                    ListTileControlAffinity
+                                                        .leading,
+                                                value: isParty,
+                                                onChanged: (bool? party) {
+                                                  setState(() {
+                                                    isEdl = false;
+                                                    isOma = false;
+                                                    isLaura = false;
+                                                    isRoth = false;
+                                                    isFuneral = false;
+                                                    isBar = false;
+                                                    isParty = party;
+                                                  });
+                                                  gameMode = 'party';
+                                                  if (isFuneral == true) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red.shade600,
+                                                      duration:
+                                                          Duration(seconds: 1),
+                                                      content: Text(
+                                                        "Cannot check while Funeral Mode is active",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ));
+                                                  }
+                                                  if (isBar == true) {
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      backgroundColor:
+                                                          Colors.red.shade600,
+                                                      duration:
+                                                          Duration(seconds: 1),
+                                                      content: Text(
+                                                        "Cannot check while Bar Mode is active",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ));
+                                                  }
+                                                },
+                                                activeColor:
+                                                    Colors.green.shade200,
+                                                title: GradientText(
+                                                    'Party Mode',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18),
+                                                    gradientType:
+                                                        GradientType.linear,
+                                                    gradientDirection:
+                                                        GradientDirection.ltr,
+                                                    colors: [
+                                                      Colors.red.shade700,
+                                                      Colors.pink,
+                                                      Colors.purple,
+                                                      Colors.deepPurple,
+                                                      Colors.deepPurple,
+                                                      Colors.indigo,
+                                                      Colors.teal,
+                                                      Colors.green,
+                                                      Colors.orange,
+                                                      Colors.deepOrange,
+                                                    ]),
+                                                subtitle: Text(
+                                                    'If you are at a party, click this.'),
+                                              )),
+                                          Align(
+                                            alignment: Alignment(0, 0.2),
+                                            child: Text(
+                                              'Or',
+                                              style: GoogleFonts.quicksand(
+                                                  color: Colors.pink[700],
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment(0, .7),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                if (textController
+                                                    .text.isEmpty) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    backgroundColor:
+                                                        Colors.red.shade600,
+                                                    duration:
+                                                        Duration(seconds: 1),
+                                                    content: Text(
+                                                      'Username is required to continue...',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ));
+                                                }
+                                                if (textController.text
+                                                    .contains('ADMIN')) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                    backgroundColor:
+                                                        Colors.red.shade600,
+                                                    duration:
+                                                        Duration(seconds: 1),
+                                                    content: Text(
+                                                      'Name cannot contain "ADMIN"',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ));
+                                                }
+                                                if (textController
+                                                    .text.isNotEmpty) {
+                                                  setState(() {
+                                                    isEdl = false;
+                                                    isOma = false;
+                                                    isLaura = false;
+                                                    isRoth = false;
                                                     isFuneral = false;
                                                     isBar = false;
                                                     isParty = false;
-                                                    isUniversal = true;
+                                                    isCustom = true;
                                                   });
-                                                  gameMode = 'AERFAMILY';
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: ((context) =>
-                                                          AlertDialog(
-                                                              shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              32))),
-                                                              backgroundColor: Colors
-                                                                  .pink[300],
-                                                              title: Text(
-                                                                'Family Gathering Mode',
-                                                                style: GoogleFonts.quicksand(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              content: StatefulBuilder(builder:
-                                                                  (BuildContext
-                                                                          context,
-                                                                      StateSetter
-                                                                          setState) {
-                                                                return Stack(
-                                                                  children: [
-                                                                    Align(
-                                                                        alignment: Alignment(
-                                                                            0,
-                                                                            -0.9),
-                                                                        child:
-                                                                            CheckboxListTile(
-                                                                          controlAffinity:
-                                                                              ListTileControlAffinity.leading,
-                                                                          value:
-                                                                              isLaura,
-                                                                          onChanged:
-                                                                              (bool? laura) {
-                                                                            if (isFuneral ==
-                                                                                false) {
-                                                                              setState(() {
-                                                                                isLaura = laura;
-                                                                              });
-                                                                            }
-                                                                            if (isFuneral ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Funeral Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                            if (isBar ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Bar Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                            if (isParty ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Party Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                          },
-                                                                          title:
-                                                                              Text(
-                                                                            'Laura is here',
-                                                                            style:
-                                                                                TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[900]),
-                                                                          ),
-                                                                          subtitle:
-                                                                              Text('Laura will be in attendance'),
-                                                                          activeColor: Colors
-                                                                              .green
-                                                                              .shade200,
-                                                                        )),
-                                                                    Align(
-                                                                        alignment: Alignment(
-                                                                            0,
-                                                                            -0.6),
-                                                                        child:
-                                                                            CheckboxListTile(
-                                                                          controlAffinity:
-                                                                              ListTileControlAffinity.leading,
-                                                                          value:
-                                                                              isOma,
-                                                                          onChanged:
-                                                                              (bool? oma) {
-                                                                            if (isFuneral ==
-                                                                                false) {
-                                                                              setState(() {
-                                                                                isOma = oma;
-                                                                              });
-                                                                            }
-                                                                            if (isFuneral ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Funeral Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                            if (isBar ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Bar Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                            if (isParty ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Party Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                          },
-                                                                          title:
-                                                                              Text(
-                                                                            'Oma is here',
-                                                                            style:
-                                                                                TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[900]),
-                                                                          ),
-                                                                          subtitle:
-                                                                              Text('Oma will be in attendance'),
-                                                                          activeColor: Colors
-                                                                              .green
-                                                                              .shade200,
-                                                                        )),
-                                                                    Align(
-                                                                        alignment: Alignment(
-                                                                            0,
-                                                                            -0.3),
-                                                                        child:
-                                                                            CheckboxListTile(
-                                                                          controlAffinity:
-                                                                              ListTileControlAffinity.leading,
-                                                                          value:
-                                                                              isEdl,
-                                                                          onChanged:
-                                                                              (bool? edl) {
-                                                                            if (isFuneral ==
-                                                                                false) {
-                                                                              setState(() {
-                                                                                isEdl = edl;
-                                                                              });
-                                                                            }
-                                                                            if (isFuneral ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Funeral Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                            if (isBar ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Bar Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                            if (isParty ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Party Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                          },
-                                                                          title:
-                                                                              Text(
-                                                                            'Edls are here',
-                                                                            style:
-                                                                                TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[900]),
-                                                                          ),
-                                                                          subtitle:
-                                                                              Text('Heather and David will be in attendance'),
-                                                                          activeColor: Colors
-                                                                              .green
-                                                                              .shade200,
-                                                                        )),
-                                                                    Align(
-                                                                        alignment: Alignment(
-                                                                            0,
-                                                                            0),
-                                                                        child:
-                                                                            CheckboxListTile(
-                                                                          controlAffinity:
-                                                                              ListTileControlAffinity.leading,
-                                                                          value:
-                                                                              isRoth,
-                                                                          onChanged:
-                                                                              (bool? roth) {
-                                                                            if (isFuneral ==
-                                                                                false) {
-                                                                              setState(() {
-                                                                                isRoth = roth;
-                                                                              });
-                                                                            }
-                                                                            if (isFuneral ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Funeral Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                            if (isBar ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Bar Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                            if (isParty ==
-                                                                                true) {
-                                                                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                                backgroundColor: Colors.red.shade600,
-                                                                                duration: Duration(seconds: 1),
-                                                                                content: Text(
-                                                                                  "Cannot check while Party Mode is active",
-                                                                                  style: TextStyle(fontWeight: FontWeight.w600),
-                                                                                ),
-                                                                              ));
-                                                                            }
-                                                                          },
-                                                                          activeColor: Colors
-                                                                              .green
-                                                                              .shade200,
-                                                                          title:
-                                                                              Text(
-                                                                            'Rothwells are here',
-                                                                            style:
-                                                                                TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[900]),
-                                                                          ),
-                                                                          subtitle:
-                                                                              Text('Diane, Don, or Kathi will be in attendance'),
-                                                                        )),
-                                                                    Align(
-                                                                      alignment:
-                                                                          Alignment(
-                                                                              0,
-                                                                              .5),
-                                                                      child: Material(
-                                                                          color: Colors.pink.shade300,
-                                                                          child: InkWell(
-                                                                              splashFactory: InkRipple.splashFactory,
-                                                                              splashColor: Colors.teal.shade700.withOpacity(0.5),
-                                                                              highlightColor: Colors.teal.shade700.withOpacity(0.5),
-                                                                              borderRadius: const BorderRadius.all(
-                                                                                Radius.circular(20.0),
-                                                                              ),
-                                                                              onTap: () {
-                                                                                _controller.nextPage(
-                                                                                  duration: Duration(milliseconds: 300),
-                                                                                  curve: Curves.easeIn,
-                                                                                );
-                                                                                Navigator.of(context, rootNavigator: true).pop();
-                                                                              },
-                                                                              child: Ink(
-                                                                                  height: 65,
-                                                                                  width: 125,
-                                                                                  decoration: BoxDecoration(
-                                                                                    borderRadius: BorderRadius.all(
-                                                                                      Radius.circular(20.0),
-                                                                                    ),
-                                                                                    color: Colors.teal.shade400,
-                                                                                  ),
-                                                                                  child: Center(
-                                                                                    child: Text(
-                                                                                      'Submit',
-                                                                                      style: GoogleFonts.quicksand(
-                                                                                        color: Colors.white,
-                                                                                        fontWeight: FontWeight.bold,
-                                                                                        fontSize: 18,
-                                                                                      ),
-                                                                                    ),
-                                                                                  )))),
-                                                                    )
-                                                                  ],
-                                                                );
-                                                              }))));
+                                                  if (isCustom == true) {
+                                                    gameMode =
+                                                        customKey.toString();
+                                                  }
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: ((context) =>
+                                                              customScreen())));
                                                 }
                                               },
-                                              icon: const Icon(Icons.send),
-                                            )),
-                                      );
-                                    }))));
-                          }
-                        },
-                        child: Container(
-                          height: 80,
-                          width: 160,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(20.0),
+                                              child: Container(
+                                                height: 80,
+                                                width: 160,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      const BorderRadius.all(
+                                                    Radius.circular(20.0),
+                                                  ),
+                                                  color: Colors.pink.shade700,
+                                                ),
+                                                child: Center(
+                                                    child: Text(
+                                                  'Create Custom',
+                                                  style: GoogleFonts.quicksand(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16),
+                                                )),
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment(.99, .99),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                if (isBar == true ||
+                                                    textControllerKey.text
+                                                        .contains('BAR')) {
+                                                  gameKeySet = "BAR" +
+                                                      (Random().nextInt(1000) +
+                                                              100)
+                                                          .toString();
+                                                  isBar = true;
+                                                  gameList gl = new gameList(
+                                                      isLaura,
+                                                      isOma,
+                                                      isEdl,
+                                                      isRoth,
+                                                      isFuneral,
+                                                      isBar,
+                                                      isParty,
+                                                      isUniversal);
+                                                  tileAssignment =
+                                                      gl.tileAssignment;
+                                                  shownDescriptions =
+                                                      gl.shownDescriptions;
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: ((context) =>
+                                                              barReadyScreen())));
+                                                }
+                                                if (isFuneral == true ||
+                                                    textControllerKey.text
+                                                        .contains('FUNERAL')) {
+                                                  gameKeySet = "FUNERAL" +
+                                                      (Random().nextInt(1000) +
+                                                              100)
+                                                          .toString();
+                                                  isFuneral = true;
+                                                  gameList gl = new gameList(
+                                                      isLaura,
+                                                      isOma,
+                                                      isEdl,
+                                                      isRoth,
+                                                      isFuneral,
+                                                      isBar,
+                                                      isParty,
+                                                      isUniversal);
+                                                  tileAssignment =
+                                                      gl.tileAssignment;
+                                                  shownDescriptions =
+                                                      gl.shownDescriptions;
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: ((context) =>
+                                                              funeralReadyScreen())));
+                                                }
+                                                if (isParty == true ||
+                                                    textControllerKey.text
+                                                        .contains('PARTY')) {
+                                                  gameKeySet = "PARTY" +
+                                                      (Random().nextInt(1000) +
+                                                              100)
+                                                          .toString();
+                                                  isParty = true;
+                                                  gameList gl = new gameList(
+                                                      isLaura,
+                                                      isOma,
+                                                      isEdl,
+                                                      isRoth,
+                                                      isFuneral,
+                                                      isBar,
+                                                      isParty,
+                                                      isUniversal);
+                                                  tileAssignment =
+                                                      gl.tileAssignment;
+                                                  shownDescriptions =
+                                                      gl.shownDescriptions;
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: ((context) =>
+                                                              partyReadyScreen())));
+                                                }
+                                              },
+                                              child: Container(
+                                                height: 60,
+                                                width: 90,
+                                                decoration: BoxDecoration(
+                                                    color: Colors
+                                                        .greenAccent.shade400
+                                                        .withOpacity(.7),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            75)),
+                                                child: Center(
+                                                    child: Text(
+                                                  'Next',
+                                                  style: GoogleFonts.quicksand(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18,
+                                                    color:
+                                                        Colors.green.shade900,
+                                                  ),
+                                                )),
+                                              ),
+                                            ),
+                                          ),
+                                        ]);
+                                      }))));
+                            }
+                          },
+                          child: Container(
+                            height: 80,
+                            width: 160,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(20.0),
+                              ),
+                              color: Colors.pink.shade700,
                             ),
-                            color: Colors.greenAccent.shade400,
+                            child: Center(
+                                child: Text(
+                              'Host Game',
+                              style: GoogleFonts.quicksand(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            )),
                           ),
-                          child: Center(
-                              child: Text(
-                            'Join Game',
-                            style: GoogleFonts.quicksand(
-                                color: Colors.grey.shade600,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          )),
                         ),
                       ),
-                    ),
-                  ]),
+                      Align(
+                        alignment: Alignment(0, 0.3),
+                        child: GestureDetector(
+                          onTap: () {
+                            if (textController.text.isEmpty) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                backgroundColor: Colors.red.shade600,
+                                duration: Duration(seconds: 1),
+                                content: Text(
+                                  'Please enter name',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                              ));
+                            }
+                            if (textController.text.isNotEmpty) {
+                              showDialog(
+                                  context: context,
+                                  builder: ((context) => AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(32))),
+                                      backgroundColor: Colors.pink[300],
+                                      title: Center(
+                                        child: Text(
+                                          'Join Game',
+                                          style: GoogleFonts.quicksand(
+                                              color: Colors.pink[700],
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      content: StatefulBuilder(builder:
+                                          (BuildContext context,
+                                              StateSetter setState) {
+                                        return TextField(
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                12),
+                                          ],
+                                          controller: textControllerKey,
+                                          decoration: InputDecoration(
+                                              labelText: 'Custom Key',
+                                              labelStyle: TextStyle(
+                                                color: Colors.pink[900],
+                                              ),
+                                              suffixIcon: IconButton(
+                                                onPressed: () {
+                                                  FocusScopeNode currentFocus =
+                                                      FocusScope.of(context);
+
+                                                  //Zack # 1
+                                                  if (textControllerKey
+                                                      .text.isNotEmpty) {
+                                                    gameKey =
+                                                        textControllerKey.text;
+                                                    customDocFind(
+                                                        textControllerKey.text);
+                                                    Future.delayed(
+                                                        Duration(seconds: 1),
+                                                        () {
+                                                      if (docExists == false) {
+                                                        textControllerKey
+                                                            .clear();
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                SnackBar(
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .red.shade600,
+                                                          duration: Duration(
+                                                              seconds: 1),
+                                                          content: Text(
+                                                            "KEY DOES NOT EXIST!",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ),
+                                                        ));
+                                                      } else {
+                                                        if (textControllerKey
+                                                            .text
+                                                            .contains('BAR')) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      ((context) =>
+                                                                          barReadyScreen())));
+                                                        }
+                                                        if (textControllerKey
+                                                            .text
+                                                            .contains(
+                                                                'PARTY')) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      ((context) =>
+                                                                          partyReadyScreen())));
+                                                        }
+                                                        if (textControllerKey
+                                                            .text
+                                                            .contains(
+                                                                'FUNERAL')) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      ((context) =>
+                                                                          funeralReadyScreen())));
+                                                        }
+                                                        if (!textControllerKey
+                                                                .text
+                                                                .contains(
+                                                                    'FUNERAL') &&
+                                                            !textControllerKey
+                                                                .text
+                                                                .contains(
+                                                                    'PARTY') &&
+                                                            !textControllerKey
+                                                                .text
+                                                                .contains(
+                                                                    'BAR')) {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      ((context) =>
+                                                                          customReadyScreen())));
+                                                        }
+                                                      }
+                                                    });
+                                                  }
+
+                                                  if (textControllerKey.text
+                                                      .contains('AERFAMILY')) {
+                                                    Navigator.of(context,
+                                                            rootNavigator: true)
+                                                        .pop();
+
+                                                    setState(() {
+                                                      isFuneral = false;
+                                                      isBar = false;
+                                                      isParty = false;
+                                                      isUniversal = true;
+                                                    });
+                                                    gameMode = 'AERFAMILY';
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: ((context) =>
+                                                            AlertDialog(
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(
+                                                                            32))),
+                                                                backgroundColor:
+                                                                    Colors.pink[
+                                                                        300],
+                                                                title: Text(
+                                                                  'Family Gathering Mode',
+                                                                  style: GoogleFonts.quicksand(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                content: StatefulBuilder(builder:
+                                                                    (BuildContext
+                                                                            context,
+                                                                        StateSetter
+                                                                            setState) {
+                                                                  return Stack(
+                                                                    children: [
+                                                                      Align(
+                                                                          alignment: Alignment(
+                                                                              0,
+                                                                              -0.9),
+                                                                          child:
+                                                                              CheckboxListTile(
+                                                                            controlAffinity:
+                                                                                ListTileControlAffinity.leading,
+                                                                            value:
+                                                                                isLaura,
+                                                                            onChanged:
+                                                                                (bool? laura) {
+                                                                              if (isFuneral == false) {
+                                                                                setState(() {
+                                                                                  isLaura = laura;
+                                                                                });
+                                                                              }
+                                                                              if (isFuneral == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Funeral Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                              if (isBar == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Bar Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                              if (isParty == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Party Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                            },
+                                                                            title:
+                                                                                Text(
+                                                                              'Laura is here',
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[900]),
+                                                                            ),
+                                                                            subtitle:
+                                                                                Text('Laura will be in attendance'),
+                                                                            activeColor:
+                                                                                Colors.green.shade200,
+                                                                          )),
+                                                                      Align(
+                                                                          alignment: Alignment(
+                                                                              0,
+                                                                              -0.6),
+                                                                          child:
+                                                                              CheckboxListTile(
+                                                                            controlAffinity:
+                                                                                ListTileControlAffinity.leading,
+                                                                            value:
+                                                                                isOma,
+                                                                            onChanged:
+                                                                                (bool? oma) {
+                                                                              if (isFuneral == false) {
+                                                                                setState(() {
+                                                                                  isOma = oma;
+                                                                                });
+                                                                              }
+                                                                              if (isFuneral == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Funeral Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                              if (isBar == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Bar Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                              if (isParty == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Party Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                            },
+                                                                            title:
+                                                                                Text(
+                                                                              'Oma is here',
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[900]),
+                                                                            ),
+                                                                            subtitle:
+                                                                                Text('Oma will be in attendance'),
+                                                                            activeColor:
+                                                                                Colors.green.shade200,
+                                                                          )),
+                                                                      Align(
+                                                                          alignment: Alignment(
+                                                                              0,
+                                                                              -0.3),
+                                                                          child:
+                                                                              CheckboxListTile(
+                                                                            controlAffinity:
+                                                                                ListTileControlAffinity.leading,
+                                                                            value:
+                                                                                isEdl,
+                                                                            onChanged:
+                                                                                (bool? edl) {
+                                                                              if (isFuneral == false) {
+                                                                                setState(() {
+                                                                                  isEdl = edl;
+                                                                                });
+                                                                              }
+                                                                              if (isFuneral == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Funeral Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                              if (isBar == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Bar Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                              if (isParty == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Party Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                            },
+                                                                            title:
+                                                                                Text(
+                                                                              'Edls are here',
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[900]),
+                                                                            ),
+                                                                            subtitle:
+                                                                                Text('Heather and David will be in attendance'),
+                                                                            activeColor:
+                                                                                Colors.green.shade200,
+                                                                          )),
+                                                                      Align(
+                                                                          alignment: Alignment(
+                                                                              0,
+                                                                              0),
+                                                                          child:
+                                                                              CheckboxListTile(
+                                                                            controlAffinity:
+                                                                                ListTileControlAffinity.leading,
+                                                                            value:
+                                                                                isRoth,
+                                                                            onChanged:
+                                                                                (bool? roth) {
+                                                                              if (isFuneral == false) {
+                                                                                setState(() {
+                                                                                  isRoth = roth;
+                                                                                });
+                                                                              }
+                                                                              if (isFuneral == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Funeral Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                              if (isBar == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Bar Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                              if (isParty == true) {
+                                                                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Colors.red.shade600,
+                                                                                  duration: Duration(seconds: 1),
+                                                                                  content: Text(
+                                                                                    "Cannot check while Party Mode is active",
+                                                                                    style: TextStyle(fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ));
+                                                                              }
+                                                                            },
+                                                                            activeColor:
+                                                                                Colors.green.shade200,
+                                                                            title:
+                                                                                Text(
+                                                                              'Rothwells are here',
+                                                                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[900]),
+                                                                            ),
+                                                                            subtitle:
+                                                                                Text('Diane, Don, or Kathi will be in attendance'),
+                                                                          )),
+                                                                      Align(
+                                                                        alignment: Alignment(
+                                                                            0,
+                                                                            .5),
+                                                                        child: Material(
+                                                                            color: Colors.pink.shade300,
+                                                                            child: InkWell(
+                                                                                splashFactory: InkRipple.splashFactory,
+                                                                                splashColor: Colors.teal.shade700.withOpacity(0.5),
+                                                                                highlightColor: Colors.teal.shade700.withOpacity(0.5),
+                                                                                borderRadius: const BorderRadius.all(
+                                                                                  Radius.circular(20.0),
+                                                                                ),
+                                                                                onTap: () {
+                                                                                  _controller.nextPage(
+                                                                                    duration: Duration(milliseconds: 300),
+                                                                                    curve: Curves.easeIn,
+                                                                                  );
+                                                                                  Navigator.of(context, rootNavigator: true).pop();
+                                                                                },
+                                                                                child: Ink(
+                                                                                    height: 65,
+                                                                                    width: 125,
+                                                                                    decoration: BoxDecoration(
+                                                                                      borderRadius: BorderRadius.all(
+                                                                                        Radius.circular(20.0),
+                                                                                      ),
+                                                                                      color: Colors.teal.shade400,
+                                                                                    ),
+                                                                                    child: Center(
+                                                                                      child: Text(
+                                                                                        'Submit',
+                                                                                        style: GoogleFonts.quicksand(
+                                                                                          color: Colors.white,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                          fontSize: 18,
+                                                                                        ),
+                                                                                      ),
+                                                                                    )))),
+                                                                      )
+                                                                    ],
+                                                                  );
+                                                                }))));
+                                                  }
+                                                },
+                                                icon: const Icon(Icons.send),
+                                              )),
+                                        );
+                                      }))));
+                            }
+                          },
+                          child: Container(
+                            height: 80,
+                            width: 160,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(20.0),
+                              ),
+                              color: Colors.greenAccent.shade400,
+                            ),
+                            child: Center(
+                                child: Text(
+                              'Join Game',
+                              style: GoogleFonts.quicksand(
+                                  color: Colors.grey.shade600,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            )),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  ),
                 ),
 
                 //Page 4
