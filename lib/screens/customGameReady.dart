@@ -52,6 +52,7 @@ class customReadyPage extends State<customReadyScreen> {
         hourGlassOpac = 0;
         gameReady = true;
       });
+      gameReady = true;
     });
   }
 

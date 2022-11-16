@@ -77,15 +77,7 @@ class customPage extends State<customScreen> {
           ),
           elevation: 0,
           backgroundColor: Colors.tealAccent.shade400,
-          leading: Builder(builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: (() {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => FirstScreen())));
-              }),
-            );
-          }),
+          automaticallyImplyLeading: false,
           //automaticallyImplyLeading: true,
         ),
         body: Container(
