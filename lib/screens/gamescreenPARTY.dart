@@ -1203,7 +1203,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                             child: Text(
                               'x ' + tileLockCount.toString(),
                               style: TextStyle(
-                                  color: Colors.black54, fontSize: 24),
+                                  color: Colors.grey.shade400, fontSize: 24),
                             )),
                       ],
                     ),
@@ -1295,7 +1295,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                             child: Text(
                               'x ' + randThreeLockCount.toString(),
                               style: TextStyle(
-                                  color: Colors.black54, fontSize: 24),
+                                  color: Colors.grey.shade400, fontSize: 24),
                             )),
                       ],
                     ),
@@ -1371,7 +1371,7 @@ class gamescreenPartyState extends State<gamescreenParty>
                             child: Text(
                               'x ' + bandageCount.toString(),
                               style: TextStyle(
-                                  color: Colors.black54, fontSize: 24),
+                                  color: Colors.grey.shade400, fontSize: 24),
                             )),
                       ],
                     ),

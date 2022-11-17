@@ -394,6 +394,7 @@ class FirstPage extends State<FirstScreen> {
                               )),
                           textInputAction: TextInputAction.go,
                           onSubmitted: (value) {
+                            modelClass.value = textController.text;
                             _controller.nextPage(
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeIn,

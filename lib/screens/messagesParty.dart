@@ -280,6 +280,11 @@ class messageBoardPartyState extends State<messageBoardParty> {
                           )),
                     ),
                   ),
+                  Container(
+                    height: 25,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.deepOrange.shade100,
+                  ),
                 ],
               ),
             )),

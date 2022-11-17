@@ -263,6 +263,11 @@ class messageBoardState extends State<messageBoard> {
                           )),
                     ),
                   ),
+                  Container(
+                    height: 25,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.deepOrange.shade100,
+                  ),
                 ],
               ),
             )),
