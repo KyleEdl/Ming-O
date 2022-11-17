@@ -66,113 +66,121 @@ class customDescPage extends State<customDescScreen> {
     await refMessages.set({'CUST DESC': customDescList[i], 'INDEX': cout});
   }
 
+  Future<bool> _onWillPop() async {
+    return false;
+  }
+
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          foregroundColor: Colors.blue,
-          title: Row(
-            children: [
-              SizedBox(
-                width: 50,
-              ),
-              Text('Tile Description Creator',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.quicksand(
-                      color: Colors.black.withOpacity(0.5),
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold)),
-            ],
-          ),
-          elevation: 0,
-          backgroundColor: Colors.tealAccent.shade400,
-          automaticallyImplyLeading: false,
-        ),
-        body: Container(
-          color: Colors.tealAccent.shade700,
-          child: Stack(children: [
-            Container(
-              height: 220,
-              child: Text(''),
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            foregroundColor: Colors.blue,
+            title: Row(
+              children: [
+                SizedBox(
+                  width: 50,
+                ),
+                Text('Tile Description Creator',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.quicksand(
+                        color: Colors.black.withOpacity(0.5),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold)),
+              ],
             ),
-            ListView.builder(
-                itemCount: customList.length,
-                itemBuilder: ((context, index) {
-                  if (index < 25) {
-                    cou = index;
-                  }
-                  return TextField(
-                    textInputAction: TextInputAction.newline,
-                    controller: customTextDesc[index],
-                    maxLength: 100,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    maxLines: 3,
-                    style: GoogleFonts.quicksand(
-                      fontSize: 22,
-                    ),
-                    decoration: InputDecoration(
-                        labelText: customList[index],
-                        labelStyle: GoogleFonts.quicksand(
-                            color: Colors.red[700], fontSize: 20),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(16),
-                            borderSide: BorderSide(
-                                color: Colors.transparent, width: 0))),
-                  );
-                })),
-            Align(
-              alignment: Alignment(.87, .8),
-              child: GestureDetector(
-                onTap: () {
-                  if (customTextDesc[cou].text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      backgroundColor: Colors.red.shade600,
-                      duration: Duration(seconds: 1),
-                      content: Text(
-                        'A required field is empty!',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ));
-                  } else {
-                    for (int i = 0; i < customList.length; i++) {
-                      if (customTextDesc[i].text.isEmpty) {
-                        print('THIS INDEX IS EMPTY');
-                        continue;
-                      } else {
-                        customDescList.add(customTextDesc[i].text);
-                        addCustDesc(i, c);
-                        c++;
-                        print('tapped');
-                      }
+            elevation: 0,
+            backgroundColor: Colors.tealAccent.shade400,
+            automaticallyImplyLeading: false,
+          ),
+          body: Container(
+            color: Colors.tealAccent.shade700,
+            child: Stack(children: [
+              Container(
+                height: 220,
+                child: Text(''),
+              ),
+              ListView.builder(
+                  itemCount: customList.length,
+                  itemBuilder: ((context, index) {
+                    if (index < 25) {
+                      cou = index;
                     }
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => customReadyScreen())));
-                  }
-                },
-                child: Container(
-                  height: 60,
-                  width: 90,
-                  decoration: BoxDecoration(
-                      color: Colors.greenAccent.shade400,
-                      borderRadius: BorderRadius.circular(25)),
-                  child: Center(
-                      child: Text(
-                    'Next',
-                    style: GoogleFonts.quicksand(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                      color: Colors.green.shade900,
-                    ),
-                  )),
+                    return TextField(
+                      textInputAction: TextInputAction.newline,
+                      controller: customTextDesc[index],
+                      maxLength: 100,
+                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      maxLines: 3,
+                      style: GoogleFonts.quicksand(
+                        fontSize: 22,
+                      ),
+                      decoration: InputDecoration(
+                          labelText: customList[index],
+                          labelStyle: GoogleFonts.quicksand(
+                              color: Colors.red[700], fontSize: 20),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                  color: Colors.transparent, width: 0))),
+                    );
+                  })),
+              Align(
+                alignment: Alignment(.87, .8),
+                child: GestureDetector(
+                  onTap: () {
+                    if (customTextDesc[cou].text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: Colors.red.shade600,
+                        duration: Duration(seconds: 1),
+                        content: Text(
+                          'A required field is empty!',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ));
+                    } else {
+                      for (int i = 0; i < customList.length; i++) {
+                        if (customTextDesc[i].text.isEmpty) {
+                          print('THIS INDEX IS EMPTY');
+                          continue;
+                        } else {
+                          customDescList.add(
+                              customList[i] + ": " + customTextDesc[i].text);
+                          addCustDesc(i, c);
+                          c++;
+                          print('tapped');
+                        }
+                      }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => customReadyScreen())));
+                    }
+                  },
+                  child: Container(
+                    height: 60,
+                    width: 90,
+                    decoration: BoxDecoration(
+                        color: Colors.greenAccent.shade400,
+                        borderRadius: BorderRadius.circular(25)),
+                    child: Center(
+                        child: Text(
+                      'Next',
+                      style: GoogleFonts.quicksand(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.green.shade900,
+                      ),
+                    )),
+                  ),
                 ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );

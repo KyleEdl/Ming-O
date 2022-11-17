@@ -72,6 +72,10 @@ class funeralReadyPage extends State<funeralReadyScreen> {
     return gameKey;
   }
 
+  Future<bool> _onWillPop() async {
+    return false;
+  }
+
   Future joinedGame() async {
     await firebaseInit;
 
@@ -102,104 +106,108 @@ class funeralReadyPage extends State<funeralReadyScreen> {
     tileAssignment = gl.tileAssignment;
     shownDescriptions = gl.shownDescriptions;
 
-    return GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Scaffold(
-          body: Container(
-              color: Colors.deepPurpleAccent[100],
-              child: Stack(
-                children: [
-                  Align(
-                      alignment: Alignment(0, -0.5),
-                      child: AnimatedOpacity(
-                          opacity: hourGlassOpac,
-                          duration: const Duration(seconds: 1),
-                          child: Container(
-                            width: 150,
-                            child: RiveAnimation.asset(
-                              'assets/Mingeruchi.riv',
-                              artboard: "hourglass",
-                              animations: [],
-                              fit: BoxFit.fitWidth,
-                              alignment: Alignment.center,
-                            ),
-                          ))),
-                  Align(
-                      alignment: Alignment(0, -0.5),
-                      child: Container(
-                        child: GestureDetector(
-                          onTap: () {
-                            Clipboard.setData(new ClipboardData(text: gameKey))
-                                .then((_) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(
-                                          'Custom Key Copied to Clipboard')));
-                            });
-                          },
-                          child: Text(
-                              "Your Game Key is: \n$gameKey" /* Zack # 2*/,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.quicksand(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.deepPurple[900])),
-                        ),
-                      )),
-                  Align(
-                      alignment: Alignment(0, 0),
-                      child: AnimatedOpacity(
-                          opacity: buttonOpac,
-                          duration: const Duration(seconds: 1),
-                          child: ElevatedButton(
-                            child: Text('Start Ming-O'),
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(150, 50),
-                              primary: Colors.cyan.shade700,
-                            ),
-                            onPressed: () {
-                              if (gameReady == true) {
-                                joinedGame();
-                                Future.delayed(Duration(seconds: 3), () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                              gamescreenFuneral())));
-                                });
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  backgroundColor: Colors.red.shade600,
-                                  duration: Duration(seconds: 1),
-                                  content: Text(
-                                    "Game not ready! Please wait...",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                ));
-                              }
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Scaffold(
+            body: Container(
+                color: Colors.deepPurpleAccent[100],
+                child: Stack(
+                  children: [
+                    Align(
+                        alignment: Alignment(0, -0.5),
+                        child: AnimatedOpacity(
+                            opacity: hourGlassOpac,
+                            duration: const Duration(seconds: 1),
+                            child: Container(
+                              width: 150,
+                              child: RiveAnimation.asset(
+                                'assets/Mingeruchi.riv',
+                                artboard: "hourglass",
+                                animations: [],
+                                fit: BoxFit.fitWidth,
+                                alignment: Alignment.center,
+                              ),
+                            ))),
+                    Align(
+                        alignment: Alignment(0, -0.5),
+                        child: Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              Clipboard.setData(
+                                      new ClipboardData(text: gameKey))
+                                  .then((_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            'Custom Key Copied to Clipboard')));
+                              });
                             },
-                          ))),
-                  Align(
-                    alignment: Alignment(0, 0.4),
-                    child: ElevatedButton(
-                      child: Text('Watch Tutorial'),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(150, 50),
-                        primary: Colors.red.shade700,
-                      ),
-                      onPressed: () async {
-                        const url = 'https://youtu.be/ofT_HdTAbks';
+                            child: Text(
+                                "Your Game Key is: \n$gameKey" /* Zack # 2*/,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.quicksand(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Colors.deepPurple[900])),
+                          ),
+                        )),
+                    Align(
+                        alignment: Alignment(0, 0),
+                        child: AnimatedOpacity(
+                            opacity: buttonOpac,
+                            duration: const Duration(seconds: 1),
+                            child: ElevatedButton(
+                              child: Text('Start Ming-O'),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(150, 50),
+                                primary: Colors.cyan.shade700,
+                              ),
+                              onPressed: () {
+                                if (gameReady == true) {
+                                  joinedGame();
+                                  Future.delayed(Duration(seconds: 3), () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                gamescreenFuneral())));
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: Colors.red.shade600,
+                                    duration: Duration(seconds: 1),
+                                    content: Text(
+                                      "Game not ready! Please wait...",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ));
+                                }
+                              },
+                            ))),
+                    Align(
+                      alignment: Alignment(0, 0.4),
+                      child: ElevatedButton(
+                        child: Text('Watch Tutorial'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(150, 50),
+                          primary: Colors.red.shade700,
+                        ),
+                        onPressed: () async {
+                          const url = 'https://youtu.be/ofT_HdTAbks';
 
-                        await launch(url);
-                      },
+                          await launch(url);
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              )),
-        ));
+                  ],
+                )),
+          )),
+    );
   }
 }
