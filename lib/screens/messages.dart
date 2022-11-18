@@ -201,6 +201,16 @@ class messageBoardState extends State<messageBoard> {
                             ),
                           ));
                         }
+                        if (chatController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red.shade600,
+                            duration: Duration(seconds: 1),
+                            content: Text(
+                              "Message can't be blank",
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ));
+                        }
                         if (chatController.text.isNotEmpty &&
                             !chatController.text.contains('/admin9245') &&
                             !chatController.text.contains('*** ') &&
@@ -212,16 +222,6 @@ class messageBoardState extends State<messageBoard> {
                               ': ' +
                               chatController.text);
                           chatController.clear();
-                        }
-                        if (chatController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.red.shade600,
-                            duration: Duration(seconds: 1),
-                            content: Text(
-                              "Message can't be blank",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ));
                         }
                       },
                       textCapitalization: TextCapitalization.sentences,
@@ -253,18 +253,6 @@ class messageBoardState extends State<messageBoard> {
                                   ),
                                 ));
                               }
-                              if (chatController.text.isNotEmpty &&
-                                  !chatController.text.contains('/admin9245') &&
-                                  !chatController.text.contains('*** ') &&
-                                  !chatController.text.contains(' ***') &&
-                                  !chatController.text.contains('***')) {
-                                //Zack writes code here
-                                FocusScope.of(context).unfocus();
-                                uploadMessage(modelClass.value.toString() +
-                                    ': ' +
-                                    chatController.text);
-                                chatController.clear();
-                              }
                               if (chatController.text.isEmpty) {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
@@ -276,6 +264,18 @@ class messageBoardState extends State<messageBoard> {
                                         TextStyle(fontWeight: FontWeight.w600),
                                   ),
                                 ));
+                              }
+                              if (chatController.text.isNotEmpty &&
+                                  !chatController.text.contains('/admin9245') &&
+                                  !chatController.text.contains('*** ') &&
+                                  !chatController.text.contains(' ***') &&
+                                  !chatController.text.contains('***')) {
+                                //Zack writes code here
+                                FocusScope.of(context).unfocus();
+                                uploadMessage(modelClass.value.toString() +
+                                    ': ' +
+                                    chatController.text);
+                                chatController.clear();
                               }
                             },
                             icon: const Icon(Icons.send),

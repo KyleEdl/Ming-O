@@ -255,18 +255,6 @@ class messageBoardCustomState extends State<messageBoardCustom> {
                                   ),
                                 ));
                               }
-                              if (chatController.text.isNotEmpty &&
-                                  !chatController.text.contains('/admin9245') &&
-                                  !chatController.text.contains('*** ') &&
-                                  !chatController.text.contains(' ***') &&
-                                  !chatController.text.contains('***')) {
-                                //Zack writes code here
-                                FocusScope.of(context).unfocus();
-                                uploadMessage(modelClass.value.toString() +
-                                    ': ' +
-                                    chatController.text);
-                                chatController.clear();
-                              }
                               if (chatController.text.isEmpty) {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
@@ -278,6 +266,18 @@ class messageBoardCustomState extends State<messageBoardCustom> {
                                         TextStyle(fontWeight: FontWeight.w600),
                                   ),
                                 ));
+                              }
+                              if (chatController.text.isNotEmpty &&
+                                  !chatController.text.contains('/admin9245') &&
+                                  !chatController.text.contains('*** ') &&
+                                  !chatController.text.contains(' ***') &&
+                                  !chatController.text.contains('***')) {
+                                //Zack writes code here
+                                FocusScope.of(context).unfocus();
+                                uploadMessage(modelClass.value.toString() +
+                                    ': ' +
+                                    chatController.text);
+                                chatController.clear();
                               }
                             },
                             icon: const Icon(Icons.send),

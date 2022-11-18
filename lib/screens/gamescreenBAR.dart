@@ -310,8 +310,9 @@ class gamescreenBarState extends State<gamescreenBar>
     timerGrace?.cancel();
     startTimerNot();
     grace = false;
-
-    _graceOpac = 0;
+    setState(() {
+      _graceOpac = 0;
+    });
   }
 
   static Timer? timerCompletion;
@@ -646,15 +647,18 @@ class gamescreenBarState extends State<gamescreenBar>
         grace = true;
         Vibration.vibrate(duration: 500);
         startTimerGrace();
-        _graceOpac = 1;
-        values[uncheckSingle.toInt()] = false;
+        setState(() {
+          _graceOpac = 1;
 
-        attackVal[uncheckSingle.toInt()] = true;
+          values[uncheckSingle.toInt()] = false;
 
-        checkedTiles--;
-        healthLevel--;
+          attackVal[uncheckSingle.toInt()] = true;
 
-        healthConditions();
+          checkedTiles--;
+          healthLevel--;
+
+          healthConditions();
+        });
       } else if (checkedTiles == 0 || appActive == false) {
         timerNot?.cancel;
         Future.delayed(Duration(seconds: 1), () {
@@ -688,18 +692,20 @@ class gamescreenBarState extends State<gamescreenBar>
         //spacing this out good lord
         grace = true;
         startTimerGrace();
-        _graceOpac = 1;
-        values[uncheckTripleOne.toInt()] = false;
-        values[uncheckTripleTwo.toInt()] = false;
-        values[uncheckTripleThree.toInt()] = false;
-        attackVal[uncheckTripleOne.toInt()] = true;
-        attackVal[uncheckTripleTwo.toInt()] = true;
-        attackVal[uncheckTripleThree.toInt()] = true;
+        setState(() {
+          _graceOpac = 1;
+          values[uncheckTripleOne.toInt()] = false;
+          values[uncheckTripleTwo.toInt()] = false;
+          values[uncheckTripleThree.toInt()] = false;
+          attackVal[uncheckTripleOne.toInt()] = true;
+          attackVal[uncheckTripleTwo.toInt()] = true;
+          attackVal[uncheckTripleThree.toInt()] = true;
 
-        checkedTiles = checkedTiles - 3;
-        Vibration.vibrate(pattern: [250, 500, 250, 500, 250, 1500]);
-        healthLevel--;
-        healthConditions();
+          checkedTiles = checkedTiles - 3;
+          Vibration.vibrate(pattern: [250, 500, 250, 500, 250, 1500]);
+          healthLevel--;
+          healthConditions();
+        });
       } else if (checkedTiles <= 2 || appActive == false) {
         timerNot?.cancel();
         Future.delayed(Duration(seconds: 1), () {
@@ -914,7 +920,9 @@ class gamescreenBarState extends State<gamescreenBar>
           print('THE ATTACK IS BEING CHECKED FOR SINGLE');
           timerGrace?.cancel();
           timerNot?.cancel();
-          singleUncheckMethod();
+          setState(() {
+            singleUncheckMethod();
+          });
         }));
       }
 
@@ -927,7 +935,9 @@ class gamescreenBarState extends State<gamescreenBar>
           print('THE ATTACK IS BEING CHECKED FOR TRIPLE');
           timerGrace?.cancel();
           timerNot?.cancel();
-          tripleUncheckMethod();
+          setState(() {
+            tripleUncheckMethod();
+          });
         }));
       }
       if (messages[0].contains('*** ') &&
@@ -1756,15 +1766,18 @@ class gamescreenBarState extends State<gamescreenBar>
                                         ? Colors.green.shade300
                                         : Colors.blue.shade100),
                               ),
-                              Container(
-                                  height: 75,
-                                  width: 75,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(25),
-                                    color: attackVal[index]
-                                        ? Colors.red.withOpacity(_attackOpac)
-                                        : Colors.transparent,
-                                  )),
+                              StatefulBuilder(builder:
+                                  (BuildContext context, StateSetter setState) {
+                                return Container(
+                                    height: 75,
+                                    width: 75,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(25),
+                                      color: attackVal[index]
+                                          ? Colors.red.withOpacity(_attackOpac)
+                                          : Colors.transparent,
+                                    ));
+                              }),
                             ],
                           ),
                         );

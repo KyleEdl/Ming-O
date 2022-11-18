@@ -52,7 +52,10 @@ class FirstPage extends State<FirstScreen> {
   static String gameKey = "";
   static int customKey = (Random().nextInt(100000) + 10000);
   static String gameKeySet = customKey.toString();
+  static bool nextButtonActive = false;
   double mingOpac = 1;
+  double nextGreenOpac = 0;
+
   // static String myName = "";
   // static String myAbilName = "";
   // @override
@@ -465,6 +468,17 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isFuneral,
                                                 onChanged: (bool? funeral) {
+                                                  setState(
+                                                    () {
+                                                      nextButtonActive =
+                                                          !nextButtonActive;
+                                                      nextGreenOpac =
+                                                          nextButtonActive ==
+                                                                  true
+                                                              ? 0.8
+                                                              : 0;
+                                                    },
+                                                  );
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
@@ -531,6 +545,17 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isBar,
                                                 onChanged: (bool? bar) {
+                                                  setState(
+                                                    () {
+                                                      nextButtonActive =
+                                                          !nextButtonActive;
+                                                      nextGreenOpac =
+                                                          nextButtonActive ==
+                                                                  true
+                                                              ? 0.8
+                                                              : 0;
+                                                    },
+                                                  );
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
@@ -599,6 +624,17 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isParty,
                                                 onChanged: (bool? party) {
+                                                  setState(
+                                                    () {
+                                                      nextButtonActive =
+                                                          !nextButtonActive;
+                                                      nextGreenOpac =
+                                                          nextButtonActive ==
+                                                                  true
+                                                              ? 0.8
+                                                              : 0;
+                                                    },
+                                                  );
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
@@ -672,7 +708,7 @@ class FirstPage extends State<FirstScreen> {
                                                     'If you are at a party, click this.'),
                                               )),
                                           Align(
-                                            alignment: Alignment(0, 0.2),
+                                            alignment: Alignment(0, 0.275),
                                             child: Text(
                                               'Or',
                                               style: GoogleFonts.quicksand(
@@ -765,111 +801,125 @@ class FirstPage extends State<FirstScreen> {
                                             ),
                                           ),
                                           Align(
-                                            alignment: Alignment(.99, .99),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                if (isBar == true ||
-                                                    textControllerKey.text
-                                                        .contains('BAR')) {
-                                                  gameKeySet = "BAR" +
-                                                      (Random().nextInt(1000) +
-                                                              100)
-                                                          .toString();
-                                                  isBar = true;
-                                                  gameList gl = new gameList(
-                                                      isLaura,
-                                                      isOma,
-                                                      isEdl,
-                                                      isRoth,
-                                                      isFuneral,
-                                                      isBar,
-                                                      isParty,
-                                                      isUniversal);
-                                                  tileAssignment =
-                                                      gl.tileAssignment;
-                                                  shownDescriptions =
-                                                      gl.shownDescriptions;
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: ((context) =>
-                                                              barReadyScreen())));
-                                                }
-                                                if (isFuneral == true ||
-                                                    textControllerKey.text
-                                                        .contains('FUNERAL')) {
-                                                  gameKeySet = "FUNERAL" +
-                                                      (Random().nextInt(1000) +
-                                                              100)
-                                                          .toString();
-                                                  isFuneral = true;
-                                                  gameList gl = new gameList(
-                                                      isLaura,
-                                                      isOma,
-                                                      isEdl,
-                                                      isRoth,
-                                                      isFuneral,
-                                                      isBar,
-                                                      isParty,
-                                                      isUniversal);
-                                                  tileAssignment =
-                                                      gl.tileAssignment;
-                                                  shownDescriptions =
-                                                      gl.shownDescriptions;
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: ((context) =>
-                                                              funeralReadyScreen())));
-                                                }
-                                                if (isParty == true ||
-                                                    textControllerKey.text
-                                                        .contains('PARTY')) {
-                                                  gameKeySet = "PARTY" +
-                                                      (Random().nextInt(1000) +
-                                                              100)
-                                                          .toString();
-                                                  isParty = true;
-                                                  gameList gl = new gameList(
-                                                      isLaura,
-                                                      isOma,
-                                                      isEdl,
-                                                      isRoth,
-                                                      isFuneral,
-                                                      isBar,
-                                                      isParty,
-                                                      isUniversal);
-                                                  tileAssignment =
-                                                      gl.tileAssignment;
-                                                  shownDescriptions =
-                                                      gl.shownDescriptions;
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: ((context) =>
-                                                              partyReadyScreen())));
-                                                }
-                                              },
-                                              child: Container(
-                                                height: 60,
-                                                width: 90,
-                                                decoration: BoxDecoration(
-                                                    color: Colors
-                                                        .greenAccent.shade400
-                                                        .withOpacity(.7),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            75)),
-                                                child: Center(
-                                                    child: Text(
-                                                  'Next',
-                                                  style: GoogleFonts.quicksand(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
-                                                    color:
-                                                        Colors.green.shade900,
-                                                  ),
-                                                )),
+                                            alignment: Alignment(.0, .05),
+                                            child: AnimatedOpacity(
+                                              opacity: nextGreenOpac,
+                                              duration: const Duration(
+                                                  milliseconds: 250),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  if (nextButtonActive ==
+                                                      false) {}
+                                                  if (isBar == true ||
+                                                      textControllerKey.text
+                                                          .contains('BAR')) {
+                                                    gameKeySet = "BAR" +
+                                                        (Random().nextInt(
+                                                                    1000) +
+                                                                100)
+                                                            .toString();
+
+                                                    nextButtonActive = true;
+
+                                                    isBar = true;
+                                                    gameList gl = new gameList(
+                                                        isLaura,
+                                                        isOma,
+                                                        isEdl,
+                                                        isRoth,
+                                                        isFuneral,
+                                                        isBar,
+                                                        isParty,
+                                                        isUniversal);
+                                                    tileAssignment =
+                                                        gl.tileAssignment;
+                                                    shownDescriptions =
+                                                        gl.shownDescriptions;
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: ((context) =>
+                                                                barReadyScreen())));
+                                                  }
+                                                  if (isFuneral == true ||
+                                                      textControllerKey.text
+                                                          .contains(
+                                                              'FUNERAL')) {
+                                                    gameKeySet = "FUNERAL" +
+                                                        (Random().nextInt(
+                                                                    1000) +
+                                                                100)
+                                                            .toString();
+                                                    isFuneral = true;
+                                                    gameList gl = new gameList(
+                                                        isLaura,
+                                                        isOma,
+                                                        isEdl,
+                                                        isRoth,
+                                                        isFuneral,
+                                                        isBar,
+                                                        isParty,
+                                                        isUniversal);
+                                                    tileAssignment =
+                                                        gl.tileAssignment;
+                                                    shownDescriptions =
+                                                        gl.shownDescriptions;
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: ((context) =>
+                                                                funeralReadyScreen())));
+                                                  }
+                                                  if (isParty == true ||
+                                                      textControllerKey.text
+                                                          .contains('PARTY')) {
+                                                    gameKeySet = "PARTY" +
+                                                        (Random().nextInt(
+                                                                    1000) +
+                                                                100)
+                                                            .toString();
+                                                    isParty = true;
+                                                    gameList gl = new gameList(
+                                                        isLaura,
+                                                        isOma,
+                                                        isEdl,
+                                                        isRoth,
+                                                        isFuneral,
+                                                        isBar,
+                                                        isParty,
+                                                        isUniversal);
+                                                    tileAssignment =
+                                                        gl.tileAssignment;
+                                                    shownDescriptions =
+                                                        gl.shownDescriptions;
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: ((context) =>
+                                                                partyReadyScreen())));
+                                                  }
+                                                },
+                                                child: Container(
+                                                  height: 60,
+                                                  width: 90,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors
+                                                          .greenAccent.shade400,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              75)),
+                                                  child: Center(
+                                                      child: Text(
+                                                    'Next',
+                                                    style:
+                                                        GoogleFonts.quicksand(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 18,
+                                                            color: Colors.green
+                                                                .shade900),
+                                                  )),
+                                                ),
                                               ),
                                             ),
                                           ),

@@ -299,7 +299,7 @@ class gameList {
     'If Laura hugs someone for more than 5 seconds or touches anyone else in an uncomfortable manner, this tile is qualified.',
     'If someone mentions an issue with Laura and she says she is fine or counters the other person, this tile is qualified',
     'If Laura has a noticeably smaller amount of food on her plate, this tile is qualified',
-    'f Laura falls, this tile is qualified',
+    'If Laura falls, this tile is qualified',
     'If Laura talks about how she looks or how she envy’s someone else’s appearance, this tile is qualified',
     'If Laura asks about the whereabouts of Isabel, this tile is qualified',
     'If Laura is having a sentimental conversation with Kiwi, this tile is qualified',
