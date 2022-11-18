@@ -99,7 +99,7 @@ class gamescreenCustomState extends State<gamescreenCustom>
 
   static int checkedTiles = 1;
 
-  Timer? timerFalse;
+  static Timer? timerFalse;
   static const maxSecondsFalse = 4;
   int secondsFalse = maxSecondsFalse;
   void startTimerFalse() {
@@ -136,11 +136,11 @@ class gamescreenCustomState extends State<gamescreenCustom>
         .collection('messages')
         .doc(cr.getgameKey)
         .collection(cr.getgameKey)
-        .doc("ADMIN: $name's Attack Completed");
+        .doc("*** $name's Attack Completed ***");
 
     await refMessages.set({
       'username': 'ADMIN',
-      'message': 'ADMIN: $name Has Sent A Single Attack',
+      'message': '*** $name Has Sent A Single Attack ***',
       'created': DateTime.now()
     });
   }
@@ -153,10 +153,10 @@ class gamescreenCustomState extends State<gamescreenCustom>
         .collection('messages')
         .doc(cr.getgameKey)
         .collection(cr.getgameKey)
-        .doc('ADMIN: $name Has Sent A Single Attack');
+        .doc('*** $name Has Sent A Single Attack ***');
     await refMessages.set({
       'username': 'ADMIN',
-      'message': 'ADMIN: $name Has Sent A Single Attack',
+      'message': '*** $name Has Sent A Single Attack ***',
       'created': DateTime.now()
     });
   }
@@ -169,10 +169,10 @@ class gamescreenCustomState extends State<gamescreenCustom>
         .collection('messages')
         .doc(cr.getgameKey)
         .collection(cr.getgameKey)
-        .doc('ADMIN: $name Has Sent A Triple Attack');
+        .doc('*** $name Has Sent A Triple Attack ***');
     await refMessages.set({
       'username': 'ADMIN',
-      'message': 'ADMIN: $name Has Sent A Triple Attack',
+      'message': '*** $name Has Sent A Triple Attack ***',
       'created': DateTime.now()
     });
   }
@@ -185,10 +185,10 @@ class gamescreenCustomState extends State<gamescreenCustom>
         .collection('messages')
         .doc(cr.getgameKey)
         .collection(cr.getgameKey)
-        .doc('ADMIN: $name Has Died');
+        .doc('*** $name Has Died ***');
     await refMessages.set({
       'username': 'ADMIN',
-      'message': 'ADMIN: $name Has Died',
+      'message': '*** $name Has Died ***',
       'created': DateTime.now()
     });
   }
@@ -201,10 +201,10 @@ class gamescreenCustomState extends State<gamescreenCustom>
         .collection('messages')
         .doc(cr.getgameKey)
         .collection(cr.getgameKey)
-        .doc('ADMIN: $name Got Ming-O!');
+        .doc('*** $name Got Ming-O! ***');
     await refMessages.set({
       'username': 'ADMIN',
-      'message': 'ADMIN: $name Got Ming-O!',
+      'message': '*** $name Got Ming-O! ***',
       'created': DateTime.now()
     });
   }
@@ -250,9 +250,9 @@ class gamescreenCustomState extends State<gamescreenCustom>
   static List<String> messages = [];
 
 //cooldown timer
-  Timer? timer;
+  static Timer? timer;
   static const maxSeconds = 300;
-  int seconds = maxSeconds;
+  static int seconds = maxSeconds;
   void startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       //set Duration back to seconds: 1 when making offical and maxSeconds = 300 (aka 5 minute timer)
@@ -313,7 +313,7 @@ class gamescreenCustomState extends State<gamescreenCustom>
     _graceOpac = 0;
   }
 
-  Timer? timerCompletion;
+  static Timer? timerCompletion;
   static const maxSecondsCompletion = 3;
   static int secondsCompletion = maxSecondsCompletion;
   void startTimerCompletion() {
@@ -837,7 +837,7 @@ class gamescreenCustomState extends State<gamescreenCustom>
     }
   }
 
-  Timer? timerNot;
+  static Timer? timerNot;
   static const maxSecondsNot = 2;
   static int secondsNot = maxSecondsNot;
   void startTimerNot() {
@@ -899,6 +899,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
 //CHECK THIS PIECE OUT
     if (messages.isNotEmpty) {
       if (messages[0].contains('Has Sent A Single Attack') &&
+          messages[0].contains('*** ') &&
+          messages[0].contains(' ***') &&
           !messages[0].contains(name) &&
           messages[0] != lastCurrent) {
         Timer(Duration(milliseconds: 500), (() {
@@ -910,6 +912,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
       }
 
       if (messages[0].contains('Has Sent A Triple Attack') &&
+          messages[0].contains('*** ') &&
+          messages[0].contains(' ***') &&
           !messages[0].contains(name) &&
           messages[0] != lastCurrent) {
         Timer(Duration(milliseconds: 500), (() {
@@ -919,7 +923,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
           tripleUncheckMethod();
         }));
       }
-      if (messages[0].contains('ADMIN:') &&
+      if (messages[0].contains('*** ') &&
+          messages[0].contains(' ***') &&
           messages[0].contains('Got Ming-O!') &&
           !messages[0].contains(name)) {
         Timer(Duration(milliseconds: 500), (() {
@@ -932,7 +937,8 @@ class gamescreenCustomState extends State<gamescreenCustom>
           });
         }));
       }
-      if (messages[0].contains('ADMIN:') &&
+      if (messages[0].contains('*** ') &&
+          messages[0].contains(' ***') &&
           messages[0].contains('Got Ming-O!') &&
           messages[0].contains(name)) {
         Timer(Duration(milliseconds: 500), (() {
@@ -978,9 +984,7 @@ This issue is one line below. Not sure if that will cause issues starting at lin
     final gamescreenCustomState gs = gamescreenCustomState();
 //cooldown is running
     if (isRunning == true) {
-      setState(() {
-        _opacityTimer = 1;
-      });
+      _opacityTimer = 1;
     } else {
       _opacityTimer = 0;
     }

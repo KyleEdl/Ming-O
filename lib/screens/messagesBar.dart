@@ -22,7 +22,6 @@ import 'package:bingo_application/firebase_options.dart';
 import 'package:bingo_application/screens/messages.dart';
 import 'package:vibration/vibration.dart';
 import 'package:bingo_application/screens/gamescreenBAR.dart';
-import 'package:bingo_application/screens/adminChat.dart';
 import 'package:flutter/services.dart';
 
 class messageBoardBar extends StatefulWidget {
@@ -186,10 +185,11 @@ class messageBoardBarState extends State<messageBoardBar> {
                                   title: Text(
                                     messages[index],
                                     style: GoogleFonts.quicksand(
-                                        color:
-                                            messages[index].contains('ADMIN: ')
-                                                ? Colors.red.withOpacity(0.7)
-                                                : Colors.black.withOpacity(0.7),
+                                        color: messages[index]
+                                                    .contains('*** ') &&
+                                                messages[index].contains(' ***')
+                                            ? Colors.red.withOpacity(0.7)
+                                            : Colors.black.withOpacity(0.7),
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -207,20 +207,29 @@ class messageBoardBarState extends State<messageBoardBar> {
                       controller: chatController,
                       textInputAction: TextInputAction.send,
                       onSubmitted: (value) {
+                        if (chatController.text.contains('***')) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red.shade600,
+                            duration: Duration(seconds: 1),
+                            content: Text(
+                              "Cannot use ***'s",
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ));
+                        }
                         if (chatController.text.isNotEmpty &&
-                            !chatController.text.contains('/admin9245')) {
+                            !chatController.text.contains('/admin9245') &&
+                            !chatController.text.contains('*** ') &&
+                            !chatController.text.contains(' ***') &&
+                            !chatController.text.contains('***')) {
                           //Zack writes code here
                           FocusScope.of(context).unfocus();
                           uploadMessage(modelClass.value.toString() +
                               ': ' +
                               chatController.text);
                           chatController.clear();
-                        } else if (chatController.text.contains('/admin9245')) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => adminScreen())));
-                        } else {
+                        }
+                        if (chatController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.red.shade600,
                             duration: Duration(seconds: 1),
@@ -248,22 +257,31 @@ class messageBoardBarState extends State<messageBoardBar> {
                           ),
                           suffixIcon: IconButton(
                             onPressed: () {
+                              if (chatController.text.contains('***')) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  backgroundColor: Colors.red.shade600,
+                                  duration: Duration(seconds: 1),
+                                  content: Text(
+                                    "Cannot use ***'s",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ));
+                              }
                               if (chatController.text.isNotEmpty &&
-                                  !chatController.text.contains('/admin9245')) {
+                                  !chatController.text.contains('/admin9245') &&
+                                  !chatController.text.contains('*** ') &&
+                                  !chatController.text.contains(' ***') &&
+                                  !chatController.text.contains('***')) {
                                 //Zack writes code here
                                 FocusScope.of(context).unfocus();
                                 uploadMessage(modelClass.value.toString() +
                                     ': ' +
                                     chatController.text);
                                 chatController.clear();
-                              } else if (chatController.text
-                                  .contains('/admin9245')) {
-                                gamescreenBarState().timerNot?.cancel();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: ((context) => adminScreen())));
-                              } else {
+                              }
+                              if (chatController.text.isEmpty) {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
                                   backgroundColor: Colors.red.shade600,

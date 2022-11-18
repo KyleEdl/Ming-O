@@ -89,10 +89,10 @@ class barReadyPage extends State<barReadyScreen> {
         .collection('messages')
         .doc(gameKey)
         .collection(gameKey)
-        .doc('ADMIN: $name Has Joined $gameKey');
+        .doc('*** $name Has Joined $gameKey ***');
     await refMessages.set({
       'username': 'ADMIN',
-      'message': 'ADMIN: $name Has Joined $gameKey',
+      'message': '*** $name Has Joined $gameKey ***',
       'created': DateTime.now()
     });
   }

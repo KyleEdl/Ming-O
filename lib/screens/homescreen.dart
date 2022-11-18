@@ -172,10 +172,10 @@ class FirstPage extends State<FirstScreen> {
         .collection('messages')
         .doc(gameMode)
         .collection(gameMode)
-        .doc('ADMIN: $name Has Joined The Game');
+        .doc('*** $name Has Joined The Game ***');
     await refMessages.set({
       'username': 'ADMIN',
-      'message': 'ADMIN: $name Has Joined The Game',
+      'message': '*** $name Has Joined The Game ***',
       'created': DateTime.now()
     });
   }
@@ -332,9 +332,8 @@ class FirstPage extends State<FirstScreen> {
                                   modelClass.value = textController.text;
 
                                   if (textController.text.isNotEmpty &&
-                                      !textController.text.contains('ADMIN') &&
-                                      !textController.text.contains('Admin') &&
-                                      !textController.text.contains('admin')) {
+                                      !textController.text.contains('*** ') &&
+                                      !textController.text.contains(' ***')) {
                                     _controller.nextPage(
                                       duration: Duration(milliseconds: 300),
                                       curve: Curves.easeIn,
@@ -353,37 +352,14 @@ class FirstPage extends State<FirstScreen> {
                                     ));
                                   }
 
-                                  if (textController.text.contains('ADMIN')) {
+                                  if (textController.text.contains('*** ') ||
+                                      textController.text.contains(' ***')) {
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       backgroundColor: Colors.red.shade600,
                                       duration: Duration(seconds: 1),
                                       content: Text(
-                                        'Name cannot contain "ADMIN"',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ));
-                                  }
-                                  if (textController.text.contains('Admin')) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor: Colors.red.shade600,
-                                      duration: Duration(seconds: 1),
-                                      content: Text(
-                                        'Name cannot contain "Admin"',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ));
-                                  }
-                                  if (textController.text.contains('admin')) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      backgroundColor: Colors.red.shade600,
-                                      duration: Duration(seconds: 1),
-                                      content: Text(
-                                        'Name cannot contain "admin"',
+                                        'Name cannot contain "***"',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w600),
                                       ),
@@ -726,7 +702,9 @@ class FirstPage extends State<FirstScreen> {
                                                   ));
                                                 }
                                                 if (textController.text
-                                                    .contains('ADMIN')) {
+                                                        .contains('*** ') ||
+                                                    textController.text
+                                                        .contains(' ***')) {
                                                   ScaffoldMessenger.of(context)
                                                       .showSnackBar(SnackBar(
                                                     backgroundColor:
@@ -734,7 +712,7 @@ class FirstPage extends State<FirstScreen> {
                                                     duration:
                                                         Duration(seconds: 1),
                                                     content: Text(
-                                                      'Name cannot contain "ADMIN"',
+                                                      'Name cannot contain "***"',
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600),
@@ -1451,16 +1429,7 @@ class FirstPage extends State<FirstScreen> {
                               ),
                             ));
                           }
-                          if (textController.text.contains('ADMIN')) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.red.shade600,
-                              duration: Duration(seconds: 1),
-                              content: Text(
-                                'Name cannot contain "ADMIN"',
-                                style: TextStyle(fontWeight: FontWeight.w600),
-                              ),
-                            ));
-                          }
+
                           if (textController.text.isNotEmpty &&
                               isBar == false &&
                               isFuneral == false &&
