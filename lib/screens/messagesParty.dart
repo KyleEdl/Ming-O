@@ -207,6 +207,16 @@ class messageBoardPartyState extends State<messageBoardParty> {
                       controller: chatController,
                       textInputAction: TextInputAction.send,
                       onSubmitted: (value) {
+                        if (chatController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.red.shade600,
+                            duration: Duration(seconds: 1),
+                            content: Text(
+                              "Message can't be blank",
+                              style: TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                          ));
+                        }
                         if (chatController.text.contains('***')) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.red.shade600,
@@ -229,16 +239,6 @@ class messageBoardPartyState extends State<messageBoardParty> {
                               chatController.text);
                           chatController.clear();
                         }
-                        if (chatController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.red.shade600,
-                            duration: Duration(seconds: 1),
-                            content: Text(
-                              "Message can't be blank",
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ));
-                        }
                       },
                       textCapitalization: TextCapitalization.sentences,
                       autocorrect: true,
@@ -257,6 +257,18 @@ class messageBoardPartyState extends State<messageBoardParty> {
                           ),
                           suffixIcon: IconButton(
                             onPressed: () {
+                              if (chatController.text.isEmpty) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  backgroundColor: Colors.red.shade600,
+                                  duration: Duration(seconds: 1),
+                                  content: Text(
+                                    "Message can't be blank",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                ));
+                              }
                               if (chatController.text.contains('***')) {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
@@ -280,18 +292,6 @@ class messageBoardPartyState extends State<messageBoardParty> {
                                     ': ' +
                                     chatController.text);
                                 chatController.clear();
-                              }
-                              if (chatController.text.isEmpty) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  backgroundColor: Colors.red.shade600,
-                                  duration: Duration(seconds: 1),
-                                  content: Text(
-                                    "Message can't be blank",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w600),
-                                  ),
-                                ));
                               }
                             },
                             icon: const Icon(Icons.send),
