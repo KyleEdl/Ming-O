@@ -31,6 +31,7 @@ class customPage extends State<customScreen> {
   static List<String> customList = [];
   final FirstPage fp = new FirstPage();
   int cou = 0;
+  int i = 0;
   var c = 0;
   var o = 0;
   var isBroken = false;
@@ -59,6 +60,34 @@ class customPage extends State<customScreen> {
 
   Future<bool> _onWillPop() async {
     return false;
+  }
+
+  backClear() async {
+    cou = 0;
+    customList.clear();
+    final instance = FirebaseFirestore.instance;
+    final batch = instance.batch();
+    var collection =
+        instance.collection('CUSTOM').doc(fp.getgameMode).collection('list');
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+    while (i < customText.length) {
+      setState(() {
+        customText[i].clear();
+      });
+
+      i++;
+      if (i == 50) {
+        setState(() {
+          i = 0;
+        });
+
+        break;
+      }
+    }
   }
 
   whileChecker() {
@@ -137,7 +166,7 @@ class customPage extends State<customScreen> {
         }
       }
       Navigator.push(context,
-          MaterialPageRoute(builder: ((context) => customDescScreen())));
+          new MaterialPageRoute(builder: ((context) => customDescScreen())));
     }
   }
 
@@ -166,7 +195,20 @@ class customPage extends State<customScreen> {
             ),
             elevation: 0,
             backgroundColor: Colors.tealAccent.shade400,
-            automaticallyImplyLeading: false,
+            leading: Builder(
+              builder: (context) {
+                return IconButton(
+                    onPressed: () {
+                      backClear();
+
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => FirstScreen()));
+                    },
+                    icon: Icon(Icons.arrow_back));
+              },
+            ),
             //automaticallyImplyLeading: true,
           ),
           body: Container(

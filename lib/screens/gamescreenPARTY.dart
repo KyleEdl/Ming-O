@@ -969,7 +969,18 @@ class gamescreenPartyState extends State<gamescreenParty>
           gameLock == true;
           timerGrace?.cancel();
           timerNot?.cancel();
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(Duration(seconds: 2), () async {
+            final instance = FirebaseFirestore.instance;
+            final batch = instance.batch();
+            var collection = instance
+                .collection('messages')
+                .doc(gameKey)
+                .collection(gameKey);
+            var snapshots = await collection.get();
+            for (var doc in snapshots.docs) {
+              batch.delete(doc.reference);
+            }
+            await batch.commit();
             Navigator.push(context,
                 MaterialPageRoute(builder: ((context) => loseScreen())));
           });
@@ -984,10 +995,6 @@ class gamescreenPartyState extends State<gamescreenParty>
           timerGrace?.cancel();
           timerNot?.cancel();
           Future.delayed(Duration(seconds: 2), () async {
-            await FirebaseFirestore.instance
-                .collection('messages')
-                .doc(gameKey)
-                .delete();
             Navigator.push(context,
                 MaterialPageRoute(builder: ((context) => winScreen())));
           });

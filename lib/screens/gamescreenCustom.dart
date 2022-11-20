@@ -941,7 +941,18 @@ class gamescreenCustomState extends State<gamescreenCustom>
           gameLock == true;
           timerGrace?.cancel();
           timerNot?.cancel();
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(Duration(seconds: 2), () async {
+            final instance = FirebaseFirestore.instance;
+            final batch = instance.batch();
+            var collection = instance
+                .collection('messages')
+                .doc(cr.getgameKey)
+                .collection(cr.getgameKey);
+            var snapshots = await collection.get();
+            for (var doc in snapshots.docs) {
+              batch.delete(doc.reference);
+            }
+            await batch.commit();
             Navigator.push(context,
                 MaterialPageRoute(builder: ((context) => loseScreen())));
           });

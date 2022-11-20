@@ -302,7 +302,7 @@ class FirstPage extends State<FirstScreen> {
                   color: Colors.greenAccent,
                   child: Stack(children: <Widget>[
                     Align(
-                        alignment: Alignment(0, -0.5),
+                        alignment: Alignment(0, -0.65),
                         child: Container(
                           child: Text("Let's start with your name...",
                               textAlign: TextAlign.center,
@@ -773,9 +773,12 @@ class FirstPage extends State<FirstScreen> {
                                                   }
                                                   Navigator.push(
                                                       context,
-                                                      MaterialPageRoute(
-                                                          builder: ((context) =>
-                                                              customScreen())));
+                                                      new MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              customScreen())).then(
+                                                      (value) => setState(
+                                                            () {},
+                                                          ));
                                                 }
                                               },
                                               child: Container(

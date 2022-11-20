@@ -66,6 +66,11 @@ class customDescPage extends State<customDescScreen> {
     await refMessages.set({'CUST DESC': customDescList[i], 'INDEX': cout});
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Future<bool> _onWillPop() async {
     return false;
   }
@@ -95,7 +100,19 @@ class customDescPage extends State<customDescScreen> {
             ),
             elevation: 0,
             backgroundColor: Colors.tealAccent.shade400,
-            automaticallyImplyLeading: false,
+            leading: Builder(
+              builder: (context) {
+                return IconButton(
+                    onPressed: () {
+                      customList.length = 0;
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) => customScreen()));
+                    },
+                    icon: Icon(Icons.arrow_back));
+              },
+            ),
           ),
           body: Container(
             color: Colors.tealAccent.shade700,

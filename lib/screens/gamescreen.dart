@@ -937,7 +937,18 @@ class gamescreenState extends State<gamescreen> with WidgetsBindingObserver {
           gameLock == true;
           timerGrace?.cancel();
           timerNot?.cancel();
-          Future.delayed(Duration(seconds: 2), () {
+          Future.delayed(Duration(seconds: 2), () async {
+            final instance = FirebaseFirestore.instance;
+            final batch = instance.batch();
+            var collection = instance
+                .collection('messages')
+                .doc('AERFAMILY')
+                .collection('AERFAMILY');
+            var snapshots = await collection.get();
+            for (var doc in snapshots.docs) {
+              batch.delete(doc.reference);
+            }
+            await batch.commit();
             Navigator.push(context,
                 MaterialPageRoute(builder: ((context) => loseScreen())));
           });
