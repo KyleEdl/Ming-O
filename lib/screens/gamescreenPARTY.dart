@@ -907,7 +907,7 @@ class gamescreenPartyState extends State<gamescreenParty>
 
   Future getMessages() async {
     await firebaseInit;
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 2));
     await FirebaseFirestore.instance
         .collection('messages')
         .doc(gameKey)

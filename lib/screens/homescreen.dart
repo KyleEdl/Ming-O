@@ -468,17 +468,9 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isFuneral,
                                                 onChanged: (bool? funeral) {
-                                                  setState(
-                                                    () {
-                                                      nextButtonActive =
-                                                          !nextButtonActive;
-                                                      nextGreenOpac =
-                                                          nextButtonActive ==
-                                                                  true
-                                                              ? 0.8
-                                                              : 0;
-                                                    },
-                                                  );
+                                                  nextButtonActive =
+                                                      !nextButtonActive;
+
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
@@ -523,6 +515,13 @@ class FirstPage extends State<FirstScreen> {
                                                       ),
                                                     ));
                                                   }
+                                                  if (nextButtonActive ==
+                                                      true) {
+                                                    nextGreenOpac = 0.8;
+                                                  } else if (nextButtonActive ==
+                                                      false) {
+                                                    nextGreenOpac = 0;
+                                                  }
                                                 },
                                                 activeColor:
                                                     Colors.green.shade200,
@@ -545,17 +544,8 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isBar,
                                                 onChanged: (bool? bar) {
-                                                  setState(
-                                                    () {
-                                                      nextButtonActive =
-                                                          !nextButtonActive;
-                                                      nextGreenOpac =
-                                                          nextButtonActive ==
-                                                                  true
-                                                              ? 0.8
-                                                              : 0;
-                                                    },
-                                                  );
+                                                  nextButtonActive =
+                                                      !nextButtonActive;
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
@@ -601,6 +591,13 @@ class FirstPage extends State<FirstScreen> {
                                                       ),
                                                     ));
                                                   }
+                                                  if (nextButtonActive ==
+                                                      true) {
+                                                    nextGreenOpac = 0.8;
+                                                  } else if (nextButtonActive ==
+                                                      false) {
+                                                    nextGreenOpac = 0;
+                                                  }
                                                 },
                                                 activeColor:
                                                     Colors.green.shade200,
@@ -624,17 +621,8 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isParty,
                                                 onChanged: (bool? party) {
-                                                  setState(
-                                                    () {
-                                                      nextButtonActive =
-                                                          !nextButtonActive;
-                                                      nextGreenOpac =
-                                                          nextButtonActive ==
-                                                                  true
-                                                              ? 0.8
-                                                              : 0;
-                                                    },
-                                                  );
+                                                  nextButtonActive =
+                                                      !nextButtonActive;
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
@@ -678,6 +666,13 @@ class FirstPage extends State<FirstScreen> {
                                                                     .w600),
                                                       ),
                                                     ));
+                                                  }
+                                                  if (nextButtonActive ==
+                                                      true) {
+                                                    nextGreenOpac = 0.8;
+                                                  } else if (nextButtonActive ==
+                                                      false) {
+                                                    nextGreenOpac = 0;
                                                   }
                                                 },
                                                 activeColor:
@@ -811,8 +806,6 @@ class FirstPage extends State<FirstScreen> {
                                                   milliseconds: 250),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  if (nextButtonActive ==
-                                                      false) {}
                                                   if (isBar == true ||
                                                       textControllerKey.text
                                                           .contains('BAR')) {
@@ -821,8 +814,6 @@ class FirstPage extends State<FirstScreen> {
                                                                     1000) +
                                                                 100)
                                                             .toString();
-
-                                                    nextButtonActive = true;
 
                                                     isBar = true;
                                                     gameList gl = new gameList(
