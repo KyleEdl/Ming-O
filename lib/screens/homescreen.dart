@@ -52,7 +52,7 @@ class FirstPage extends State<FirstScreen> {
   static String gameKey = "";
   static int customKey = (Random().nextInt(100000) + 10000);
   static String gameKeySet = customKey.toString();
-  static bool nextButtonActive = false;
+  static bool? nextButtonActive = false;
   double mingOpac = 1;
   double nextGreenOpac = 0;
 
@@ -468,9 +468,7 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isFuneral,
                                                 onChanged: (bool? funeral) {
-                                                  nextButtonActive =
-                                                      !nextButtonActive;
-
+                                                  nextButtonActive = funeral;
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
@@ -480,6 +478,7 @@ class FirstPage extends State<FirstScreen> {
                                                     isBar = false;
                                                     isParty = false;
                                                   });
+
                                                   gameMode = 'funeral';
                                                   if (isBar == true) {
                                                     ScaffoldMessenger.of(
@@ -544,8 +543,7 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isBar,
                                                 onChanged: (bool? bar) {
-                                                  nextButtonActive =
-                                                      !nextButtonActive;
+                                                  nextButtonActive = bar;
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
@@ -621,8 +619,7 @@ class FirstPage extends State<FirstScreen> {
                                                         .leading,
                                                 value: isParty,
                                                 onChanged: (bool? party) {
-                                                  nextButtonActive =
-                                                      !nextButtonActive;
+                                                  nextButtonActive = party;
                                                   setState(() {
                                                     isEdl = false;
                                                     isOma = false;
